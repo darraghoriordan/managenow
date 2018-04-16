@@ -1,9 +1,15 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import App from './App';
+import teamMembers from "../sampleData/sampleTeam";
+import {App, IAppState} from './App';
 
 it('renders without crashing', () => {
   const div = document.createElement('div');
-  ReactDOM.render(<App />, div);
+  
+  const stateMock:IAppState = {
+    teamMembers
+  }
+
+  ReactDOM.render(<App state={stateMock}/>, div);
   ReactDOM.unmountComponentAtNode(div);
 });

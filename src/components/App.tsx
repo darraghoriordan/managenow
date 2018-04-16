@@ -1,14 +1,14 @@
 import * as React from "react";
 import { Container, Header } from "semantic-ui-react";
+import ITeamMember from "../models/ITeamMember";
 import AppFooter from "./AppFooter";
-import ITeamMember from "./Models/ITeamMember";
 import TopMenu from "./TopMenu";
 
-interface IAppState {
+export interface IAppState {
   teamMembers: ITeamMember[];
 }
 
-class App extends React.Component<null, IAppState> {
+export class App extends React.Component<any, IAppState> {
   public render() {
     return (
       <div>
