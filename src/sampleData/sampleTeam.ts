@@ -1,5 +1,5 @@
-import ITeamMember from "../Models/ITeamMember";
-import { TeamMemberStatus } from "../Models/TeamMemberStatus";
+import ITeamMember from "../models/ITeamMember";
+import { TeamMemberStatus } from "../models/TeamMemberStatus";
 
 const teamMembers = new Array<ITeamMember>();
 teamMembers.push(

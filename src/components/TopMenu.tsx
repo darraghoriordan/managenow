@@ -5,8 +5,8 @@ const TopMenu = () => (
   <Menu fixed="top" inverted={true}>
     <Container>
       <Menu.Item as="a" header={true}>
-        <Image size="mini" src="/logo.png" style={{ marginRight: "1.5em" }} />
-        Project Name
+        <Image size="mini" src="./logo.png" style={{ marginRight: "1.5em" }} />
+        Manage Now
       </Menu.Item>
       <Menu.Item as="a">Home</Menu.Item>
 
