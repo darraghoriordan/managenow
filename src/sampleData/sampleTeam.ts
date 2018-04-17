@@ -1,4 +1,4 @@
-import { TeamMemberNoteSentiment, TeamMemberStatus } from "../models/Enums";
+import { TeamMemberNoteSentiment, TeamMemberStatus, TeamMemberTodoStatus } from "../models/Enums";
 import ITeamMember from "../models/ITeamMember";
 
 const teamMembers = new Array<ITeamMember>();
@@ -22,7 +22,19 @@ teamMembers.push(
         sentiment: TeamMemberNoteSentiment.positive
       }
     ],
-    status: TeamMemberStatus.active
+    status: TeamMemberStatus.active,
+    todos:[
+      {
+        dateAdded: new Date(),
+        dateCompleted: new Date(),
+        description: "chat about life",
+        status: TeamMemberTodoStatus.active
+      }, {
+        dateAdded: new Date(),
+        dateCompleted: new Date(),
+        description: "chat about career",
+        status: TeamMemberTodoStatus.active
+      }]
   },
   {
     name: "Lucy",
@@ -41,7 +53,19 @@ teamMembers.push(
       description: "fantastic work this time",
       sentiment: TeamMemberNoteSentiment.positive
     }],
-    status: TeamMemberStatus.active
+    status: TeamMemberStatus.active,
+    todos:[
+      {
+        dateAdded: new Date(),
+        dateCompleted: new Date(),
+        description: "chat about life",
+        status: TeamMemberTodoStatus.active
+      }, {
+        dateAdded: new Date(),
+        dateCompleted: new Date(),
+        description: "chat about career",
+        status: TeamMemberTodoStatus.active
+      }]
   }
 );
 

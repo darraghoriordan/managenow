@@ -16,6 +16,7 @@ export default class TeamMemberNotes extends React.PureComponent<
   public render() {
     return (
       <div>
+        <p>Notes</p>
         {this.props.teamMemberNotes
           .sort((note1, note2) => +note2.dateAdded - +note1.dateAdded)
           .map((x: ITeamMemberNote) => (

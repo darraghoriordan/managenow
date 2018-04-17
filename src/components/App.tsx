@@ -5,6 +5,7 @@ import teamMembers from "../sampleData/sampleTeam";
 import AppFooter from "./AppFooter";
 import TeamList from "./TeamList";
 import TeamMemberNotes from "./TeamMemberNotes";
+import TeamMemberTodos from "./TeamMemberTodos";
 import TeamStatistcs from "./TeamStatistics";
 import TopMenu from "./TopMenu";
 
@@ -30,6 +31,8 @@ export class App extends React.Component<any, IAppState> {
           <TeamStatistcs teamMembers={this.state.teamMembers} />
           <TeamList teamMembers={this.state.teamMembers} />
           <TeamMemberNotes teamMemberNotes={this.state.teamMembers[0].notes} />
+          <TeamMemberTodos teamMemberTodos={this.state.teamMembers[0].todos} />
+          
         </Container>
         <AppFooter />
       </div>
