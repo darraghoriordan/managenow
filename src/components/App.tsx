@@ -4,8 +4,10 @@ import ITeamMember from "../models/ITeamMember";
 import teamMembers from "../sampleData/sampleTeam";
 import AppFooter from "./AppFooter";
 import TeamList from "./TeamList";
+import TeamMemberNotes from "./TeamMemberNotes";
 import TeamStatistcs from "./TeamStatistics";
 import TopMenu from "./TopMenu";
+
 export interface IAppState {
   teamMembers: ITeamMember[];
 }
@@ -27,6 +29,7 @@ export class App extends React.Component<any, IAppState> {
           <Header as="h1">Your Team</Header>
           <TeamStatistcs teamMembers={this.state.teamMembers} />
           <TeamList teamMembers={this.state.teamMembers} />
+          <TeamMemberNotes teamMemberNotes={this.state.teamMembers[0].notes} />
         </Container>
         <AppFooter />
       </div>

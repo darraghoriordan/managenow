@@ -1,4 +1,5 @@
 import * as React from "react";
+import { Button } from "semantic-ui-react";
 import ITeamMember from "../models/ITeamMember";
 
 export interface ITeamListProps {
@@ -14,7 +15,7 @@ export default class TeamList extends React.PureComponent<ITeamListProps, any> {
       <div>
         <p>links to all team</p>
         {this.props.teamMembers.map((element: ITeamMember) => (
-          <button key={element.name}>{element.name} </button>
+          <Button key={element.name}>{element.name} </Button>
         ))}
       </div>
     );

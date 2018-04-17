@@ -4,7 +4,10 @@ import ITeamMember from "../models/ITeamMember";
 export interface ITeamStatisticsProps {
   teamMembers: ITeamMember[];
 }
-export default class TeamStatistics extends React.PureComponent<ITeamStatisticsProps, any> {
+export default class TeamStatistics extends React.PureComponent<
+  ITeamStatisticsProps,
+  any
+> {
   constructor(props: ITeamStatisticsProps) {
     super(props);
   }
@@ -12,7 +15,7 @@ export default class TeamStatistics extends React.PureComponent<ITeamStatisticsP
   public render() {
     return (
       <div>
-        <p>Some team  overview</p>
+        <p>Some team overview</p>
       </div>
     );
   }
