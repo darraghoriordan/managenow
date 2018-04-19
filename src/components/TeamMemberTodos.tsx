@@ -21,6 +21,7 @@ export default class TeamMemberTodos extends React.PureComponent<
           .sort((note1, note2) => +note2.dateAdded - +note1.dateAdded)
           .map((x: ITeamMemberTodo) => (
             <p
+            key={new Date().toString()+ x.description+ Math.random()}
               className={
                 x.status === TeamMemberTodoStatus.active
                   ? "note-positive"
