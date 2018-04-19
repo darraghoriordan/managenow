@@ -1,5 +1,6 @@
 import * as React from "react";
 import { Container, Dropdown, Image, Menu } from "semantic-ui-react";
+import constants from "../constants/constants";
 
 const TopMenu = () => (
   <Menu fixed="top" inverted={true}>
@@ -8,7 +9,18 @@ const TopMenu = () => (
         <Image size="mini" src="./logo.png" style={{ marginRight: "1.5em" }} />
         Manage Now
       </Menu.Item>
-      <Menu.Item as="a">Home</Menu.Item>
+      <Menu.Item as="a" to={constants.ROUTE_HOME}>
+        Home
+      </Menu.Item>
+      <Menu.Item as="a" to={constants.ROUTE_SIGN_IN}>
+        Sign in
+      </Menu.Item>
+      <Menu.Item as="a" to={constants.ROUTE_LANDING}>
+        Landing
+      </Menu.Item>
+      <Menu.Item as="a" to={constants.ROUTE_ACCOUNT}>
+        Account
+      </Menu.Item>
 
       <Dropdown item={true} simple={true} text="Dropdown">
         <Dropdown.Menu>

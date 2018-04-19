@@ -1,15 +1,17 @@
 import * as React from "react";
-import { TeamMemberTodoStatus } from "../models/Enums";
-import ITeamMemberTodo from "../models/ITeamMemberTodo";
+import { TeamMemberActionStatus } from "../models/Enums";
+import ITeamMemberAction from "../models/ITeamMemberAction";
 import "./TeamMemberNotes.css";
-export interface ITeamMemberTodosProps {
-  teamMemberTodos: ITeamMemberTodo[];
+
+export interface ITeamMemberActionsProps {
+  teamMemberActions: ITeamMemberAction[];
 }
-export default class TeamMemberTodos extends React.PureComponent<
-  ITeamMemberTodosProps,
+
+export default class TeamMemberActions extends React.PureComponent<
+  ITeamMemberActionsProps,
   any
 > {
-  constructor(props: ITeamMemberTodosProps) {
+  constructor(props: ITeamMemberActionsProps) {
     super(props);
   }
 
@@ -17,12 +19,12 @@ export default class TeamMemberTodos extends React.PureComponent<
     return (
       <div>
         <p>Todo For</p>
-        {this.props.teamMemberTodos
+        {this.props.teamMemberActions
           .sort((note1, note2) => +note2.dateAdded - +note1.dateAdded)
-          .map((x: ITeamMemberTodo) => (
+          .map((x: ITeamMemberAction) => (
             <p
               className={
-                x.status === TeamMemberTodoStatus.active
+                x.status === TeamMemberActionStatus.active
                   ? "note-positive"
                   : "note-negative"
               }

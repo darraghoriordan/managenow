@@ -1,12 +1,15 @@
 import * as React from "react";
-import { Container, Header } from "semantic-ui-react";
+import { BrowserRouter as Router, Route } from "react-router-dom";
+import constants from "../constants/constants";
 import ITeamMember from "../models/ITeamMember";
 import teamMembers from "../sampleData/sampleTeam";
+
+import AccountPage from "./AccountPage";
 import AppFooter from "./AppFooter";
-import TeamList from "./TeamList";
-import TeamMemberNotes from "./TeamMemberNotes";
-import TeamMemberTodos from "./TeamMemberTodos";
-import TeamStatistcs from "./TeamStatistics";
+import HomePage from "./HomePage";
+import LandingPage from "./LandingPage";
+import SignInPage from "./SignInPage";
+import SignUpPage from "./SignUpPage";
 import TopMenu from "./TopMenu";
 
 export interface IAppState {
@@ -24,16 +27,26 @@ export class App extends React.Component<any, IAppState> {
   public render() {
     return (
       <div>
-        <TopMenu />
+        <Router>
+          <TopMenu />
+          <Route exact={true} path={constants.ROUTE_LANDING}>
+            <LandingPage teamMembers={this.state.teamMembers} />
+          </Route>
+          <Route exact={true} path={constants.ROUTE_SIGN_UP}>
+            <SignUpPage />
+          </Route>
+          <Route exact={true} path={constants.ROUTE_SIGN_IN}>
+            <SignInPage />
+          </Route>
 
-        <Container text={true} style={{ marginTop: "7em" }}>
-          <Header as="h1">Your Team</Header>
-          <TeamStatistcs teamMembers={this.state.teamMembers} />
-          <TeamList teamMembers={this.state.teamMembers} />
-          <TeamMemberNotes teamMemberNotes={this.state.teamMembers[0].notes} />
-          <TeamMemberTodos teamMemberTodos={this.state.teamMembers[0].todos} />
-          
-        </Container>
+          <Route exact={true} path={constants.ROUTE_HOME}>
+            <HomePage />
+          </Route>
+          <Route exact={true} path={constants.ROUTE_ACCOUNT}>
+            <AccountPage />
+          </Route>
+        </Router>
+
         <AppFooter />
       </div>
     );
