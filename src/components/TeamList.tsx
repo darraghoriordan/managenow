@@ -8,6 +8,7 @@ export interface ITeamListProps {
 export default class TeamList extends React.PureComponent<ITeamListProps, any> {
   constructor(props: ITeamListProps) {
     super(props);
+
   }
 
   public render() {

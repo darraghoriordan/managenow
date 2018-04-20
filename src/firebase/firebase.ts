@@ -25,7 +25,8 @@ export const uiConfig = {
   signInOptions: [
     firebase.auth.GoogleAuthProvider.PROVIDER_ID
   ],
-  signInSuccessUrl: '/landing'
+  // TODO: this should use the callback ad push a history event instead
+  signInSuccessUrl: '/team'
 
 };
 
