@@ -7,6 +7,7 @@ it('renders without crashing', () => {
   const div = document.createElement('div');
   
   const stateMock:IAppState = {
+    authUser:null,
     teamMembers
   }
 

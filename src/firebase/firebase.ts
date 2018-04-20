@@ -19,16 +19,27 @@ const prodConfig = {
   storageBucket: "nowmanagersources.appspot.com"
 };
 
+
+export const uiConfig = {
+  signInFlow: 'popup',
+  signInOptions: [
+    firebase.auth.GoogleAuthProvider.PROVIDER_ID
+  ],
+  signInSuccessUrl: '/landing'
+
+};
+
 const config = process.env.NODE_ENV === 'production'
   ? prodConfig
   : devConfig;
-  
+
+
 const firebaseApp = firebase.initializeApp(config);
 
 const auth = firebase.auth();
 
 export {
-  auth,
+  auth
 };
 
 export default firebaseApp;
