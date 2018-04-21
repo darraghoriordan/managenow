@@ -18,7 +18,7 @@ export default class TeamMemberActions extends React.PureComponent<
   public render() {
     return (
       <div>
-        <p>Todo For</p>
+        <p>Actions For</p>
         {this.props.teamMemberActions
           .sort((note1, note2) => +note2.dateAdded - +note1.dateAdded)
           .map((x: ITeamMemberAction) => (

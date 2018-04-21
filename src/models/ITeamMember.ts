@@ -4,6 +4,7 @@ import ITeamMemberNote from "./ITeamMemberNote";
 import ITeamMemberTodo from "./ITeamMemberTodo";
 
 export default interface ITeamMember {
+  id:string;
   name: string;
   status: TeamMemberStatus;
   notes: ITeamMemberNote[];

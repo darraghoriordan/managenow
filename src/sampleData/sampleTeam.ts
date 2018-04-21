@@ -1,4 +1,6 @@
 import {
+  ActionSourceType,
+  TeamMemberActionStatus,
   TeamMemberNoteSentiment,
   TeamMemberStatus,
   TeamMemberTodoStatus
@@ -9,6 +11,7 @@ const teamMembers = new Array<ITeamMember>();
 teamMembers.push(
   {
     actions: [],
+    id: "1",
     name: "Mark",
     notes: [
       {
@@ -44,22 +47,42 @@ teamMembers.push(
     ]
   },
   {
-    actions: [],
+    actions: [
+      {
+        actionDetails: {
+          description: "blah",
+          locationInSource: "fdf",
+          name: "fgdfg",
+          sourceDetails: {
+            author: "sdfsdf",
+            name: "sdfsdfsd",
+            referralLink: "fsfsdfsdf",
+            type: ActionSourceType.blog
+          }
+        },
+        dateAdded: new Date(),
+        dateCompleted: new Date(),
+        description: "description",
+        notes: "notes",
+        status: TeamMemberActionStatus.active
+      }
+    ],
+    id: "2",
     name: "Lucy",
     notes: [
       {
         dateAdded: new Date(),
-        description: "awful work today",
+        description: "Lucy - awful work today",
         sentiment: TeamMemberNoteSentiment.negative
       },
       {
         dateAdded: new Date(),
-        description: "awful work today",
+        description: "Lucy - awful work today",
         sentiment: TeamMemberNoteSentiment.negative
       },
       {
         dateAdded: new Date(),
-        description: "fantastic work this time",
+        description: "Lucy - fantastic work this time",
         sentiment: TeamMemberNoteSentiment.positive
       }
     ],
@@ -68,13 +91,13 @@ teamMembers.push(
       {
         dateAdded: new Date(),
         dateCompleted: new Date(),
-        description: "chat about life",
+        description: "Lucy - chat about life",
         status: TeamMemberTodoStatus.active
       },
       {
         dateAdded: new Date(),
         dateCompleted: new Date(),
-        description: "chat about career",
+        description: "Lucy - chat about career",
         status: TeamMemberTodoStatus.active
       }
     ]

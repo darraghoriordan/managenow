@@ -1,5 +1,6 @@
 import { User } from "firebase";
 import * as React from "react";
+import { doCreateUser } from "../firebase/db";
 import { auth } from "../firebase/firebase";
 
 export interface IAuthState {
@@ -21,6 +22,9 @@ const withAuthentication = (Component: any) => {
       //  const authCon = (authUser: any) => !!this.props.authUser;
       auth.onAuthStateChanged((authUser: User) => {
         if (authUser) {
+          doCreateUser(authUser.uid, authUser.email)
+            .then()
+            .catch();
           this.setState({
             authUser,
             authenticated: true
