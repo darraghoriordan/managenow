@@ -1,17 +1,23 @@
 import { User } from "firebase";
 import * as React from "react";
-import { doCreateUser } from "../firebase/db";
+import { doCreateUser, onceGetUser } from "../firebase/db";
 import { auth } from "../firebase/firebase";
+import IAppUser from "../models/IAppUser";
 
 export interface IAuthState {
   authUser: User | null;
   authenticated: boolean;
+  appUser: IAppUser | null;
 }
 const withAuthentication = (Component: any) => {
   class WithAuthentication extends React.Component<any, IAuthState> {
     constructor(props: any) {
       super(props);
-      const state: IAuthState = { authUser: null, authenticated: false };
+      const state: IAuthState = {
+        appUser: null,
+        authUser: null,
+        authenticated: false
+      };
 
       this.state = state;
     }
@@ -22,15 +28,40 @@ const withAuthentication = (Component: any) => {
       //  const authCon = (authUser: any) => !!this.props.authUser;
       auth.onAuthStateChanged((authUser: User) => {
         if (authUser) {
-          doCreateUser(authUser.uid, authUser.email)
-            .then()
-            .catch();
-          this.setState({
-            authUser,
-            authenticated: true
-          });
+          // try get the appUser
+          onceGetUser(authUser.uid)
+            .then(dataRef => {
+              // if not exists  create the new user
+              let foundUser = dataRef.val();
+
+              if (!foundUser) {
+                foundUser={
+                  displayName: authUser.displayName || "",
+                  email: authUser.email || "",
+                  uid:authUser.uid
+                }
+                doCreateUser(
+                  authUser.uid,
+                  authUser.email || "",
+                  authUser.displayName || ""
+                );
+              }
+              this.setState({
+                appUser: foundUser,
+                authUser,
+                authenticated: true
+              });
+            })
+            .catch(
+              
+              error => {
+                // tslint:disable-next-line:no-console
+                console.log(error);
+              }
+            );
         } else {
           this.setState({
+            appUser: null,
             authUser: null,
             authenticated: false
           });

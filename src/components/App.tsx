@@ -26,7 +26,8 @@ export class App extends React.Component<IAppProps, IAppState> {
     super(props);
     const state: IAppState = {
       loading: true,
-      teamMembers
+      teamMembers,
+      
     };
 
     this.state = state;
