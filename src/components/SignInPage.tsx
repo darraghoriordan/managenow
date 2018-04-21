@@ -1,39 +1,45 @@
 import * as React from "react";
 import { FirebaseAuth } from "react-firebaseui";
-import { Link } from "react-router-dom";
+import { Redirect, RouteComponentProps, withRouter } from "react-router-dom";
 import { Container } from "semantic-ui-react";
 import constants from "../constants/constants";
 import { auth, uiConfig } from "../firebase/firebase";
+interface ISignInPageProps extends RouteComponentProps<any> {
+  authenticated: boolean;
+}
+interface ISignInPageState {
+  loading: boolean;
+}
 
-const SignInPage = () => (
-  <Container text={true} style={{ marginTop: "7em" }}>
-    <div>
-      <h1>Sign In</h1>
-      <SignInForm />
-    </div>
-  </Container>
-);
-
-class SignInForm extends React.Component {
-  constructor(props: any) {
+class SignInPage extends React.Component<ISignInPageProps, ISignInPageState> {
+  constructor(props: ISignInPageProps) {
     super(props);
+    this.state = {
+      loading: true
+    };
+  }
+  public componentDidMount() {
+    this.setState({ loading: false });
   }
 
-  public onSubmit = (event: any) => {
-    return null;
-  };
-
   public render() {
-    return <FirebaseAuth uiConfig={uiConfig} firebaseAuth={auth} />;
+    if (this.props.authenticated) {
+      return <Redirect to={constants.ROUTE_LANDING} />;
+    }
+
+    if (this.state.loading) {
+      return <div>loading...</div>;
+    }
+
+    return (
+      <Container text={true} style={{ marginTop: "7em" }}>
+        <div>
+          <h1>Sign In</h1>
+          <FirebaseAuth uiConfig={uiConfig} firebaseAuth={auth} />
+        </div>
+      </Container>
+    );
   }
 }
 
-const SignInLink = () => (
-  <p>
-    Don't have an account? <Link to={constants.ROUTE_SIGN_UP}>Sign Up</Link>
-  </p>
-);
-
-export default SignInPage;
-
-export { SignInForm, SignInLink };
+export default withRouter(SignInPage);

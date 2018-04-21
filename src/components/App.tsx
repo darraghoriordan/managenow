@@ -1,8 +1,9 @@
+import { User } from "firebase";
 import * as React from "react";
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { BrowserRouter as Router, Redirect, Route } from "react-router-dom";
 import withAuthentication from "../aspects/WithAuthentication";
 import constants from "../constants/constants";
-import AuthUserContext from "../contexts/AuthUserContext"
+import { auth } from "../firebase/firebase";
 import ITeamMember from "../models/ITeamMember";
 import teamMembers from "../sampleData/sampleTeam";
 import AccountPage from "./AccountPage";
@@ -11,38 +12,67 @@ import HomePage from "./HomePage";
 import LandingPage from "./LandingPage";
 import SignInPage from "./SignInPage";
 import TopMenu from "./TopMenu";
+
 export interface IAppState {
   teamMembers: ITeamMember[];
+  loading: boolean;
 }
-
-export class App extends React.Component<any, IAppState> {
+export interface IAppProps {
+  authenticated: boolean;
+  authUser: User;
+}
+export class App extends React.Component<IAppProps, IAppState> {
   constructor(props: any) {
     super(props);
-    const state: IAppState = { teamMembers };
+    const state: IAppState = {
+      loading: true,
+      teamMembers
+    };
 
     this.state = state;
+  }
+  public signOutFirebase(history: any) {
+    auth.signOut().then(
+      () => {
+        history.push(constants.ROUTE_SIGN_IN);
+      },
+      error => {
+        // tslint:disable-next-line:no-console
+        console.error("Sign Out Error", error);
+      }
+    );
   }
 
   public render() {
     const teamMembersProp = this.state.teamMembers;
+    const authUserProp = this.props.authUser;
+    const authenticatedProp = this.props.authenticated;
 
     return (
       <div>
         <Router>
           <div>
-            <TopMenu />
+            <TopMenu
+              authenticated={authenticatedProp}
+              onSignOut={this.signOutFirebase}
+            />
             <Route
               exact={true}
               path={constants.ROUTE_LANDING}
               // tslint:disable-next-line:jsx-no-lambda
-              render={routeProps => (
-                <AuthUserContext.Consumer>
-                  {(authUser) => <LandingPage {...routeProps} teamMembers={teamMembersProp} authUser={authUser} /> }
-                
-                </AuthUserContext.Consumer>
-              )}
+              render={routeProps => {
+                if (authenticatedProp) {
+                  return (
+                    <LandingPage
+                      {...routeProps}
+                      teamMembers={teamMembersProp}
+                      authUser={authUserProp}
+                    />
+                  );
+                }
+                return <Redirect to={constants.ROUTE_SIGN_IN} />;
+              }}
             />
-
             <Route
               exact={true}
               path={constants.ROUTE_SIGN_UP}
@@ -52,7 +82,8 @@ export class App extends React.Component<any, IAppState> {
             <Route
               exact={true}
               path={constants.ROUTE_SIGN_IN}
-              component={SignInPage}
+              // tslint:disable-next-line:jsx-no-lambda
+              render={() => <SignInPage authenticated={authenticatedProp} />}
             />
 
             <Route

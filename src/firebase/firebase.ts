@@ -1,4 +1,5 @@
 import * as firebase from "firebase";
+import constants from "../constants/constants";
 
 // Initialize Firebase
 const devConfig = {
@@ -25,8 +26,7 @@ export const uiConfig = {
   signInOptions: [
     firebase.auth.GoogleAuthProvider.PROVIDER_ID
   ],
-  // TODO: this should use the callback ad push a history event instead
-  signInSuccessUrl: '/team'
+  signInSuccessUrl: constants.ROUTE_LANDING
 
 };
 
@@ -38,9 +38,10 @@ const config = process.env.NODE_ENV === 'production'
 const firebaseApp = firebase.initializeApp(config);
 
 const auth = firebase.auth();
-
+const db = firebase.database();
 export {
-  auth
+  auth,
+  db
 };
 
 export default firebaseApp;
