@@ -16,17 +16,21 @@ teamMembers.push(
     notes: [
       {
         dateAdded: new Date(),
+
         description: "terrible work today",
+        id: "1",
         sentiment: TeamMemberNoteSentiment.negative
       },
       {
         dateAdded: new Date(),
         description: "terrible work today",
+        id: "2",
         sentiment: TeamMemberNoteSentiment.negative
       },
       {
         dateAdded: new Date(),
         description: "great work this time",
+        id: "3",
         sentiment: TeamMemberNoteSentiment.positive
       }
     ],
@@ -36,12 +40,14 @@ teamMembers.push(
         dateAdded: new Date(),
         dateCompleted: new Date(),
         description: "chat about life",
+        id: "1",
         status: TeamMemberTodoStatus.active
       },
       {
         dateAdded: new Date(),
         dateCompleted: new Date(),
         description: "chat about career",
+        id: "2",
         status: TeamMemberTodoStatus.active
       }
     ]
@@ -51,18 +57,22 @@ teamMembers.push(
       {
         actionDetails: {
           description: "blah",
+          id: "1",
           locationInSource: "fdf",
           name: "fgdfg",
           sourceDetails: {
             author: "sdfsdf",
+            id: "1",
             name: "sdfsdfsd",
             referralLink: "fsfsdfsdf",
             type: ActionSourceType.blog
           }
         },
+
         dateAdded: new Date(),
         dateCompleted: new Date(),
         description: "description",
+        id: "1",
         notes: "notes",
         status: TeamMemberActionStatus.active
       }
@@ -73,16 +83,19 @@ teamMembers.push(
       {
         dateAdded: new Date(),
         description: "Lucy - awful work today",
+        id: "1",
         sentiment: TeamMemberNoteSentiment.negative
       },
       {
         dateAdded: new Date(),
         description: "Lucy - awful work today",
+        id: "2",
         sentiment: TeamMemberNoteSentiment.negative
       },
       {
         dateAdded: new Date(),
         description: "Lucy - fantastic work this time",
+        id: "3",
         sentiment: TeamMemberNoteSentiment.positive
       }
     ],
@@ -92,12 +105,14 @@ teamMembers.push(
         dateAdded: new Date(),
         dateCompleted: new Date(),
         description: "Lucy - chat about life",
+        id: "1",
         status: TeamMemberTodoStatus.active
       },
       {
         dateAdded: new Date(),
         dateCompleted: new Date(),
         description: "Lucy - chat about career",
+        id: "2",
         status: TeamMemberTodoStatus.active
       }
     ]

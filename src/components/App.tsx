@@ -4,7 +4,9 @@ import { BrowserRouter as Router, Redirect, Route } from "react-router-dom";
 import withAuthentication from "../aspects/WithAuthentication";
 import constants from "../constants/constants";
 import { auth } from "../firebase/firebase";
+import ISource from "../models/ISource";
 import ITeamMember from "../models/ITeamMember";
+import techniqueSources from "../sampleData/sampleSources";
 import teamMembers from "../sampleData/sampleTeam";
 import AccountPage from "./AccountPage";
 import AppFooter from "./AppFooter";
@@ -16,6 +18,7 @@ import TopMenu from "./TopMenu";
 export interface IAppState {
   teamMembers: ITeamMember[];
   loading: boolean;
+  techniqueSources: ISource[];
 }
 export interface IAppProps {
   authenticated: boolean;
@@ -27,7 +30,7 @@ export class App extends React.Component<IAppProps, IAppState> {
     const state: IAppState = {
       loading: true,
       teamMembers,
-      
+      techniqueSources
     };
 
     this.state = state;
@@ -73,11 +76,6 @@ export class App extends React.Component<IAppProps, IAppState> {
                 }
                 return <Redirect to={constants.ROUTE_SIGN_IN} />;
               }}
-            />
-            <Route
-              exact={true}
-              path={constants.ROUTE_SIGN_UP}
-              component={SignInPage}
             />
 
             <Route

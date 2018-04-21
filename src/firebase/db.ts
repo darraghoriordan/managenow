@@ -1,3 +1,4 @@
+import sampleSources from "../sampleData/sampleSources";
 import { db } from "./firebase";
 
 // User API
@@ -18,3 +19,5 @@ export const onceGetUser = (uid: string) =>
     .ref("users")
     .child(uid)
     .once("value");
+
+export const onceGetAllSources = () => sampleSources
