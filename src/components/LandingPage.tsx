@@ -54,7 +54,7 @@ class LandingPage extends React.PureComponent<
         return {
           key: objKey,
           text: val,
-          value: val
+          value: objKey
         };
       }
     );

@@ -1,4 +1,7 @@
 const constants = {
+  FIELD_STRINGS:{
+    techniqueSearchPlaceholderText: "I need to work on..."
+  },
   ROUTE_ACCOUNT: "/account",
   ROUTE_HOME: "/",
   ROUTE_LANDING: "/team",
