@@ -4,6 +4,7 @@ import { Container, Header } from "semantic-ui-react";
 import constants from "../constants/constants";
 import { TeamMemberStatus } from "../models/Enums";
 import ITeamMember from "../models/ITeamMember";
+import AddAction from "./AddAction";
 import TeamList from "./TeamList";
 import TeamMemberActions from "./TeamMemberActions";
 import TeamMemberNotes from "./TeamMemberNotes";
@@ -47,7 +48,16 @@ class LandingPage extends React.PureComponent<
     if (this.state.loading) {
       return <div>loading...</div>;
     }
-
+    const categories: any = Object.keys(constants.TECHNIQUE_CATEGORY).map(
+      objKey => {
+        const val = constants.TECHNIQUE_CATEGORY[objKey];
+        return {
+          key: objKey,
+          text: val,
+          value: val
+        };
+      }
+    );
     return (
       <Container text={true} style={{ marginTop: "7em" }}>
         <Header as="h1">Your Team, {this.props.authUser.displayName}</Header>
@@ -56,7 +66,10 @@ class LandingPage extends React.PureComponent<
           teamMembers={this.props.teamMembers}
           onTeamMemberClick={this.onTeamMemberClick}
         />
-        <TeamMemberActions teamMemberActions={this.state.activeTeamMember.actions} />
+        <AddAction categories={categories} />
+        <TeamMemberActions
+          teamMemberActions={this.state.activeTeamMember.actions}
+        />
         <TeamMemberNotes teamMemberNotes={this.state.activeTeamMember.notes} />
         <TeamMemberTodos teamMemberTodos={this.state.activeTeamMember.todos} />
       </Container>
@@ -64,18 +77,18 @@ class LandingPage extends React.PureComponent<
   }
 
   private onTeamMemberClick(id: string) {
-    const emptyTeamMember:ITeamMember = {
+    const emptyTeamMember: ITeamMember = {
       actions: [],
       id: "",
       name: "",
-      notes: [ ],
+      notes: [],
       status: TeamMemberStatus.active,
       todos: []
-    }
+    };
     const foundMember: ITeamMember | undefined = this.props.teamMembers.find(
       tm => tm.id === id
     );
-    this.setState({ activeTeamMember: (foundMember || emptyTeamMember)});
+    this.setState({ activeTeamMember: foundMember || emptyTeamMember });
   }
 }
 
