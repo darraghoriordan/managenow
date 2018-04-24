@@ -1,6 +1,6 @@
 import { User } from "firebase";
 import * as React from "react";
-import { doCreateUser, onceGetUser } from "../firebase/db";
+import { createUser, getUserOnce } from "../firebase/db";
 import { auth } from "../firebase/firebase";
 import IAppUser from "../models/IAppUser";
 
@@ -9,6 +9,7 @@ export interface IAuthState {
   authenticated: boolean;
   appUser: IAppUser | null;
 }
+
 const withAuthentication = (Component: any) => {
   class WithAuthentication extends React.Component<any, IAuthState> {
     constructor(props: any) {
@@ -29,22 +30,19 @@ const withAuthentication = (Component: any) => {
       auth.onAuthStateChanged((authUser: User) => {
         if (authUser) {
           // try get the appUser
-          onceGetUser(authUser.uid)
+          getUserOnce(authUser.uid)
             .then(dataRef => {
-              // if not exists  create the new user
-              let foundUser = dataRef.val();
+              // if not exists create the new user
+              let foundUser: IAppUser = dataRef.val() as IAppUser;
 
               if (!foundUser) {
-                foundUser={
+                foundUser = {
                   displayName: authUser.displayName || "",
                   email: authUser.email || "",
-                  uid:authUser.uid
-                }
-                doCreateUser(
-                  authUser.uid,
-                  authUser.email || "",
-                  authUser.displayName || ""
-                );
+                  teamMembers: [],
+                  uid: authUser.uid
+                };
+                createUser(foundUser);
               }
               this.setState({
                 appUser: foundUser,
@@ -52,13 +50,10 @@ const withAuthentication = (Component: any) => {
                 authenticated: true
               });
             })
-            .catch(
-              
-              error => {
-                // tslint:disable-next-line:no-console
-                console.log(error);
-              }
-            );
+            .catch(error => {
+              // tslint:disable-next-line:no-console
+              console.log(error);
+            });
         } else {
           this.setState({
             appUser: null,
@@ -70,8 +65,8 @@ const withAuthentication = (Component: any) => {
     }
 
     public render() {
-      const { authUser, authenticated } = this.state;
-      return <Component authUser={authUser} authenticated={authenticated} />;
+      const { authUser, authenticated, appUser } = this.state;
+      return <Component authUser={authUser} authenticated={authenticated} appUser={appUser} />;
     }
   }
 

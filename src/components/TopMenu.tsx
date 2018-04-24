@@ -7,6 +7,7 @@ import constants from "../constants/constants";
 interface ITopMenuProps extends RouteComponentProps<any> {
   onSignOut: (history: any) => void;
   authenticated: boolean;
+  tm:any;
 }
 
 class TopMenu extends React.PureComponent<ITopMenuProps, any> {

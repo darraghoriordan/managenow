@@ -1,10 +1,8 @@
 import * as React from "react";
 import { Button } from "semantic-ui-react";
-import ITeamMember from "../models/ITeamMember";
 
 interface ITeamListProps {
-  teamMembers: ITeamMember[];
-  onTeamMemberClick: (name: string) => void;
+  teamMembers: {};
 }
 export default class TeamList extends React.PureComponent<ITeamListProps, any> {
   constructor(props: ITeamListProps) {
@@ -12,19 +10,21 @@ export default class TeamList extends React.PureComponent<ITeamListProps, any> {
   }
 
   public render() {
-    return (
-      <div>
-        <p>links to all team</p>
-        {this.props.teamMembers.map((element: ITeamMember) => (
-          <Button
-            key={element.id}
-            // tslint:disable-next-line:jsx-no-lambda
-            onClick={() => this.props.onTeamMemberClick(element.id)}
-          >
-            {element.name}{" "}
-          </Button>
-        ))}
-      </div>
-    );
+    const { teamMembers } = this.props;
+    if (teamMembers) {
+      return (
+        <div>
+          <p>links to all team</p>
+
+          {Object.keys(teamMembers).map((element: string) => (
+            <Button key={teamMembers[element].id}>
+              {teamMembers[element].name}{" "}
+            </Button>
+          ))}
+        </div>
+      );
+    } else {
+      return <p>You have no team members. Add some now!</p>;
+    }
   }
 }

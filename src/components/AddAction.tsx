@@ -1,8 +1,8 @@
 import * as React from "react";
-import { Button, Dropdown, Icon, Item } from "semantic-ui-react";
+import { Button, ButtonProps, Dropdown, Icon, Item } from "semantic-ui-react";
 import constants from "../constants/constants";
 import ITechnique from "../models/ITechnique";
-import sampleSources from "../sampleData/sampleSources";
+import { getRelevantTechniques } from "../services/techniqueService";
 
 interface IDropdownOption {
   key: string;
@@ -11,6 +11,7 @@ interface IDropdownOption {
 }
 interface IAddActionProps {
   categories: IDropdownOption[];
+  onSelection: (event: any, data: ButtonProps, t: ITechnique) => void;
 }
 interface IAddActionState {
   selectedBehaviour: any;
@@ -26,32 +27,15 @@ class AddAction extends React.PureComponent<IAddActionProps, IAddActionState> {
     };
   }
   public onSelectChanged(event: any, data: any) {
-      if (typeof data === "undefined"){
-          return;
-      }
-    const selectedTechniques = this.getRelevantTechniques(data.value);
+    if (typeof data === "undefined") {
+      return;
+    }
+    const selectedTechniques = getRelevantTechniques(data.value);
 
     this.setState({
       selectedBehaviour: data.value,
       techniques: selectedTechniques
     });
-  }
-
-  public getRelevantTechniques(behaviourName: string): ITechnique[] {
-    // get the techniques for the behaviour
-    // sort them by effectiveness
-    // populate field if used before for this team member
-    const techniques: ITechnique[] = [];
-
-    sampleSources.forEach(element => {
-      element.techniques.forEach(el => {
-        if (el.category === behaviourName) {
-          techniques.push(el);
-        }
-      });
-    });
-
-    return techniques;
   }
 
   public render() {
@@ -75,7 +59,15 @@ class AddAction extends React.PureComponent<IAddActionProps, IAddActionState> {
                 </Item.Meta>
                 <Item.Description>{t.description}</Item.Description>
                 <Item.Extra>
-                  <Button primary={true} floated="right">
+                  <Button
+                    type="button"
+                    primary={true}
+                    floated="right"
+                    // tslint:disable-next-line:jsx-no-lambda
+                    onClick={(e: any, data: ButtonProps) => {
+                      this.props.onSelection(e, data, t);
+                    }}
+                  >
                     Use Technique
                     <Icon className="right chevron" />
                   </Button>

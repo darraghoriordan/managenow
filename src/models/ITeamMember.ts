@@ -11,3 +11,18 @@ export default interface ITeamMember {
   todos: ITeamMemberTodo[];
   actions: ITeamMemberAction[];
 }
+
+
+export class TeamMember implements ITeamMember {
+  public id: string;
+  public name: string;
+  public status: TeamMemberStatus;
+  public notes: ITeamMemberNote[];
+  public todos: ITeamMemberTodo[];
+  public actions: ITeamMemberAction[];
+
+  constructor(name:string){
+    this.name = name;
+  }
+}
+
