@@ -11,7 +11,7 @@ export const getUserOnce = (uid: string) =>
     .child(uid)
     .once("value");
 
-export const addUpdateTeamMember = (uid: string, teamMember: ITeamMember) => {
+export const reserveTeamMemberId = (uid: string, teamMember: ITeamMember) => {
   // if we dont already have an id try to get one from firebase
   if (!teamMember.id) {
     const newTeamMemberKey: string =
@@ -24,10 +24,11 @@ export const addUpdateTeamMember = (uid: string, teamMember: ITeamMember) => {
     if (newTeamMemberKey === "error") {
       // tslint:disable-next-line:no-console
       console.log("saving teamMember error");
-      return Promise.resolve();
+      return Promise.reject("saving teamMember error");
     }
 
     teamMember.id = newTeamMemberKey;
+    return Promise.resolve(teamMember);
   }
 
  return db

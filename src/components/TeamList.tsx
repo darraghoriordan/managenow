@@ -3,6 +3,7 @@ import { Button } from "semantic-ui-react";
 
 interface ITeamListProps {
   teamMembers: {};
+  onDeleteClick: (teamMemberId: string) => void;
 }
 export default class TeamList extends React.PureComponent<ITeamListProps, any> {
   constructor(props: ITeamListProps) {
@@ -17,9 +18,20 @@ export default class TeamList extends React.PureComponent<ITeamListProps, any> {
           <p>links to all team</p>
 
           {Object.keys(teamMembers).map((element: string) => (
-            <Button key={teamMembers[element].id}>
-              {teamMembers[element].name}{" "}
-            </Button>
+            <div key={teamMembers[element].id}>
+              <Button >
+                {teamMembers[element].name}{" "}
+              </Button>
+              <Button
+                negative={true}
+                // tslint:disable-next-line:jsx-no-lambda
+                onClick={() => {
+                  this.props.onDeleteClick(teamMembers[element].id);
+                }}
+              >
+                {"delete " + teamMembers[element].name}{" "}
+              </Button>
+            </div>
           ))}
         </div>
       );

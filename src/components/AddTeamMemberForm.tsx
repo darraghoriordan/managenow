@@ -3,7 +3,7 @@ import { Button, Form } from "semantic-ui-react";
 import ITeamMember, { TeamMember } from "../models/ITeamMember";
 
 interface IAddTeamMemberFormProps {
-  addTeamMember: (teamMember: ITeamMember) => void;
+  onTeamMemberAdd: (teamMember: ITeamMember) => void;
 }
 interface IAddTeamMemberFormState {
   name: string;
@@ -22,9 +22,12 @@ class AddTeamMemberForm extends React.Component<
     event.preventDefault();
     const { name } = this.state;
     const teamMember = new TeamMember(name);
-    this.props.addTeamMember(teamMember);
+    this.props.onTeamMemberAdd(teamMember);
     // refresh the form
-    event.currentTarget.reset();
+
+    this.setState({
+      name: ""
+    });
   };
   public render() {
     const { name } = this.state;
@@ -37,7 +40,7 @@ class AddTeamMemberForm extends React.Component<
             value={name}
             onChange={this.handleChange}
           />
-          <Button type="submit">+ Add team member</Button>
+          <Button type="submit">Add team member</Button>
         </Form.Group>
       </Form>
     );

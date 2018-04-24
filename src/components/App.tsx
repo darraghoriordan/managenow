@@ -40,7 +40,7 @@ export class App extends React.Component<{}, IAppState> {
       loading: true,
       techniqueSources
     };
-    this.onAddTeamMember = this.onAddTeamMember.bind(this);
+    this.onTeamMemberAdd = this.onTeamMemberAdd.bind(this);
     this.state = state;
   }
   public signOutFirebase(history: any) {
@@ -54,7 +54,7 @@ export class App extends React.Component<{}, IAppState> {
       }
     );
   }
-  public onAddTeamMember = (teamMember: ITeamMember) => {
+  public onTeamMemberAdd = (teamMember: ITeamMember) => {
     const teamMembers = Object.assign({}, this.state.appUser.teamMembers);
     // addUpdateTeamMember(appUser.uid, teamMember).then(
     //  () => {
@@ -77,45 +77,71 @@ export class App extends React.Component<{}, IAppState> {
     //      console.log("Couldnt save team member: " + error)
     //  );
   };
+  public onDeleteMember = (teamMemberId: string) => {
+    const teamMembers = Object.assign({}, this.state.appUser.teamMembers);
+    // addUpdateTeamMember(appUser.uid, teamMember).then(
+    //  () => {
+    delete teamMembers[teamMemberId];
+
+    this.setState(prevState => ({
+      ...prevState,
+      appUser: {
+        ...prevState.appUser,
+        teamMembers
+      }
+    }));
+  };
+  public authenticateUser(authUser: User): Promise<any> {
+    
+      if (authUser) {
+       return Promise.resolve(authUser);
+      }
+
+      return Promise.reject("No authenticated user available");
+
+  }
+  public setUnAuthenticatedState() {
+    this.setState({
+      appUser: new AppUser(),
+      authUser: null,
+      authenticated: false,
+      loading: false
+    });
+  }
   public componentDidMount() {
     // if (!authCon(authUser)) {
     //   this.props.history.push(constants.ROUTE_SIGN_IN);
     // }
     //  const authCon = (authUser: any) => !!this.props.authUser;
     auth.onAuthStateChanged((authUser: User) => {
-      if (authUser) {
-        // try get the appUser
-        getUserOnce(authUser.uid)
-          .then(dataRef => {
-            // if not exists create the new user
-            let foundUser: IAppUser = dataRef.val() as IAppUser;
+      this.authenticateUser(authUser)
+        .then((authenticatedUser) => getUserOnce(authenticatedUser.uid))
+        .then(dataRef => {
+          // if not exists create the new user
+          let foundUser: IAppUser = dataRef.val() as IAppUser;
 
-            if (!foundUser) {
-              foundUser = new AppUser();
-              foundUser.uid = authUser.uid;
-              foundUser.displayName = authUser.displayName || "";
-              foundUser.email = authUser.email || "";
-            }
-            createUser(foundUser);
-
-            this.setState({
-              appUser: foundUser,
-              authUser,
-              authenticated: true
-            });
-          })
-          .catch(error => {
-            // tslint:disable-next-line:no-console
-            console.log(error);
+          if (!foundUser) {
+            foundUser = new AppUser();
+            foundUser.uid = authUser.uid;
+            foundUser.displayName = authUser.displayName || "";
+            foundUser.email = authUser.email || "";
+            return createUser(foundUser);
+          }
+          return Promise.resolve(foundUser);
+        })
+        .then(appUser => {
+          this.setState({
+            appUser,
+            authUser,
+            authenticated: true,
+            loading: false
           });
-      } else {
-        this.setState({
-          appUser: new AppUser(),
-          authUser: null,
-          authenticated: false,
-          loading: false
-        });
-      }
+        })
+        .catch(reason => {
+          // tslint:disable-next-line:no-console
+          console.log("setting null state: "+reason);
+          this.setUnAuthenticatedState();
+        })
     });
   }
   public render() {
@@ -143,7 +169,8 @@ export class App extends React.Component<{}, IAppState> {
                       teamMembers={teamMembersProp}
                       isAuthenticated={authenticatedProp}
                       userDisplayName={this.state.appUser.displayName}
-                      onAddTeamMember={this.onAddTeamMember}
+                      onTeamMemberAdd={this.onTeamMemberAdd}
+                      onTeamMemberDelete={this.onDeleteMember}
                     />
                   );
                 }

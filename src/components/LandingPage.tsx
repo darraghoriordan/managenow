@@ -3,14 +3,15 @@ import { RouteComponentProps, withRouter } from "react-router-dom";
 import { Container, Header } from "semantic-ui-react";
 import constants from "../constants/constants";
 import ITeamMember from "../models/ITeamMember";
-import AddTeamMemberForm from "./AddTeamMember";
+import AddTeamMemberForm from "./AddTeamMemberForm";
 import TeamList from "./TeamList";
 
 export interface ILandingPageProps extends RouteComponentProps<any> {
   teamMembers: {};
   isAuthenticated: boolean;
   userDisplayName: string;
-  onAddTeamMember: (teamMember: ITeamMember) => void;
+  onTeamMemberDelete: (teamMemberId: string) => void;
+  onTeamMemberAdd: (teamMember: ITeamMember) => void;
 }
 export interface ILandingPageState {
   loading: boolean;
@@ -44,8 +45,8 @@ class LandingPage extends React.PureComponent<
     return (
       <Container text={true} style={{ marginTop: "7em" }}>
         <Header as="h1">Your Team, {this.props.userDisplayName}</Header>
-        <TeamList teamMembers={this.props.teamMembers} />
-        <AddTeamMemberForm addTeamMember={this.props.onAddTeamMember} />
+        <TeamList teamMembers={this.props.teamMembers} onDeleteClick={this.props.onTeamMemberDelete} />
+        <AddTeamMemberForm onTeamMemberAdd={this.props.onTeamMemberAdd} />
       </Container>
     );
   }
