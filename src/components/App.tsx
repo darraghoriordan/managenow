@@ -2,7 +2,7 @@ import { User } from "firebase";
 import * as React from "react";
 import { BrowserRouter as Router, Redirect, Route } from "react-router-dom";
 import constants from "../constants/constants";
-import { createUser } from "../firebase/db";
+import { createUser, deleteTeamMember, saveTeamMember } from "../firebase/db";
 import { getUserOnce } from "../firebase/db";
 import { auth } from "../firebase/firebase";
 import IAppUser, { AppUser } from "../models/IAppUser";
@@ -55,50 +55,53 @@ export class App extends React.Component<{}, IAppState> {
     );
   }
   public onTeamMemberAdd = (teamMember: ITeamMember) => {
-    const teamMembers = Object.assign({}, this.state.appUser.teamMembers);
-    // addUpdateTeamMember(appUser.uid, teamMember).then(
-    //  () => {
-    if (!teamMember.id) {
-      teamMember.id = teamMember.name;
-    }
-    teamMembers[teamMember.id] = teamMember;
+    saveTeamMember(this.state.appUser.uid, teamMember)
+      .then(savedTeamMember => {
+        const teamMembers = Object.assign({}, this.state.appUser.teamMembers);
 
-    this.setState(prevState => ({
-      ...prevState,
-      appUser: {
-        ...prevState.appUser,
-        teamMembers
-      }
-    }));
+        // if (!savedTeamMember.id) {
+        //   teamMember.id = teamMember.name;
+        // }
+        teamMembers[savedTeamMember.id] = savedTeamMember;
 
-    //   },
-    //   error =>
-    // tslint:disable-next-line:no-console
-    //      console.log("Couldnt save team member: " + error)
-    //  );
+        this.setState(prevState => ({
+          ...prevState,
+          appUser: {
+            ...prevState.appUser,
+            teamMembers
+          }
+        }));
+
+        return Promise.resolve();
+      })
+      .catch((error: string) =>
+        // tslint:disable-next-line:no-console
+        console.log("Couldnt save team member: " + error)
+      );
   };
-  public onDeleteMember = (teamMemberId: string) => {
-    const teamMembers = Object.assign({}, this.state.appUser.teamMembers);
-    // addUpdateTeamMember(appUser.uid, teamMember).then(
-    //  () => {
-    delete teamMembers[teamMemberId];
+  public onTeamMemberDelete = (teamMemberId: string) => {
+    deleteTeamMember(this.state.appUser.uid, teamMemberId).then(() => {
+      const teamMembers = Object.assign({}, this.state.appUser.teamMembers);
+      delete teamMembers[teamMemberId];
 
-    this.setState(prevState => ({
-      ...prevState,
-      appUser: {
-        ...prevState.appUser,
-        teamMembers
-      }
-    }));
+      this.setState(prevState => ({
+        ...prevState,
+        appUser: {
+          ...prevState.appUser,
+          teamMembers
+        }
+      }));
+    }).catch(error => {
+      // tslint:disable-next-line:no-console
+      console.log("Couldn't delete team member: "+error);
+    });
   };
   public authenticateUser(authUser: User): Promise<any> {
-    
-      if (authUser) {
-       return Promise.resolve(authUser);
-      }
+    if (authUser) {
+      return Promise.resolve(authUser);
+    }
 
-      return Promise.reject("No authenticated user available");
-
+    return Promise.reject("No authenticated user available");
   }
   public setUnAuthenticatedState() {
     this.setState({
@@ -109,13 +112,9 @@ export class App extends React.Component<{}, IAppState> {
     });
   }
   public componentDidMount() {
-    // if (!authCon(authUser)) {
-    //   this.props.history.push(constants.ROUTE_SIGN_IN);
-    // }
-    //  const authCon = (authUser: any) => !!this.props.authUser;
     auth.onAuthStateChanged((authUser: User) => {
       this.authenticateUser(authUser)
-        .then((authenticatedUser) => getUserOnce(authenticatedUser.uid))
+        .then(authenticatedUser => getUserOnce(authenticatedUser.uid))
         .then(dataRef => {
           // if not exists create the new user
           let foundUser: IAppUser = dataRef.val() as IAppUser;
@@ -139,9 +138,9 @@ export class App extends React.Component<{}, IAppState> {
         })
         .catch(reason => {
           // tslint:disable-next-line:no-console
-          console.log("setting null state: "+reason);
+          console.log("setting null state: " + reason);
           this.setUnAuthenticatedState();
-        })
+        });
     });
   }
   public render() {
@@ -170,7 +169,7 @@ export class App extends React.Component<{}, IAppState> {
                       isAuthenticated={authenticatedProp}
                       userDisplayName={this.state.appUser.displayName}
                       onTeamMemberAdd={this.onTeamMemberAdd}
-                      onTeamMemberDelete={this.onDeleteMember}
+                      onTeamMemberDelete={this.onTeamMemberDelete}
                     />
                   );
                 }
