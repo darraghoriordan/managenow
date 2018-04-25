@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Button, Form } from "semantic-ui-react";
+import { Button, Form, Header } from "semantic-ui-react";
 import ITeamMember, { TeamMember } from "../models/ITeamMember";
 
 interface IAddTeamMemberFormProps {
@@ -32,17 +32,20 @@ class AddTeamMemberForm extends React.Component<
   public render() {
     const { name } = this.state;
     return (
-      <Form onSubmit={this.createTeamMember}>
-        <Form.Group>
-          <Form.Input
-            placeholder="Name"
-            name="name"
-            value={name}
-            onChange={this.handleChange}
-          />
-          <Button type="submit">Add team member</Button>
-        </Form.Group>
-      </Form>
+      <div>
+        <Header as="h2">Add a team member</Header>
+        <Form onSubmit={this.createTeamMember}>
+          <Form.Group>
+            <Form.Input
+              placeholder="Name"
+              name="name"
+              value={name}
+              onChange={this.handleChange}
+            />
+            <Button type="submit">Add team member</Button>
+          </Form.Group>
+        </Form>
+      </div>
     );
   }
 

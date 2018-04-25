@@ -2,13 +2,17 @@ import { User } from "firebase";
 import * as React from "react";
 import { BrowserRouter as Router, Redirect, Route } from "react-router-dom";
 import constants from "../constants/constants";
-import { createUser, deleteTeamMember, saveTeamMember } from "../firebase/db";
+import {
+  createUser,
+  deleteTeamMember,
+  saveTeamMember,
+  saveTeamMemberAction
+} from "../firebase/db";
 import { getUserOnce } from "../firebase/db";
 import { auth } from "../firebase/firebase";
 import IAppUser, { AppUser } from "../models/IAppUser";
-import ISource from "../models/ISource";
 import ITeamMember from "../models/ITeamMember";
-import techniqueSources from "../sampleData/sampleSources";
+import ITeamMemberAction from "../models/ITeamMemberAction";
 import AccountPage from "./AccountPage";
 import AppFooter from "./AppFooter";
 import HomePage from "./HomePage";
@@ -18,7 +22,6 @@ import TopMenu from "./TopMenu";
 
 export interface IAppState {
   loading: boolean;
-  techniqueSources: ISource[];
   appUser: IAppUser;
   authUser: User | null;
   authenticated: boolean;
@@ -37,8 +40,7 @@ export class App extends React.Component<{}, IAppState> {
       appUser: new AppUser(),
       authUser: null,
       authenticated: false,
-      loading: true,
-      techniqueSources
+      loading: true
     };
     this.onTeamMemberAdd = this.onTeamMemberAdd.bind(this);
     this.state = state;
@@ -79,22 +81,62 @@ export class App extends React.Component<{}, IAppState> {
         console.log("Couldnt save team member: " + error)
       );
   };
-  public onTeamMemberDelete = (teamMemberId: string) => {
-    deleteTeamMember(this.state.appUser.uid, teamMemberId).then(() => {
-      const teamMembers = Object.assign({}, this.state.appUser.teamMembers);
-      delete teamMembers[teamMemberId];
 
-      this.setState(prevState => ({
-        ...prevState,
-        appUser: {
-          ...prevState.appUser,
-          teamMembers
-        }
-      }));
-    }).catch(error => {
-      // tslint:disable-next-line:no-console
-      console.log("Couldn't delete team member: "+error);
-    });
+  public onTeamMemberActionAdd = (
+    teamMemberId: string,
+    teamMemberAction: ITeamMemberAction
+  ) => {
+    saveTeamMemberAction(this.state.appUser.uid, teamMemberId, teamMemberAction)
+      .then(savedTeamMemberAction => {
+        const actions = Object.assign(
+          {},
+          this.state.appUser.teamMembers[teamMemberId].actions
+        );
+
+        // if (!savedTeamMember.id) {
+        //   teamMember.id = teamMember.name;
+        // }
+        actions[savedTeamMemberAction.id] = savedTeamMemberAction;
+
+        this.setState(prevState => ({
+          ...prevState,
+          appUser: {
+            ...prevState.appUser,
+            teamMembers: {
+              ...prevState.appUser.teamMembers,
+              [teamMemberId]: {
+                ...prevState.appUser.teamMembers[teamMemberId],
+                actions
+              }
+            }
+          }
+        }));
+
+        return Promise.resolve();
+      })
+      .catch((error: string) =>
+        // tslint:disable-next-line:no-console
+        console.log("Couldnt save team member: " + error)
+      );
+  };
+  public onTeamMemberDelete = (teamMemberId: string) => {
+    deleteTeamMember(this.state.appUser.uid, teamMemberId)
+      .then(() => {
+        const teamMembers = Object.assign({}, this.state.appUser.teamMembers);
+        delete teamMembers[teamMemberId];
+
+        this.setState(prevState => ({
+          ...prevState,
+          appUser: {
+            ...prevState.appUser,
+            teamMembers
+          }
+        }));
+      })
+      .catch(error => {
+        // tslint:disable-next-line:no-console
+        console.log("Couldn't delete team member: " + error);
+      });
   };
   public authenticateUser(authUser: User): Promise<any> {
     if (authUser) {
@@ -170,6 +212,7 @@ export class App extends React.Component<{}, IAppState> {
                       userDisplayName={this.state.appUser.displayName}
                       onTeamMemberAdd={this.onTeamMemberAdd}
                       onTeamMemberDelete={this.onTeamMemberDelete}
+                      onTeamMemberActionAdd={this.onTeamMemberActionAdd}
                     />
                   );
                 }

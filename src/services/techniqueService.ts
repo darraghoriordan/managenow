@@ -1,21 +1,61 @@
 import constants from "../constants/constants";
+import { TechniqueSourceType } from "../models/Enums";
 import ITechnique from "../models/ITechnique";
-import sampleSources from "../sampleData/sampleSources";
 
+export function getRelevantTechniques(behaviourKey: string): ITechnique[] {
+ 
+  return getTechniques().filter(element =>
+    findCategory(element, behaviourKey)
+  );
+}
+export function getTechniques(){
+  const sampleTechniques = new Array<ITechnique>();
+  sampleTechniques.push({
+    author: "Jurgen Appelo",
 
+    category: constants.TECHNIQUE_CATEGORY.BuildingProducts,
+    description:
+      "Discuss the identifiable results of innovation in our organisation. If we cant identify any then why not?",
+    id: "1",
+    locationInSource: "Chapter 4. The Information-Innovation System",
+    name: "Discuss Identifiable Innovation",
+    referralLink:
+      "https://www.amazon.com/Management-3-0-Developers-Developing-Addison-Wesley/dp/0321712471/ref=sr_1_2?ie=UTF8&qid=1524119998&sr=8-2&keywords=management+3.0",
 
-export const getRelevantTechniques=(behaviourKey: string): ITechnique[] => {
-    // get the techniques for the behaviour
-    // sort them by effectiveness
-    // populate field if used before for this team member
-    const techniques: ITechnique[] = [];
+    sourcename: "Management 3.0",
+    type: TechniqueSourceType.book
+  });
 
-    sampleSources.forEach(element => {
-      element.techniques.forEach(el => {
-        if (el.category === constants.TECHNIQUE_CATEGORY[behaviourKey]) {
-          techniques.push(el);
-        }
-      });
-    });
-    return techniques;
+  sampleTechniques.push({
+    author: "Michael D. Watkins",
+
+    category: constants.TECHNIQUE_CATEGORY.Decisons,
+    description:
+      "There a few different ways to make decisions depending on the maturity of the team. Picking the right model can change he outcome.",
+    id: "2",
+    locationInSource: "Chapter 7. Build your team",
+    name: "How to make decisions",
+    referralLink:
+      "https://www.amazon.com/First-Days-Updated-Expanded-Strategies-ebook/dp/B00B6U63ZE/ref=sr_1_4?s=books&ie=UTF8&qid=1524128886&sr=1-4&keywords=first+90+days",
+
+    sourcename: "The First 90 Days",
+    type: TechniqueSourceType.book
+  });
+  sampleTechniques.push({
+    author: "Get Lighthouse",
+    category: constants.TECHNIQUE_CATEGORY.BuildingRapportandInfluence,
+    description: "How to start one on ones with your team",
+    id: "3",
+    locationInSource: "",
+    name: "",
+    referralLink:
+      "https://getlighthouse.com/blog/how-to-start-one-on-ones-your-teams/",
+    sourcename: "Starting one-on-ones",
+    type: TechniqueSourceType.blog
+  });
+
+  return sampleTechniques;
+}
+function findCategory(technique: ITechnique, behaviourKey: string) {
+  return technique.category === constants.TECHNIQUE_CATEGORY[behaviourKey];
 }

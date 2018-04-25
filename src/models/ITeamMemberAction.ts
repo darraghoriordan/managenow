@@ -1,12 +1,24 @@
 import { TeamMemberActionStatus } from "./Enums";
-import IActionTechnique from "./IActionTechnique";
 
 export default interface ITeamMemberAction {
   id: string;
-  description: string;
   dateCompleted: Date;
   status: TeamMemberActionStatus;
   notes: string;
-  actionDetails: IActionTechnique;
+  techniqueId: string;
   dateAdded: Date;
+}
+
+export class TeamMemberAction implements ITeamMemberAction {
+  public id: string;
+  public dateCompleted: Date;
+  public status: TeamMemberActionStatus;
+  public notes: string;
+  public techniqueId: string;
+  public dateAdded: Date;
+  constructor(techniqueId: string) {
+    this.dateAdded = new Date();
+    this.status = TeamMemberActionStatus.active;
+    this.techniqueId = techniqueId;
+  }
 }

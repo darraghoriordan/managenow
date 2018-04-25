@@ -14,7 +14,7 @@ export enum TeamMemberActionStatus {
   active,
   done
 }
-export enum ActionSourceType {
+export enum TechniqueSourceType {
   book,
   podcast,
   blog
