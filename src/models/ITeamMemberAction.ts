@@ -2,22 +2,22 @@ import { TeamMemberActionStatus } from "./Enums";
 
 export default interface ITeamMemberAction {
   id: string;
-  dateCompleted: Date;
+  dateCompleted: number;
   status: TeamMemberActionStatus;
   notes: string;
   techniqueId: string;
-  dateAdded: Date;
+  dateAdded: number;
 }
 
 export class TeamMemberAction implements ITeamMemberAction {
   public id: string;
-  public dateCompleted: Date;
+  public dateCompleted: number;
   public status: TeamMemberActionStatus;
   public notes: string;
   public techniqueId: string;
-  public dateAdded: Date;
+  public dateAdded: number;
   constructor(techniqueId: string) {
-    this.dateAdded = new Date();
+    this.dateAdded = new Date().getTime();
     this.status = TeamMemberActionStatus.active;
     this.techniqueId = techniqueId;
   }
