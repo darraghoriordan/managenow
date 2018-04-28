@@ -30,7 +30,7 @@ export default class TeamMemberActionList extends React.Component<
         </div>
       );
     } else {
-      return <p>{teamMemberName} has no actions. Add one now!</p>;
+      return <p>{teamMemberName} has no development tasks. Add one now!</p>;
     }
   }
 

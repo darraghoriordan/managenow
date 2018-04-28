@@ -8,6 +8,8 @@ export default interface ITechnique {
   referralLink: string;
   author: string;
   type: TechniqueSourceType;
-  category:string;
+  category: string;
+  coverimage: string;
   locationInSource: string;
+  rating: number;
 }

@@ -5,7 +5,8 @@ import {
   Dropdown,
   Header,
   Icon,
-  Item
+  Item,
+  Rating
 } from "semantic-ui-react";
 import constants from "../constants/constants";
 import ITeamMember from "../models/ITeamMember";
@@ -70,7 +71,7 @@ class AddAction extends React.Component<IAddActionProps, IAddActionState> {
     return (
       <div>
         <Header as="h2">
-          Add an action for {this.props.selectedTeamMember.name}
+          Add a development task for {this.props.selectedTeamMember.name}
         </Header>
         <Dropdown
           placeholder={constants.FIELD_STRINGS.techniqueSearchPlaceholderText}
@@ -83,25 +84,55 @@ class AddAction extends React.Component<IAddActionProps, IAddActionState> {
           onChange={this.onSelectChanged}
         />
         <Item.Group divided={true}>
-          {this.state.techniques.map(t => (
-            <Item key={t.id}>
+          {this.state.techniques.map(technique => (
+            <Item key={technique.id}>
+              {technique.coverimage && (
+                <Item.Image size="tiny" src={technique.coverimage} />
+              )}
               <Item.Content>
-                <Item.Header as="a">{t.name}</Item.Header>
+                <Item.Header>{technique.name}</Item.Header>
                 <Item.Meta>
-                  <span className="source">{t.locationInSource}</span>
+                  <span className="source-name">Source: {technique.sourcename}</span> by 
+                  <span className="source-author">{technique.author}</span>
                 </Item.Meta>
-                <Item.Description>{t.description}</Item.Description>
+                <Item.Meta>
+                  <span className="source-location">
+                   Location: {technique.locationInSource}
+                  </span>
+                </Item.Meta>
+
+                <Item.Meta>
+                  <Rating
+                    icon="star"
+                    defaultRating={technique.rating / 2}
+                    disabled={true}
+                    maxRating={5}
+                  />
+                </Item.Meta>
+                <Item.Description>{technique.description}</Item.Description>
                 <Item.Extra>
+                <Button
+               
+                    content="Buy now" 
+                    icon="add to cart"
+                    labelPosition="left"
+                    floated="left"
+                    // tslint:disable-next-line:jsx-no-lambda
+                    onClick={(e: any, data: ButtonProps) => {
+                      const win = window.open(technique.referralLink, '_blank');
+                      (win || {} as Window).focus();
+                    }}
+                  />
                   <Button
                     type="button"
                     primary={true}
                     floated="right"
                     // tslint:disable-next-line:jsx-no-lambda
                     onClick={(e: any, data: ButtonProps) => {
-                      this.onSelectedTechnique(e, t);
+                      this.onSelectedTechnique(e, technique);
                     }}
                   >
-                    Select
+                    Assign to {this.props.selectedTeamMember.name}
                     <Icon className="right chevron" />
                   </Button>
                 </Item.Extra>

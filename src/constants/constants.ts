@@ -1,7 +1,7 @@
 const constants = {
   APP_NAME: "Now Manager",
   FIELD_STRINGS: {
-    techniqueSearchPlaceholderText: "I need to work on..."
+    techniqueSearchPlaceholderText: "We will work on..."
   },
   ROUTE_ACCOUNT: "/account",
   ROUTE_HOME: "/",
