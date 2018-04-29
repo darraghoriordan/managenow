@@ -38,7 +38,7 @@ class AddAction extends React.Component<IAddActionProps, IAddActionState> {
       techniques: []
     };
   }
-  public getCategoriesAsDropDownModels(
+  public getCategoriesAsDropDownModels( 
     categories: string[]
   ): IDropdownOption[] {
     return categories.map(objKey => {

@@ -1,13 +1,10 @@
 import * as React from "react";
 import { RouteComponentProps, withRouter } from "react-router-dom";
-import { Container, Header } from "semantic-ui-react";
+import { Container, Divider, Header } from "semantic-ui-react";
 import constants from "../constants/constants";
-import { TeamMemberActionStatus, TeamMemberStatus } from "../models/Enums";
+import { TeamMemberStatus } from "../models/Enums";
 import ITeamMember from "../models/ITeamMember";
-import ITeamMemberAction from "../models/ITeamMemberAction";
-import AddTeamMemberAction from "./AddTeamMemberAction";
 import AddTeamMemberForm from "./AddTeamMemberForm";
-import TeamMemberActionList from "./TeamMemberActionList";
 import TeamMemberList from "./TeamMemberList";
 
 export interface ILandingPageProps extends RouteComponentProps<any> {
@@ -16,10 +13,6 @@ export interface ILandingPageProps extends RouteComponentProps<any> {
   userDisplayName: string;
   onTeamMemberDelete: (teamMemberId: string) => void;
   onTeamMemberAdd: (teamMember: ITeamMember) => void;
-  onTeamMemberActionSave: (
-    teamMemberId: string,
-    teamMemberAction: ITeamMemberAction
-  ) => void;
 }
 export interface ILandingPageState {
   loading: boolean;
@@ -34,8 +27,9 @@ class LandingPage extends React.PureComponent<
     prevState: ILandingPageState
   ) {
     if (prevState.selectedTeamMember) {
-      const updatedTeamMember =
-        (nextProps.teamMembers ||{})[prevState.selectedTeamMember.id];
+      const updatedTeamMember = (nextProps.teamMembers || {})[
+        prevState.selectedTeamMember.id
+      ];
       // is there an updated active team member?
       if (
         updatedTeamMember &&
@@ -68,12 +62,6 @@ class LandingPage extends React.PureComponent<
     this.onTeamMemberSelectedChanged = this.onTeamMemberSelectedChanged.bind(
       this
     );
-    this.onTeamMemberActionSaveNotes = this.onTeamMemberActionSaveNotes.bind(
-      this
-    );
-    this.onTeamMemberActionComplete = this.onTeamMemberActionComplete.bind(
-      this
-    );
 
     const selectedTeamMember = LandingPage.findNextValidTeamMember(
       this.props.teamMembers
@@ -88,6 +76,7 @@ class LandingPage extends React.PureComponent<
   public onTeamMemberSelectedChanged(teamMemberId: string) {
     const selectedTeamMember = this.props.teamMembers[teamMemberId];
     this.setState({ selectedTeamMember });
+    this.props.history.push("/team/member/" + selectedTeamMember.id);
   }
 
   public componentDidMount() {
@@ -98,27 +87,6 @@ class LandingPage extends React.PureComponent<
     }
 
     this.setState({ loading: false });
-  }
-  public onTeamMemberActionComplete(teamMemberActionId: string) {
-    const action = Object.assign(
-      {},
-      this.state.selectedTeamMember.actions[teamMemberActionId]
-    ) as ITeamMemberAction;
-    action.status = TeamMemberActionStatus.done;
-
-    this.props.onTeamMemberActionSave(this.state.selectedTeamMember.id, action);
-  }
-  public onTeamMemberActionSaveNotes(
-    teamMemberActionId: string,
-    notes: string
-  ) {
-    const action = Object.assign(
-      {},
-      this.state.selectedTeamMember.actions[teamMemberActionId]
-    ) as ITeamMemberAction;
-    action.notes = notes;
-
-    this.props.onTeamMemberActionSave(this.state.selectedTeamMember.id, action);
   }
 
   public render() {
@@ -135,18 +103,8 @@ class LandingPage extends React.PureComponent<
           onSelectedChanged={this.onTeamMemberSelectedChanged}
           onDeleteClick={this.props.onTeamMemberDelete}
         />
-
+        <Divider />
         <AddTeamMemberForm onTeamMemberAdd={this.props.onTeamMemberAdd} />
-        <TeamMemberActionList
-          teamMemberName={this.state.selectedTeamMember.name}
-          actions={this.state.selectedTeamMember.actions}
-          onCompletedClick={this.onTeamMemberActionComplete}
-          onSaveNotesClick={this.onTeamMemberActionSaveNotes}
-        />
-        <AddTeamMemberAction
-          selectedTeamMember={this.state.selectedTeamMember}
-          onSelection={this.props.onTeamMemberActionSave}
-        />
       </Container>
     );
   }

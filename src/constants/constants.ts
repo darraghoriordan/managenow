@@ -7,6 +7,7 @@ const constants = {
   ROUTE_HOME: "/",
   ROUTE_LANDING: "/team",
   ROUTE_SIGN_IN: "/signin",
+  ROUTE_TEAM_MEMBER: "/team/member/:id",
   TECHNIQUE_CATEGORY: {
     BuildingCulture: "Building Culture",
     BuildingProducts: "Building Products",

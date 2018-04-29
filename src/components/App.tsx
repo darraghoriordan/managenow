@@ -2,13 +2,13 @@ import { User } from "firebase";
 import * as React from "react";
 import { BrowserRouter as Router, Redirect, Route } from "react-router-dom";
 import constants from "../constants/constants";
+import { getUserOnce } from "../firebase/db";
 import {
   createUser,
   deleteTeamMember,
   saveTeamMember,
   saveTeamMemberAction
 } from "../firebase/db";
-import { getUserOnce } from "../firebase/db";
 import { auth } from "../firebase/firebase";
 import IAppUser, { AppUser } from "../models/IAppUser";
 import ITeamMember from "../models/ITeamMember";
@@ -18,6 +18,7 @@ import AppFooter from "./AppFooter";
 import HomePage from "./HomePage";
 import LandingPage from "./LandingPage";
 import SignInPage from "./SignInPage";
+import TeamMemberPage from "./TeamMemberPage";
 import TopMenu from "./TopMenu";
 
 export interface IAppState {
@@ -212,7 +213,6 @@ export class App extends React.Component<{}, IAppState> {
                       userDisplayName={this.state.appUser.displayName}
                       onTeamMemberAdd={this.onTeamMemberAdd}
                       onTeamMemberDelete={this.onTeamMemberDelete}
-                      onTeamMemberActionSave={this.onTeamMemberActionAdd}
                     />
                   );
                 }
@@ -232,7 +232,25 @@ export class App extends React.Component<{}, IAppState> {
               path={constants.ROUTE_HOME}
               component={HomePage}
             />
-
+            <Route
+              exact={true}
+              path={constants.ROUTE_TEAM_MEMBER}
+              // tslint:disable-next-line:jsx-no-lambda
+              render={routeProps => {
+                if (authenticatedProp) {
+                  return (
+                    <TeamMemberPage
+                      {...routeProps}
+                      selectedTeamMember={teamMembersProp[(routeProps as any).match.params.id]}
+                      isAuthenticated={authenticatedProp}
+                      onTeamMemberActionSave={this.onTeamMemberActionAdd}
+                      onTeamMemberDelete={this.onTeamMemberDelete}
+                    />
+                  );
+                }
+                return <Redirect to={constants.ROUTE_SIGN_IN} />;
+              }}
+            />
             <Route
               exact={true}
               path={constants.ROUTE_ACCOUNT}
