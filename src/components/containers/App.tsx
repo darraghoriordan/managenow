@@ -1,25 +1,25 @@
 import { User } from "firebase";
 import * as React from "react";
 import { BrowserRouter as Router, Redirect, Route } from "react-router-dom";
-import constants from "../constants/constants";
-import { getUserOnce } from "../firebase/db";
+import constants from "../../constants/constants";
+import { getUserOnce } from "../../firebase/db";
 import {
   createUser,
   deleteTeamMember,
   saveTeamMember,
   saveTeamMemberAction
-} from "../firebase/db";
-import { auth } from "../firebase/firebase";
-import IAppUser, { AppUser } from "../models/IAppUser";
-import ITeamMember from "../models/ITeamMember";
-import ITeamMemberAction from "../models/ITeamMemberAction";
+} from "../../firebase/db";
+import { auth } from "../../firebase/firebase";
+import IAppUser, { AppUser } from "../../models/IAppUser";
+import ITeamMember from "../../models/ITeamMember";
+import ITeamMemberAction from "../../models/ITeamMemberAction";
+import AppFooter from "../presentational/AppFooter";
+import TopMenu from "../presentational/TopMenu";
 import AccountPage from "./AccountPage";
-import AppFooter from "./AppFooter";
 import HomePage from "./HomePage";
 import LandingPage from "./LandingPage";
 import SignInPage from "./SignInPage";
 import TeamMemberPage from "./TeamMemberPage";
-import TopMenu from "./TopMenu";
 
 export interface IAppState {
   loading: boolean;
@@ -241,7 +241,7 @@ export class App extends React.Component<{}, IAppState> {
                   return (
                     <TeamMemberPage
                       {...routeProps}
-                      selectedTeamMember={teamMembersProp[(routeProps as any).match.params.id]}
+                      teamMember={teamMembersProp[(routeProps as any).match.params.id]}
                       isAuthenticated={authenticatedProp}
                       onTeamMemberActionSave={this.onTeamMemberActionAdd}
                       onTeamMemberDelete={this.onTeamMemberDelete}

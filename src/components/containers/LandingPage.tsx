@@ -1,11 +1,11 @@
 import * as React from "react";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import { Container, Divider, Header } from "semantic-ui-react";
-import constants from "../constants/constants";
-import { TeamMemberStatus } from "../models/Enums";
-import ITeamMember from "../models/ITeamMember";
-import AddTeamMemberForm from "./AddTeamMemberForm";
-import TeamMemberList from "./TeamMemberList";
+import constants from "../../constants/constants";
+import { TeamMemberStatus } from "../../models/Enums";
+import ITeamMember from "../../models/ITeamMember";
+import AddTeamMemberForm from "../presentational/AddTeamMemberForm";
+import TeamMemberList from "../presentational/TeamMemberList";
 
 export interface ILandingPageProps extends RouteComponentProps<any> {
   teamMembers: {};

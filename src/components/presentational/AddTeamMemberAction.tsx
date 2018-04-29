@@ -8,13 +8,13 @@ import {
   Item,
   Rating
 } from "semantic-ui-react";
-import constants from "../constants/constants";
-import ITeamMember from "../models/ITeamMember";
+import constants from "../../constants/constants";
+import ITeamMember from "../../models/ITeamMember";
 import ITeamMemberAction, {
   TeamMemberAction
-} from "../models/ITeamMemberAction";
-import ITechnique from "../models/ITechnique";
-import { getRelevantTechniques } from "../services/techniqueService";
+} from "../../models/ITeamMemberAction";
+import ITechnique from "../../models/ITechnique";
+import { getRelevantTechniques } from "../../services/techniqueService";
 
 interface IDropdownOption {
   key: string;

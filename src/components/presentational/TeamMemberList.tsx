@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Button, Card, Image } from "semantic-ui-react";
-import ITeamMember from "../models/ITeamMember";
+import ITeamMember from "../../models/ITeamMember";
 
 interface ITeamListProps {
   teamMembers: {};
@@ -27,6 +27,7 @@ export default class TeamMemberList extends React.PureComponent<
               tm.id === this.props.selectedTeamMemberId ? "red" : "grey";
             const numberOfActions = Object.keys(tm.actions || {}).length;
             const daysSinceInteraction = Math.floor(Math.random() * 10);
+
             return (
               <Card key={tm.id} color={cardColor}>
                 <Card.Content>
@@ -49,23 +50,12 @@ export default class TeamMemberList extends React.PureComponent<
                       color="blue"
                       // tslint:disable-next-line:jsx-no-lambda
                       onClick={() => {
-                        this.props.onSelectedChanged(teamMembers[element].id);
+                        this.props.onSelectedChanged(tm.id);
                       }}
                     >
                       {" "}
-                      {"Select " + teamMembers[element].name}{" "}
+                      {"Select " + tm.name}{" "}
                     </Button>
-                    {/* <Button
-                      basic={true}
-                      color="red"
-                      // tslint:disable-next-line:jsx-no-lambda
-                      onClick={() => {
-                        this.props.onDeleteClick(teamMembers[element].id);
-                      }}
-                    >
-                      {" "}
-                      {"delete " + teamMembers[element].name}{" "}
-                    </Button> */}
                   </div>
                 </Card.Content>
               </Card>

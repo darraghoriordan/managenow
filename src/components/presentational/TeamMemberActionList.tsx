@@ -8,14 +8,14 @@ import {
   Item,
   TextArea
 } from "semantic-ui-react";
-import { TeamMemberActionStatus } from "../models/Enums";
-import ITeamMemberAction from "../models/ITeamMemberAction";
-import ITechnique from "../models/ITechnique";
-import { getTechniques } from "../services/techniqueService";
+import { TeamMemberActionStatus } from "../../models/Enums";
+import ITeamMemberAction from "../../models/ITeamMemberAction";
+import ITechnique from "../../models/ITechnique";
 
 interface ITeamMemberActionListProps {
   actions: {};
   teamMemberName: string;
+  techniques:ITechnique[];
   onCompletedClick: (teamMemberActionId: string) => void;
   onSaveNotesClick: (teamMemberActionId: string, notes: string) => void;
 }
@@ -83,7 +83,7 @@ export default class TeamMemberActionList extends React.Component<
       return null;
     }
     const technique =
-      getTechniques().find(el => el.id === teamMemeberAction.techniqueId) ||
+      this.props.techniques.find(el => el.id === teamMemeberAction.techniqueId) ||
       ({} as ITechnique);
     if (!technique) {
       return null;
@@ -129,9 +129,9 @@ export default class TeamMemberActionList extends React.Component<
               onClick={(e: any, data: ButtonProps) => {
                 this.props.onCompletedClick(teamMemeberAction.id);
               }}
-            >
+            >           
+              <Icon className="check" />
               Mark Completed
-              <Icon className="right chevron" />
             </Button>
             <Button
               type="button"
@@ -145,7 +145,7 @@ export default class TeamMemberActionList extends React.Component<
                 );
               }}
             >
-              <Icon className="checkmark" />
+              <Icon className="save" />
               Save Notes
             </Button>
           </Item.Extra>

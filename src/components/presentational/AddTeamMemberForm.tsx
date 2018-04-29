@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Button, Form, Header } from "semantic-ui-react";
-import ITeamMember, { TeamMember } from "../models/ITeamMember";
+import ITeamMember, { TeamMember } from "../../models/ITeamMember";
 
 interface IAddTeamMemberFormProps {
   onTeamMemberAdd: (teamMember: ITeamMember) => void;
