@@ -46,6 +46,7 @@ export default class TeamMemberActionList extends React.Component<
     super(props);
 
     this.renderItem = this.renderItem.bind(this);
+    this.state = {};
   }
 
   public handleChange = (e: any, { name, value }: any) =>
