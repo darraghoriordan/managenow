@@ -68,6 +68,9 @@ class AddAction extends React.Component<IAddActionProps, IAddActionState> {
     this.props.onSelection(this.props.selectedTeamMember.id, teamMemberAction);
   }
   public render() {
+    if (!this.props.selectedTeamMember || !this.props.selectedTeamMember.name) {
+      return null;
+    }
     return (
       <div>
         <Header as="h2">
@@ -92,12 +95,15 @@ class AddAction extends React.Component<IAddActionProps, IAddActionState> {
               <Item.Content>
                 <Item.Header>{technique.name}</Item.Header>
                 <Item.Meta>
-                  <span className="source-name">Source: {technique.sourcename}</span> by 
+                  <span className="source-name">
+                    Source: {technique.sourcename}
+                  </span>{" "}
+                  by
                   <span className="source-author">{technique.author}</span>
                 </Item.Meta>
                 <Item.Meta>
                   <span className="source-location">
-                   Location: {technique.locationInSource}
+                    Location: {technique.locationInSource}
                   </span>
                 </Item.Meta>
 
@@ -111,16 +117,15 @@ class AddAction extends React.Component<IAddActionProps, IAddActionState> {
                 </Item.Meta>
                 <Item.Description>{technique.description}</Item.Description>
                 <Item.Extra>
-                <Button
-               
-                    content="Buy now" 
+                  <Button
+                    content="Buy now"
                     icon="add to cart"
                     labelPosition="left"
                     floated="left"
                     // tslint:disable-next-line:jsx-no-lambda
                     onClick={(e: any, data: ButtonProps) => {
-                      const win = window.open(technique.referralLink, '_blank');
-                      (win || {} as Window).focus();
+                      const win = window.open(technique.referralLink, "_blank");
+                      (win || ({} as Window)).focus();
                     }}
                   />
                   <Button

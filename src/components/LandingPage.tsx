@@ -23,7 +23,7 @@ export interface ILandingPageProps extends RouteComponentProps<any> {
 }
 export interface ILandingPageState {
   loading: boolean;
-  selectedTeamMember?: ITeamMember;
+  selectedTeamMember: ITeamMember;
 }
 class LandingPage extends React.PureComponent<
   ILandingPageProps,
@@ -35,7 +35,7 @@ class LandingPage extends React.PureComponent<
   ) {
     if (prevState.selectedTeamMember) {
       const updatedTeamMember =
-        nextProps.teamMembers[prevState.selectedTeamMember.id];
+        (nextProps.teamMembers ||{})[prevState.selectedTeamMember.id];
       // is there an updated active team member?
       if (
         updatedTeamMember &&
@@ -53,16 +53,14 @@ class LandingPage extends React.PureComponent<
     }
     return { selectTeamMember: null };
   }
-  public static findNextValidTeamMember(
-    teamMembers: any
-  ): ITeamMember | undefined {
+  public static findNextValidTeamMember(teamMembers: any): ITeamMember {
     if (!teamMembers) {
-      return undefined;
+      return {} as ITeamMember;
     }
     const foundTeamMmber = Object.keys(teamMembers)
       .map((x: string) => teamMembers[x])
       .filter(x => x.status === TeamMemberStatus.active)[0];
-    return foundTeamMmber;
+    return foundTeamMmber || ({} as ITeamMember);
   }
   constructor(props: ILandingPageProps) {
     super(props);

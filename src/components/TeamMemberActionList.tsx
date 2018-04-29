@@ -8,6 +8,7 @@ import {
   Item,
   TextArea
 } from "semantic-ui-react";
+import { TeamMemberActionStatus } from "../models/Enums";
 import ITeamMemberAction from "../models/ITeamMemberAction";
 import ITechnique from "../models/ITechnique";
 import { getTechniques } from "../services/techniqueService";
@@ -23,53 +24,81 @@ export default class TeamMemberActionList extends React.Component<
   ITeamMemberActionListProps,
   any
 > {
+  public static getDerivedStateFromProps(
+    nextProps: ITeamMemberActionListProps,
+    prevState: any
+  ) {
+    const notes = Object.keys(nextProps.actions || {}).reduce<{}>(
+      (prev: {}, curr: string, i: number) => {
+        prev[TeamMemberActionList.getNoteFieldName(curr)] =
+          nextProps.actions[curr].notes;
+        return prev;
+      },
+      {}
+    );
+
+    return { ...notes };
+  }
+  public static getNoteFieldName(actionId: string): string {
+    return actionId + "-notes";
+  }
   constructor(props: ITeamMemberActionListProps) {
     super(props);
-    this.getNoteFieldName = this.getNoteFieldName.bind(this);
 
-    Object.keys(this.props.actions).forEach((x: string) => {
-      this.state = {
-        ...this.state,
-        [this.getNoteFieldName(x)]: this.props.actions[x].notes
-      };
-    });
+    this.renderItem = this.renderItem.bind(this);
   }
+
   public handleChange = (e: any, { name, value }: any) =>
     this.setState({ [name]: value });
+
   public render() {
     const { teamMemberName, actions } = this.props;
-    if (!actions && !teamMemberName){
-      return null;
-    }
 
     if (actions) {
       return (
         <div>
           <Header as="h2">Active Tasks</Header>
           <Item.Group divided={true}>
-            {Object.keys(actions).map((element: string) =>
-              this.renderItem(actions[element])
-            )}
+            {Object.keys(actions || {}).map((element: string) => {
+              return this.renderItem(actions[element]);
+            })}
           </Item.Group>
         </div>
       );
-    } else {
+    }
+
+    if (teamMemberName) {
       return <p>{teamMemberName} has no development tasks. Add one now!</p>;
     }
+
+    return null;
   }
-  private getNoteFieldName(actionId: string): string {
-    return actionId + "-notes";
-  }
+
   private renderItem(teamMemeberAction: ITeamMemberAction) {
+    if (
+      !teamMemeberAction ||
+      teamMemeberAction.status === TeamMemberActionStatus.done
+    ) {
+      return null;
+    }
     const technique =
       getTechniques().find(el => el.id === teamMemeberAction.techniqueId) ||
       ({} as ITechnique);
+    if (!technique) {
+      return null;
+    }
+
+    const noteFieldName = TeamMemberActionList.getNoteFieldName(
+      teamMemeberAction.id
+    );
     return (
       <Item key={teamMemeberAction.id}>
         <Item.Content>
           <Item.Header>{technique.name}</Item.Header>
           <Item.Meta>
-            <span className="source">{technique.sourcename +" - "+ technique.locationInSource}</span>
+            <span className="source">
+              {technique.sourcename + " - " + technique.locationInSource}
+            </span>
           </Item.Meta>
           <Item.Meta>
             <span className="created">
@@ -81,11 +110,11 @@ export default class TeamMemberActionList extends React.Component<
           <Form>
             <Form.Input label="Your Notes">
               <TextArea
-                name={this.getNoteFieldName(teamMemeberAction.id)}
+                name={noteFieldName}
                 autoHeight={true}
                 placeholder="Add some notes..."
                 onChange={this.handleChange}
-                value={this.state[this.getNoteFieldName(teamMemeberAction.id)]}
+                value={this.state && this.state[noteFieldName]}
               />
             </Form.Input>
           </Form>
@@ -111,7 +140,7 @@ export default class TeamMemberActionList extends React.Component<
               onClick={(e: any, data: ButtonProps) => {
                 this.props.onSaveNotesClick(
                   teamMemeberAction.id,
-                  this.state[this.getNoteFieldName(teamMemeberAction.id)]
+                  this.state[noteFieldName]
                 );
               }}
             >

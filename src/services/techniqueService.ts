@@ -48,7 +48,7 @@ export function getTechniques() {
     coverimage: "",
     description: "How to start one on ones with your team",
     id: "3",
-    locationInSource: "",
+    locationInSource: "https://getlighthouse.com/blog/how-to-start-one-on-ones-your-teams/",
     name: "",
     rating: 6,
     referralLink:
