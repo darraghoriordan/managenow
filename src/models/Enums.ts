@@ -1,21 +1,21 @@
 export enum TeamMemberStatus {
-  active,
-  disabled
+  active = "active",
+  disabled = "disabled"
 }
 export enum TeamMemberNoteSentiment {
-  positive,
-  negative
+  positive = "positive",
+  negative = "negative"
 }
 export enum TeamMemberTodoStatus {
-  active,
-  done
+  active = "active",
+  done = "done"
 }
 export enum TeamMemberActionStatus {
-  active,
-  done
+  active = "active",
+  done = "done"
 }
 export enum TechniqueSourceType {
-  book,
-  podcast,
-  blog
+  book = "book",
+  podcast = "podcast",
+  blog = "blog"
 }

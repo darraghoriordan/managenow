@@ -212,7 +212,7 @@ export class App extends React.Component<{}, IAppState> {
                       userDisplayName={this.state.appUser.displayName}
                       onTeamMemberAdd={this.onTeamMemberAdd}
                       onTeamMemberDelete={this.onTeamMemberDelete}
-                      onTeamMemberActionAdd={this.onTeamMemberActionAdd}
+                      onTeamMemberActionSave={this.onTeamMemberActionAdd}
                     />
                   );
                 }

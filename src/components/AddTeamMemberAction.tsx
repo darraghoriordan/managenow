@@ -125,14 +125,14 @@ class AddAction extends React.Component<IAddActionProps, IAddActionState> {
                   />
                   <Button
                     type="button"
-                    primary={true}
+                    positive={true}
                     floated="right"
                     // tslint:disable-next-line:jsx-no-lambda
                     onClick={(e: any, data: ButtonProps) => {
                       this.onSelectedTechnique(e, technique);
                     }}
                   >
-                    Assign to {this.props.selectedTeamMember.name}
+                    Assign task to {this.props.selectedTeamMember.name}
                     <Icon className="right chevron" />
                   </Button>
                 </Item.Extra>

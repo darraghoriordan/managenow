@@ -2,7 +2,7 @@ import * as React from "react";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import { Container, Header } from "semantic-ui-react";
 import constants from "../constants/constants";
-import { TeamMemberActionStatus } from "../models/Enums";
+import { TeamMemberActionStatus, TeamMemberStatus } from "../models/Enums";
 import ITeamMember from "../models/ITeamMember";
 import ITeamMemberAction from "../models/ITeamMemberAction";
 import AddTeamMemberAction from "./AddTeamMemberAction";
@@ -16,14 +16,14 @@ export interface ILandingPageProps extends RouteComponentProps<any> {
   userDisplayName: string;
   onTeamMemberDelete: (teamMemberId: string) => void;
   onTeamMemberAdd: (teamMember: ITeamMember) => void;
-  onTeamMemberActionAdd: (
+  onTeamMemberActionSave: (
     teamMemberId: string,
     teamMemberAction: ITeamMemberAction
   ) => void;
 }
 export interface ILandingPageState {
   loading: boolean;
-  selectedTeamMember: ITeamMember;
+  selectedTeamMember?: ITeamMember;
 }
 class LandingPage extends React.PureComponent<
   ILandingPageProps,
@@ -36,28 +36,51 @@ class LandingPage extends React.PureComponent<
     if (prevState.selectedTeamMember) {
       const updatedTeamMember =
         nextProps.teamMembers[prevState.selectedTeamMember.id];
-      if (updatedTeamMember) {
+      // is there an updated active team member?
+      if (
+        updatedTeamMember &&
+        updatedTeamMember.status === TeamMemberStatus.active
+      ) {
         return { selectedTeamMember: updatedTeamMember };
       }
+      // is there an availabl next team member?
+      const nextTeamMember = LandingPage.findNextValidTeamMember(
+        nextProps.teamMembers
+      );
+      if (nextTeamMember) {
+        return { selectedTeamMember: nextTeamMember };
+      }
     }
-    return null;
+    return { selectTeamMember: null };
   }
-
+  public static findNextValidTeamMember(
+    teamMembers: any
+  ): ITeamMember | undefined {
+    if (!teamMembers) {
+      return undefined;
+    }
+    const foundTeamMmber = Object.keys(teamMembers)
+      .map((x: string) => teamMembers[x])
+      .filter(x => x.status === TeamMemberStatus.active)[0];
+    return foundTeamMmber;
+  }
   constructor(props: ILandingPageProps) {
     super(props);
 
     this.onTeamMemberSelectedChanged = this.onTeamMemberSelectedChanged.bind(
       this
     );
+    this.onTeamMemberActionSaveNotes = this.onTeamMemberActionSaveNotes.bind(
+      this
+    );
     this.onTeamMemberActionComplete = this.onTeamMemberActionComplete.bind(
       this
     );
-    let selectedTeamMember = {} as ITeamMember;
-    if (Object.keys(this.props.teamMembers).length > 0) {
-      selectedTeamMember = this.props.teamMembers[
-        Object.keys(this.props.teamMembers)[0]
-      ];
-    }
+
+    const selectedTeamMember = LandingPage.findNextValidTeamMember(
+      this.props.teamMembers
+    );
+
     this.state = {
       loading: true,
       selectedTeamMember
@@ -85,8 +108,21 @@ class LandingPage extends React.PureComponent<
     ) as ITeamMemberAction;
     action.status = TeamMemberActionStatus.done;
 
-    this.props.onTeamMemberActionAdd(this.state.selectedTeamMember.id, action);
+    this.props.onTeamMemberActionSave(this.state.selectedTeamMember.id, action);
   }
+  public onTeamMemberActionSaveNotes(
+    teamMemberActionId: string,
+    notes: string
+  ) {
+    const action = Object.assign(
+      {},
+      this.state.selectedTeamMember.actions[teamMemberActionId]
+    ) as ITeamMemberAction;
+    action.notes = notes;
+
+    this.props.onTeamMemberActionSave(this.state.selectedTeamMember.id, action);
+  }
+
   public render() {
     if (this.state.loading) {
       return <div>loading...</div>;
@@ -107,10 +143,11 @@ class LandingPage extends React.PureComponent<
           teamMemberName={this.state.selectedTeamMember.name}
           actions={this.state.selectedTeamMember.actions}
           onCompletedClick={this.onTeamMemberActionComplete}
+          onSaveNotesClick={this.onTeamMemberActionSaveNotes}
         />
         <AddTeamMemberAction
           selectedTeamMember={this.state.selectedTeamMember}
-          onSelection={this.props.onTeamMemberActionAdd}
+          onSelection={this.props.onTeamMemberActionSave}
         />
       </Container>
     );
