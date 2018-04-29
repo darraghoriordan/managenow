@@ -25,7 +25,7 @@ export default class TeamMemberList extends React.PureComponent<
             const tm = teamMembers[element] as ITeamMember;
             const cardColor =
               tm.id === this.props.selectedTeamMemberId ? "red" : "grey";
-            const numberOfActions = Object.keys(tm.actions).length;
+            const numberOfActions = Object.keys(tm.actions || {}).length;
             const daysSinceInteraction = Math.floor(Math.random() * 10);
             return (
               <Card key={tm.id} color={cardColor}>
