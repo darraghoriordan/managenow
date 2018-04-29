@@ -4,7 +4,6 @@ import ITeamMember from "../../models/ITeamMember";
 
 interface ITeamListProps {
   teamMembers: {};
-  selectedTeamMemberId: string;
   onDeleteClick: (teamMemberId: string) => void;
   onSelectedChanged: (teamMemberId: string) => void;
 }
@@ -23,13 +22,13 @@ export default class TeamMemberList extends React.PureComponent<
         <Card.Group>
           {Object.keys(teamMembers).map((element: string) => {
             const tm = teamMembers[element] as ITeamMember;
-            const cardColor =
-              tm.id === this.props.selectedTeamMemberId ? "red" : "grey";
             const numberOfActions = Object.keys(tm.actions || {}).length;
+            const numberOfTodos = Object.keys(tm.actions || {}).length;
+            const numberOfInteractions = Object.keys(tm.actions || {}).length;
             const daysSinceInteraction = Math.floor(Math.random() * 10);
 
             return (
-              <Card key={tm.id} color={cardColor}>
+              <Card key={tm.id}>
                 <Card.Content>
                   <Image
                     floated="right"
@@ -37,7 +36,9 @@ export default class TeamMemberList extends React.PureComponent<
                     src="/images/portraits/person-rose.jpg"
                   />
                   <Card.Header>{tm.name}</Card.Header>
-                  <Card.Meta>Actions: {numberOfActions}</Card.Meta>
+                  <Card.Meta>Tasks: {numberOfActions}</Card.Meta>
+                  <Card.Meta>Interactions: {numberOfInteractions}</Card.Meta>
+                  <Card.Meta>Todos: {numberOfTodos}</Card.Meta>
                   <Card.Description>
                     It's been {daysSinceInteraction} days since your last
                     interaction!

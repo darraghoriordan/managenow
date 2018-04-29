@@ -17,8 +17,8 @@ import AppFooter from "../presentational/AppFooter";
 import TopMenu from "../presentational/TopMenu";
 import AccountPage from "./AccountPage";
 import HomePage from "./HomePage";
-import LandingPage from "./LandingPage";
 import SignInPage from "./SignInPage";
+import TeamListPage from "./TeamListPage";
 import TeamMemberPage from "./TeamMemberPage";
 
 export interface IAppState {
@@ -206,7 +206,7 @@ export class App extends React.Component<{}, IAppState> {
               render={routeProps => {
                 if (authenticatedProp) {
                   return (
-                    <LandingPage
+                    <TeamListPage
                       {...routeProps}
                       teamMembers={teamMembersProp}
                       isAuthenticated={authenticatedProp}
