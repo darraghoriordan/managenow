@@ -11,7 +11,7 @@ export interface ITeamListPageProps extends RouteComponentProps<any> {
   isAuthenticated: boolean;
   userDisplayName: string;
   onTeamMemberDelete: (teamMemberId: string) => void;
-  onTeamMemberAdd: (teamMember: ITeamMember) => void;
+  onTeamMemberAdd: (teamMember: ITeamMember) => Promise<ITeamMember>;
 }
 export interface ITeamListPageState {
   loading: boolean;
@@ -20,7 +20,6 @@ class TeamListPage extends React.PureComponent<
   ITeamListPageProps,
   ITeamListPageState
 > {
-
   constructor(props: ITeamListPageProps) {
     super(props);
 
@@ -52,21 +51,23 @@ class TeamListPage extends React.PureComponent<
       return <div>loading...</div>;
     }
     return (
-      <div>
-    
+      <div style={{ marginTop: "7em" }}>
         <Header as="h1">Your Team, {this.props.userDisplayName}</Header>
 
         <TeamMemberList
           teamMembers={this.props.teamMembers}
           onSelectedChanged={this.onTeamMemberSelectedChanged}
           onDeleteClick={this.props.onTeamMemberDelete}
+          currentUserFirstName={this.props.userDisplayName}
+ 
         />
         <Divider />
         <AddTeamMemberForm onTeamMemberAdd={this.props.onTeamMemberAdd} />
-  
       </div>
     );
   }
+
+
 }
 
 export default withRouter(TeamListPage);

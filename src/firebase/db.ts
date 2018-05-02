@@ -15,6 +15,7 @@ export const getUserOnce = (uid: string) =>
 export const deleteTeamMember = (uid: string, teamMemberId: string) => {
   return db.ref("/users/" + uid + "/teamMembers/" + teamMemberId).remove();
 };
+
 export const saveTeamMember = (uid: string, teamMember: ITeamMember) => {
   // if we dont already have an id try to get one from firebase
   if (!teamMember.id) {

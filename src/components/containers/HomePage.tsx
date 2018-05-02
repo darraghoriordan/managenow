@@ -1,8 +1,15 @@
 import * as React from "react";
-
+import { Container,Header } from "semantic-ui-react";
 const HomePage = () => (
   <div>
-    <h1>Home Page</h1>
+    <Container text={true} style={{ marginTop: "7em" }}>
+      <Header as="h1">
+        The greatest minds in leadership at your fingertips
+      </Header>
+      <Header as="h3">
+        The greatest minds in leadership at your fingertips
+      </Header>
+    </Container>
   </div>
 );
 

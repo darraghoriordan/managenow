@@ -3,7 +3,6 @@ import { RouteComponentProps, withRouter } from "react-router-dom";
 import {
   Button,
   ButtonProps,
-  Container,
   Header,
   Icon
 } from "semantic-ui-react";
@@ -84,7 +83,7 @@ class TeamMemberPage extends React.PureComponent<
 
     const { teamMember, onTeamMemberActionSave } = this.props;
     return (
-      <Container text={true} style={{ marginTop: "7em" }}>
+      <div style={{ marginTop: "7em" }}>
         <Header as="h1">{teamMember.name}</Header>
         <TeamMemberActionList
           teamMemberName={teamMember.name}
@@ -103,12 +102,13 @@ class TeamMemberPage extends React.PureComponent<
           // tslint:disable-next-line:jsx-no-lambda
           onClick={(e: any, data: ButtonProps) => {
             this.props.onTeamMemberDelete(teamMember.id);
+            this.props.history.push(constants.ROUTE_LANDING);
           }}
         >
           <Icon className="user delete" />
           Delete User
         </Button>
-      </Container>
+      </div>
     );
   }
 }

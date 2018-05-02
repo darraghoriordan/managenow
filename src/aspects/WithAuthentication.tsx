@@ -2,7 +2,7 @@ import { User } from "firebase";
 import * as React from "react";
 import { createUser, getUserOnce } from "../firebase/db";
 import { auth } from "../firebase/firebase";
-import IAppUser from "../models/IAppUser";
+import IAppUser, { AppUser } from "../models/IAppUser";
 
 export interface IAuthState {
   authUser: User | null;
@@ -36,12 +36,12 @@ const withAuthentication = (Component: any) => {
               let foundUser: IAppUser = dataRef.val() as IAppUser;
 
               if (!foundUser) {
-                foundUser = {
-                  displayName: authUser.displayName || "",
-                  email: authUser.email || "",
-                  teamMembers: [],
-                  uid: authUser.uid
-                };
+                foundUser = new AppUser(
+                  authUser.displayName || "",
+                  authUser.email || "",
+                  authUser.uid,
+                  {}
+                );
                 createUser(foundUser);
               }
               this.setState({
@@ -66,7 +66,13 @@ const withAuthentication = (Component: any) => {
 
     public render() {
       const { authUser, authenticated, appUser } = this.state;
-      return <Component authUser={authUser} authenticated={authenticated} appUser={appUser} />;
+      return (
+        <Component
+          authUser={authUser}
+          authenticated={authenticated}
+          appUser={appUser}
+        />
+      );
     }
   }
 

@@ -1,7 +1,6 @@
 import * as React from "react";
 import { FirebaseAuth } from "react-firebaseui";
 import { Redirect, RouteComponentProps, withRouter } from "react-router-dom";
-import { Container } from "semantic-ui-react";
 import constants from "../../constants/constants";
 import { auth, uiConfig } from "../../firebase/firebase";
 interface ISignInPageProps extends RouteComponentProps<any> {
@@ -32,12 +31,12 @@ class SignInPage extends React.Component<ISignInPageProps, ISignInPageState> {
     }
 
     return (
-      <Container text={true} style={{ marginTop: "7em" }}>
-        <div>
-          <h1>Sign In</h1>
+      <div  style={{ marginTop: "7em" }}>
+        <div style={{ textAlign: "center" }}>
+          <h1>Welcome!</h1>
           <FirebaseAuth uiConfig={uiConfig} firebaseAuth={auth} />
         </div>
-      </Container>
+      </div>
     );
   }
 }
