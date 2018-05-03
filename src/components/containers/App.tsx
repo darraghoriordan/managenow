@@ -1,25 +1,28 @@
 import { User } from "firebase";
 import * as React from "react";
 import { BrowserRouter as Router, Redirect, Route } from "react-router-dom";
-import constants from "../constants/constants";
-import { getUserOnce } from "../firebase/db";
+import { Grid } from "semantic-ui-react";
+import constants from "../../constants/constants";
+import { getUserOnce } from "../../firebase/db";
 import {
   createUser,
   deleteTeamMember,
   saveTeamMember,
   saveTeamMemberAction
-} from "../firebase/db";
-import { auth } from "../firebase/firebase";
-import IAppUser, { AppUser } from "../models/IAppUser";
-import ITeamMember from "../models/ITeamMember";
-import ITeamMemberAction from "../models/ITeamMemberAction";
+} from "../../firebase/db";
+import { auth } from "../../firebase/firebase";
+import { EmptyAppUser } from "../../models/EmptyAppUser";
+import IAppUser, { AppUser } from "../../models/IAppUser";
+import ITeamMember from "../../models/ITeamMember";
+import ITeamMemberAction from "../../models/ITeamMemberAction";
+import { validateTeamMemberForSave } from "../../services/validations";
+import AppFooter from "../presentational/AppFooter";
+import TopMenu from "../presentational/TopMenu";
 import AccountPage from "./AccountPage";
-import AppFooter from "./AppFooter";
 import HomePage from "./HomePage";
-import LandingPage from "./LandingPage";
 import SignInPage from "./SignInPage";
+import TeamListPage from "./TeamListPage";
 import TeamMemberPage from "./TeamMemberPage";
-import TopMenu from "./TopMenu";
 
 export interface IAppState {
   loading: boolean;
@@ -38,7 +41,7 @@ export class App extends React.Component<{}, IAppState> {
     super(props);
 
     const state: IAppState = {
-      appUser: new AppUser(),
+      appUser: new EmptyAppUser(),
       authUser: null,
       authenticated: false,
       loading: true
@@ -57,8 +60,11 @@ export class App extends React.Component<{}, IAppState> {
       }
     );
   }
-  public onTeamMemberAdd = (teamMember: ITeamMember) => {
-    saveTeamMember(this.state.appUser.uid, teamMember)
+  public onTeamMemberAdd = (teamMember: ITeamMember): Promise<ITeamMember> => {
+    return validateTeamMemberForSave(teamMember)
+      .then(validatedTeamMember =>
+        saveTeamMember(this.state.appUser.uid, validatedTeamMember)
+      )
       .then(savedTeamMember => {
         const teamMembers = Object.assign({}, this.state.appUser.teamMembers);
 
@@ -75,12 +81,8 @@ export class App extends React.Component<{}, IAppState> {
           }
         }));
 
-        return Promise.resolve();
-      })
-      .catch((error: string) =>
-        // tslint:disable-next-line:no-console
-        console.log("Couldnt save team member: " + error)
-      );
+        return Promise.resolve(teamMember);
+      });
   };
 
   public onTeamMemberActionAdd = (
@@ -148,7 +150,7 @@ export class App extends React.Component<{}, IAppState> {
   }
   public setUnAuthenticatedState() {
     this.setState({
-      appUser: new AppUser(),
+      appUser: new EmptyAppUser(),
       authUser: null,
       authenticated: false,
       loading: false
@@ -160,13 +162,20 @@ export class App extends React.Component<{}, IAppState> {
         .then(authenticatedUser => getUserOnce(authenticatedUser.uid))
         .then(dataRef => {
           // if not exists create the new user
-          let foundUser: IAppUser = dataRef.val() as IAppUser;
+          let foundUser: IAppUser = new AppUser(
+            dataRef.val().displayName,
+            dataRef.val().email,
+            dataRef.val().uid,
+            dataRef.val().teamMembers
+          );
 
           if (!foundUser) {
-            foundUser = new AppUser();
-            foundUser.uid = authUser.uid;
-            foundUser.displayName = authUser.displayName || "";
-            foundUser.email = authUser.email || "";
+            foundUser = new AppUser(
+              authUser.displayName || "No Name",
+              authUser.email || "No Email",
+              authUser.uid,
+              {}
+            );
             return createUser(foundUser);
           }
           return Promise.resolve(foundUser);
@@ -196,66 +205,76 @@ export class App extends React.Component<{}, IAppState> {
           <div>
             <TopMenu
               authenticated={authenticatedProp}
+              displayName={this.state.appUser.firstName}
               onSignOut={this.signOutFirebase}
-              tm={teamMembersProp}
             />
-            <Route
-              exact={true}
-              path={constants.ROUTE_LANDING}
-              // tslint:disable-next-line:jsx-no-lambda
-              render={routeProps => {
-                if (authenticatedProp) {
-                  return (
-                    <LandingPage
-                      {...routeProps}
-                      teamMembers={teamMembersProp}
-                      isAuthenticated={authenticatedProp}
-                      userDisplayName={this.state.appUser.displayName}
-                      onTeamMemberAdd={this.onTeamMemberAdd}
-                      onTeamMemberDelete={this.onTeamMemberDelete}
-                    />
-                  );
-                }
-                return <Redirect to={constants.ROUTE_SIGN_IN} />;
-              }}
-            />
+            <Grid columns="equal">
+              <Grid.Column />
+              <Grid.Column width={8}>
+                <Route
+                  exact={true}
+                  path={constants.ROUTE_LANDING}
+                  // tslint:disable-next-line:jsx-no-lambda
+                  render={routeProps => {
+                    if (authenticatedProp) {
+                      return (
+                        <TeamListPage
+                          {...routeProps}
+                          teamMembers={teamMembersProp}
+                          isAuthenticated={authenticatedProp}
+                          userDisplayName={this.state.appUser.firstName}
+                          onTeamMemberAdd={this.onTeamMemberAdd}
+                          onTeamMemberDelete={this.onTeamMemberDelete}
+                        />
+                      );
+                    }
+                    return <Redirect to={constants.ROUTE_SIGN_IN} />;
+                  }}
+                />
 
-            <Route
-              exact={true}
-              path={constants.ROUTE_SIGN_IN}
-              // tslint:disable-next-line:jsx-no-lambda
-              render={() => <SignInPage authenticated={authenticatedProp} />}
-            />
+                <Route
+                  exact={true}
+                  path={constants.ROUTE_SIGN_IN}
+                  // tslint:disable-next-line:jsx-no-lambda
+                  render={() => (
+                    <SignInPage authenticated={authenticatedProp} />
+                  )}
+                />
 
-            <Route
-              exact={true}
-              path={constants.ROUTE_HOME}
-              component={HomePage}
-            />
-            <Route
-              exact={true}
-              path={constants.ROUTE_TEAM_MEMBER}
-              // tslint:disable-next-line:jsx-no-lambda
-              render={routeProps => {
-                if (authenticatedProp) {
-                  return (
-                    <TeamMemberPage
-                      {...routeProps}
-                      selectedTeamMember={teamMembersProp[(routeProps as any).match.params.id]}
-                      isAuthenticated={authenticatedProp}
-                      onTeamMemberActionSave={this.onTeamMemberActionAdd}
-                      onTeamMemberDelete={this.onTeamMemberDelete}
-                    />
-                  );
-                }
-                return <Redirect to={constants.ROUTE_SIGN_IN} />;
-              }}
-            />
-            <Route
-              exact={true}
-              path={constants.ROUTE_ACCOUNT}
-              component={AccountPage}
-            />
+                <Route
+                  exact={true}
+                  path={constants.ROUTE_HOME}
+                  component={HomePage}
+                />
+                <Route
+                  exact={true}
+                  path={constants.ROUTE_TEAM_MEMBER}
+                  // tslint:disable-next-line:jsx-no-lambda
+                  render={routeProps => {
+                    if (authenticatedProp) {
+                      return (
+                        <TeamMemberPage
+                          {...routeProps}
+                          teamMember={
+                            teamMembersProp[(routeProps as any).match.params.id]
+                          }
+                          isAuthenticated={authenticatedProp}
+                          onTeamMemberActionSave={this.onTeamMemberActionAdd}
+                          onTeamMemberDelete={this.onTeamMemberDelete}
+                        />
+                      );
+                    }
+                    return <Redirect to={constants.ROUTE_SIGN_IN} />;
+                  }}
+                />
+                <Route
+                  exact={true}
+                  path={constants.ROUTE_ACCOUNT}
+                  component={AccountPage}
+                />
+              </Grid.Column>
+              <Grid.Column />
+            </Grid>
           </div>
         </Router>
 

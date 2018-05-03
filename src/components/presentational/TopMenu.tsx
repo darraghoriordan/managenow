@@ -1,26 +1,26 @@
 import * as React from "react";
 import { Link, RouteComponentProps } from "react-router-dom";
 import { withRouter } from "react-router-dom";
-import { Container, Image, Menu } from "semantic-ui-react";
-import constants from "../constants/constants";
+import { Container, Dropdown, Menu } from "semantic-ui-react";
+import constants from "../../constants/constants";
 
 interface ITopMenuProps extends RouteComponentProps<any> {
+  displayName: string;
   onSignOut: (history: any) => void;
   authenticated: boolean;
-  tm:any;
 }
 
 class TopMenu extends React.PureComponent<ITopMenuProps, any> {
   public render() {
     return (
-      <Menu fixed="top" inverted={true}>
+      <Menu fixed="top">
         <Container>
           <Menu.Item as={Link} header={true} to={constants.ROUTE_HOME}>
-            <Image
+            {/* <Image
               size="mini"
               src="./logo.png"
               style={{ marginRight: "1.5em" }}
-            />
+            /> */}
             Manage Now
           </Menu.Item>
           <Menu.Item as={Link} to={constants.ROUTE_HOME}>
@@ -36,12 +36,18 @@ class TopMenu extends React.PureComponent<ITopMenuProps, any> {
                 Team
               </Menu.Item>
 
-              <Menu.Item
-                // tslint:disable-next-line:jsx-no-lambda
-                onClick={() => this.props.onSignOut(this.props.history)}
-              >
-                Sign Out
-              </Menu.Item>
+              <Menu.Menu position="right">
+                <Dropdown item={true} text={this.props.displayName}>
+                  <Dropdown.Menu>
+                    <Dropdown.Item
+                      icon="edit"
+                      text="Signout"
+                      // tslint:disable-next-line:jsx-no-lambda
+                      onClick={() => this.props.onSignOut(this.props.history)}
+                    />
+                  </Dropdown.Menu>
+                </Dropdown>
+              </Menu.Menu>
             </React.Fragment>
           )}
         </Container>
