@@ -53,7 +53,7 @@ export class App extends React.Component<{}, IAppState> {
   public signOutFirebase(history: any) {
     auth.signOut().then(
       () => {
-        history.push(constants.ROUTE_SIGN_IN);
+        history.push(constants.ROUTES.SIGN_IN);
       },
       error => {
         // tslint:disable-next-line:no-console
@@ -215,7 +215,7 @@ export class App extends React.Component<{}, IAppState> {
               <Grid.Column width={8}>
                 <Route
                   exact={true}
-                  path={constants.ROUTE_LANDING}
+                  path={constants.ROUTES.LANDING}
                   // tslint:disable-next-line:jsx-no-lambda
                   render={routeProps => {
                     if (authenticatedProp) {
@@ -230,13 +230,13 @@ export class App extends React.Component<{}, IAppState> {
                         />
                       );
                     }
-                    return <Redirect to={constants.ROUTE_SIGN_IN} />;
+                    return <Redirect to={constants.ROUTES.SIGN_IN} />;
                   }}
                 />
 
                 <Route
                   exact={true}
-                  path={constants.ROUTE_SIGN_IN}
+                  path={constants.ROUTES.SIGN_IN}
                   // tslint:disable-next-line:jsx-no-lambda
                   render={() => (
                     <SignInPage authenticated={authenticatedProp} />
@@ -245,12 +245,12 @@ export class App extends React.Component<{}, IAppState> {
 
                 <Route
                   exact={true}
-                  path={constants.ROUTE_HOME}
+                  path={constants.ROUTES.HOME}
                   component={HomePage}
                 />
                  <Route
                   exact={true}
-                  path={constants.ROUTE_TEAM_MEMBER_ADD}
+                  path={constants.ROUTES.TEAM_MEMBER_ADD}
                   // tslint:disable-next-line:jsx-no-lambda
                   render={ (routerProps)=>  
                     (
@@ -259,7 +259,7 @@ export class App extends React.Component<{}, IAppState> {
                 />
                 <Route
                   exact={true}
-                  path={constants.ROUTE_TEAM_MEMBER}
+                  path={constants.ROUTES.TEAM_MEMBER}
                   // tslint:disable-next-line:jsx-no-lambda
                   render={routeProps => {
                     if (authenticatedProp) {
@@ -275,12 +275,12 @@ export class App extends React.Component<{}, IAppState> {
                         />
                       );
                     }
-                    return <Redirect to={constants.ROUTE_SIGN_IN} />;
+                    return <Redirect to={constants.ROUTES.SIGN_IN} />;
                   }}
                 />
                 <Route
                   exact={true}
-                  path={constants.ROUTE_ACCOUNT}
+                  path={constants.ROUTES.ACCOUNT}
                   component={AccountPage}
                 />
               </Grid.Column>

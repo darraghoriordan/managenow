@@ -39,7 +39,7 @@ class TeamListPage extends React.PureComponent<
     if (!this.props.isAuthenticated) {
       // tslint:disable-next-line:no-console
       console.log("no auth user, redirecting to signin");
-      this.props.history.push(constants.ROUTE_SIGN_IN);
+      this.props.history.push(constants.ROUTES.SIGN_IN);
     }
 
     this.setState({ loading: false });

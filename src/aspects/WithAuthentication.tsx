@@ -24,7 +24,7 @@ const withAuthentication = (Component: any) => {
     }
     public componentDidMount() {
       // if (!authCon(authUser)) {
-      //   this.props.history.push(constants.ROUTE_SIGN_IN);
+      //   this.props.history.push(constants.ROUTES.SIGN_IN);
       // }
       //  const authCon = (authUser: any) => !!this.props.authUser;
       auth.onAuthStateChanged((authUser: User) => {

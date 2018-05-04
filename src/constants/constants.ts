@@ -11,12 +11,6 @@ const constants = {
     TEAM_MEMBER: "/team/member/:id",
     TEAM_MEMBER_ADD: "/team/add",
   },
-  ROUTE_ACCOUNT: "/account",
-  ROUTE_HOME: "/",
-  ROUTE_LANDING: "/team",
-  ROUTE_SIGN_IN: "/signin",
-  ROUTE_TEAM_MEMBER: "/team/member/:id",
-  ROUTE_TEAM_MEMBER_ADD: "/team/add",
   TECHNIQUE_CATEGORY: {
     BuildingCulture: "Building Culture",
     BuildingProducts: "Building Products",

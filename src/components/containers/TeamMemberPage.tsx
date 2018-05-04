@@ -49,7 +49,7 @@ class TeamMemberPage extends React.PureComponent<
     if (!this.props.isAuthenticated) {
       // tslint:disable-next-line:no-console
       console.log("no auth user, redirecting to signin");
-      this.props.history.push(constants.ROUTE_SIGN_IN);
+      this.props.history.push(constants.ROUTES.SIGN_IN);
     }
 
     this.setState({ loading: false });
@@ -102,7 +102,7 @@ class TeamMemberPage extends React.PureComponent<
           // tslint:disable-next-line:jsx-no-lambda
           onClick={(e: any, data: ButtonProps) => {
             this.props.onTeamMemberDelete(teamMember.id);
-            this.props.history.push(constants.ROUTE_LANDING);
+            this.props.history.push(constants.ROUTES.LANDING);
           }}
         >
           <Icon className="user delete" />
