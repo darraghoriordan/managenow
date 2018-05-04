@@ -19,6 +19,7 @@ import { validateTeamMemberForSave } from "../../services/validations";
 import AppFooter from "../presentational/AppFooter";
 import TopMenu from "../presentational/TopMenu";
 import AccountPage from "./AccountPage";
+import AddTeamMemberPage from "./AddTeamMemberPage";
 import HomePage from "./HomePage";
 import SignInPage from "./SignInPage";
 import TeamListPage from "./TeamListPage";
@@ -162,11 +163,12 @@ export class App extends React.Component<{}, IAppState> {
         .then(authenticatedUser => getUserOnce(authenticatedUser.uid))
         .then(dataRef => {
           // if not exists create the new user
+          const refVal = dataRef.val();
           let foundUser: IAppUser = new AppUser(
-            dataRef.val().displayName,
-            dataRef.val().email,
-            dataRef.val().uid,
-            dataRef.val().teamMembers
+            refVal.displayName,
+            refVal.email,
+            refVal.uid,
+            refVal.teamMembers
           );
 
           if (!foundUser) {
@@ -245,6 +247,15 @@ export class App extends React.Component<{}, IAppState> {
                   exact={true}
                   path={constants.ROUTE_HOME}
                   component={HomePage}
+                />
+                 <Route
+                  exact={true}
+                  path={constants.ROUTE_TEAM_MEMBER_ADD}
+                  // tslint:disable-next-line:jsx-no-lambda
+                  render={ (routerProps)=>  
+                    (
+                     <AddTeamMemberPage {...routerProps} onTeamMemberAdd={this.onTeamMemberAdd} />
+                  )}
                 />
                 <Route
                   exact={true}

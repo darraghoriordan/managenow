@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Button, Item } from "semantic-ui-react";
+import { Button, Icon, Item, SemanticCOLORS } from "semantic-ui-react";
 import ITeamMember from "../../models/ITeamMember";
 
 interface ITeamMemberItemProps {
@@ -14,7 +14,7 @@ const TeamMemberItem: React.SFC<ITeamMemberItemProps> = props => {
   const onSelected = onSelectedChanged;
   return (
     <Item key={teamMember.id}>
-      <Item.Image size="tiny" src="/images/portraits/person-rose.jpg" />
+      <Icon size="huge" color={teamMember.color as SemanticCOLORS} name="snowflake outline" />
       <Item.Content>
         <Item.Header>{teamMember.name}</Item.Header>
         <Item.Meta>

@@ -14,17 +14,17 @@ const TeamMemberCard: React.SFC<ITeamMemberCardProps> = props => {
   const onSelected = onSelectedChanged;
   return (
     <Card key={teamMember.id}>
-      <Card.Content>
-        <Image
+      <Image
           floated="right"
           size="tiny"
           src="/images/portraits/person-rose.jpg"
         />
+      <Card.Content>      
         <Card.Header>{teamMember.name}</Card.Header>
         <Card.Meta>Tasks: {numberOfActions}</Card.Meta>
       </Card.Content>
       <Card.Content extra={true}>
-        <div className="ui two buttons">
+        <div className="ui">
           <Button
             basic={true}
             color="blue"

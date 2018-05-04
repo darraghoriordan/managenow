@@ -1,9 +1,8 @@
 import * as React from "react";
 import { RouteComponentProps, withRouter } from "react-router-dom";
-import { Divider, Header } from "semantic-ui-react";
+import { Button, ButtonProps, Divider, Icon } from "semantic-ui-react";
 import constants from "../../constants/constants";
 import ITeamMember from "../../models/ITeamMember";
-import AddTeamMemberForm from "../presentational/AddTeamMemberForm";
 import TeamMemberList from "../presentational/TeamMemberList";
 
 export interface ITeamListPageProps extends RouteComponentProps<any> {
@@ -52,22 +51,28 @@ class TeamListPage extends React.PureComponent<
     }
     return (
       <div style={{ marginTop: "7em" }}>
-        <Header as="h1">Your Team, {this.props.userDisplayName}</Header>
-
         <TeamMemberList
           teamMembers={this.props.teamMembers}
           onSelectedChanged={this.onTeamMemberSelectedChanged}
           onDeleteClick={this.props.onTeamMemberDelete}
           currentUserFirstName={this.props.userDisplayName}
- 
         />
         <Divider />
-        <AddTeamMemberForm onTeamMemberAdd={this.props.onTeamMemberAdd} />
+        <Button
+          type="button"
+          primary={true}
+          style={{ marginBottom: "1em" }}
+          // tslint:disable-next-line:jsx-no-lambda
+          onClick={(e: any, data: ButtonProps) => {
+            this.props.history.push(constants.ROUTES.TEAM_MEMBER_ADD);
+          }}
+        >
+          Add Team Member
+          <Icon className="chevron right" />
+        </Button>
       </div>
     );
   }
-
-
 }
 
 export default withRouter(TeamListPage);

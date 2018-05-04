@@ -1,6 +1,7 @@
 import * as React from "react";
 import { Button, Form, Header, Message } from "semantic-ui-react";
 import ITeamMember, { TeamMember } from "../../models/ITeamMember";
+import { getColor } from "../../services/teamMemberService";
 
 interface IAddTeamMemberFormProps {
   onTeamMemberAdd: (teamMember: ITeamMember) => Promise<ITeamMember>;
@@ -8,6 +9,7 @@ interface IAddTeamMemberFormProps {
 interface IAddTeamMemberFormState {
   name: string;
   errors?: string[];
+  success?: boolean;
 }
 class AddTeamMemberForm extends React.Component<
   IAddTeamMemberFormProps,
@@ -16,13 +18,13 @@ class AddTeamMemberForm extends React.Component<
   constructor(props: IAddTeamMemberFormProps) {
     super(props);
 
-    this.state = { name: "", errors: undefined };
+    this.state = { name: "", errors: undefined, success: undefined };
   }
 
   public createTeamMember = (event: any) => {
     event.preventDefault();
     const { name } = this.state;
-    const teamMember = new TeamMember(name);
+    const teamMember = new TeamMember(name, getColor());
     this.props
       .onTeamMemberAdd(teamMember)
       .then((tm: ITeamMember) => {
@@ -30,7 +32,8 @@ class AddTeamMemberForm extends React.Component<
 
         this.setState({
           errors: undefined,
-          name: ""
+          name: "",
+          success: true
         });
       })
       .catch((error: string) =>
@@ -59,16 +62,17 @@ class AddTeamMemberForm extends React.Component<
         {this.state.errors && (
           <Message
             error={true}
-            header="There was some errors"
+            header="There were some errors"
             list={this.state.errors || []}
           />
         )}
+        {this.state.success && <Message positive={true} header="User saved!" />}
       </div>
     );
   }
 
   private handleChange = (e: any, { name, value }: any) =>
-    this.setState({ [name]: value });
+    this.setState({ [name]: value, success: undefined });
 }
 
 export default AddTeamMemberForm;

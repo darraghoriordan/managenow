@@ -19,7 +19,7 @@ export class AppUser implements IAppUser {
     uid: string,
     teamMembers: {}
   ) {
-    this.teamMembers = {};
+    this.teamMembers = teamMembers;
     this.displayName = displayName;
     this.email = email;
     this.uid = uid;
