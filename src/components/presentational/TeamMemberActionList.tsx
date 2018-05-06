@@ -69,20 +69,21 @@ export default class TeamMemberActionList extends React.Component<
     return (
       <div>
         <div>
-          <Header as="h2">Active Development</Header>
+          <Header as="h2">Active Development Tasks</Header>
           <Item.Group divided={true}>
             {activeTasks.map((el: ITeamMemberAction) => {
               return this.renderItem(el);
             })}
           </Item.Group>
           {(!activeTasks || activeTasks.length <= 0) && (
-            <p>{teamMemberName} has no development tasks. Add one now!</p>
+            <p>{teamMemberName} has no active development tasks. Add one now!</p>
           )}
         </div>
-        <Divider />
-        {completedTasks && (
+        
+        {completedTasks && completedTasks.length > 0 && (
           <div>
-            <Header as="h2">Development History</Header>
+            <Divider />
+            <Header as="h2">Development Task History</Header>
             <Item.Group divided={true}>
               {Object.keys(actions || {})
                 .map((element: string) => actions[element] as ITeamMemberAction)

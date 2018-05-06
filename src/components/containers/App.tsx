@@ -21,10 +21,11 @@ import TopMenu from "../presentational/TopMenu";
 import AccountPage from "./AccountPage";
 import AddDevelopmentTaskPage from "./AddDevelopmentTaskPage";
 import AddTeamMemberPage from "./AddTeamMemberPage";
+import DevelopmentTaskPage from "./DevelopmentTaskPage";
 import HomePage from "./HomePage";
 import SignInPage from "./SignInPage";
 import TeamListPage from "./TeamListPage";
-import TeamMemberPage from "./TeamMemberPage";
+import TeamMemberOverview from "./TeamMemberOverview";
 
 export interface IAppState {
   loading: boolean;
@@ -262,18 +263,37 @@ export class App extends React.Component<{}, IAppState> {
                 />
                 <Route
                   exact={true}
-                  path={constants.ROUTES.TEAM_MEMBER}
+                  path={constants.ROUTES.TEAM_MEMBER_DEV_TASK_OVERVIEW}
                   // tslint:disable-next-line:jsx-no-lambda
                   render={routeProps => {
                     if (authenticatedProp) {
                       return (
-                        <TeamMemberPage
+                        <DevelopmentTaskPage
                           {...routeProps}
                           teamMember={
                             teamMembersProp[(routeProps as any).match.params.id]
                           }
                           isAuthenticated={authenticatedProp}
                           onDevelopmentTaskSave={this.onTeamMemberActionAdd}
+                        />
+                      );
+                    }
+                    return <Redirect to={constants.ROUTES.SIGN_IN} />;
+                  }}
+                />
+                 <Route
+                  exact={true}
+                  path={constants.ROUTES.TEAM_MEMBER_OVERVIEW}
+                  // tslint:disable-next-line:jsx-no-lambda
+                  render={routeProps => {
+                    if (authenticatedProp) {
+                      return (
+                        <TeamMemberOverview
+                          {...routeProps}
+                          teamMember={
+                            teamMembersProp[(routeProps as any).match.params.id]
+                          }
+                          isAuthenticated={authenticatedProp}
                           onTeamMemberDelete={this.onTeamMemberDelete}
                         />
                       );

@@ -1,6 +1,6 @@
 import * as React from "react";
 import { RouteComponentProps, withRouter } from "react-router-dom";
-import { Button, ButtonProps, Divider, Header, Icon } from "semantic-ui-react";
+import { Button, ButtonProps, Header, Icon } from "semantic-ui-react";
 import constants from "../../constants/constants";
 import { TeamMemberActionStatus } from "../../models/Enums";
 import ITeamMember from "../../models/ITeamMember";
@@ -8,23 +8,22 @@ import ITeamMemberAction from "../../models/ITeamMemberAction";
 import { getTechniques } from "../../services/techniqueService";
 import TeamMemberActionList from "../presentational/TeamMemberActionList";
 
-export interface ITeamMemberPageProps extends RouteComponentProps<any> {
+export interface IDevelopmentTaskPageProps extends RouteComponentProps<any> {
   isAuthenticated: boolean;
   teamMember: ITeamMember;
-  onTeamMemberDelete: (teamMemberId: string) => void;
   onDevelopmentTaskSave: (
     teamMemberId: string,
     teamMemberAction: ITeamMemberAction
   ) => void;
 }
-export interface ITeamMemberPageState {
+export interface IDevelopmentTaskPageState {
   loading: boolean;
 }
-class TeamMemberPage extends React.PureComponent<
-  ITeamMemberPageProps,
-  ITeamMemberPageState
+class DevelopmentTaskPage extends React.PureComponent<
+  IDevelopmentTaskPageProps,
+  IDevelopmentTaskPageState
 > {
-  constructor(props: ITeamMemberPageProps) {
+  constructor(props: IDevelopmentTaskPageProps) {
     super(props);
 
     this.onTeamMemberActionSaveNotes = this.onTeamMemberActionSaveNotes.bind(
@@ -91,8 +90,7 @@ class TeamMemberPage extends React.PureComponent<
       <Icon className="chevron left" />
       Back
     </Button>
-        <Header as="h1">{teamMember.name}</Header>
-      
+        <Header as="h1">Details - {teamMember.name}</Header>
         <Button
           type="button"
           primary={true}
@@ -117,23 +115,9 @@ class TeamMemberPage extends React.PureComponent<
           onCompletedClick={this.onTeamMemberActionComplete}
           onSaveNotesClick={this.onTeamMemberActionSaveNotes}
         />
-
-        <Divider />
-        <Button
-          type="button"
-          negative={true}
-          // tslint:disable-next-line:jsx-no-lambda
-          onClick={(e: any, data: ButtonProps) => {
-            this.props.onTeamMemberDelete(teamMember.id);
-            this.props.history.push(constants.ROUTES.LANDING);
-          }}
-        >
-          <Icon className="user delete" />
-          Delete User
-        </Button>
       </div>
     );
   }
 }
 
-export default withRouter(TeamMemberPage);
+export default withRouter(DevelopmentTaskPage);

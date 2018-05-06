@@ -8,9 +8,10 @@ const constants = {
     HOME: "/",
     LANDING: "/team",
     SIGN_IN: "/signin",
-    TEAM_MEMBER: "/team/member/:id",
     TEAM_MEMBER_ADD: "/team/add",
-    TEAM_MEMBER_DEV_TASK_ADD: "/team/member/:id/devtasks/add"
+    TEAM_MEMBER_DEV_TASK_ADD: "/team/member/:id/devtasks/add",
+    TEAM_MEMBER_DEV_TASK_OVERVIEW: "/team/member/:id/devtasks",
+    TEAM_MEMBER_OVERVIEW: "/team/member/:id"
   },
   TECHNIQUE_CATEGORY: {
     BuildingCulture: "Building Culture",

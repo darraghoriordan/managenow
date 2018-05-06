@@ -3,7 +3,7 @@ import { RouteComponentProps, withRouter } from "react-router-dom";
 import { Button, ButtonProps, Divider, Icon } from "semantic-ui-react";
 import constants from "../../constants/constants";
 import ITeamMember from "../../models/ITeamMember";
-import TeamMemberList from "../presentational/TeamMemberList";
+import TeamMemberCardList from "../presentational/TeamMemberCardList";
 
 export interface ITeamListPageProps extends RouteComponentProps<any> {
   teamMembers: {};
@@ -22,7 +22,8 @@ class TeamListPage extends React.PureComponent<
   constructor(props: ITeamListPageProps) {
     super(props);
 
-    this.onTeamMemberSelectedChanged = this.onTeamMemberSelectedChanged.bind(
+    this.onDevTaskOverviewSelected = this.onDevTaskOverviewSelected.bind(this);
+    this.onTeamMemberOverviewSelected = this.onTeamMemberOverviewSelected.bind(
       this
     );
 
@@ -31,7 +32,15 @@ class TeamListPage extends React.PureComponent<
     };
   }
 
-  public onTeamMemberSelectedChanged(teamMemberId: string) {
+  public onDevTaskOverviewSelected(teamMemberId: string) {
+    this.props.history.push(
+      constants.ROUTES.TEAM_MEMBER_DEV_TASK_OVERVIEW.replace(
+        ":id",
+        teamMemberId
+      )
+    );
+  }
+  public onTeamMemberOverviewSelected(teamMemberId: string) {
     this.props.history.push("/team/member/" + teamMemberId);
   }
 
@@ -51,9 +60,10 @@ class TeamListPage extends React.PureComponent<
     }
     return (
       <div style={{ marginTop: "7em" }}>
-        <TeamMemberList
+        <TeamMemberCardList
           teamMembers={this.props.teamMembers}
-          onSelectedChanged={this.onTeamMemberSelectedChanged}
+          onTeamMemberOverviewSelected={this.onTeamMemberOverviewSelected}
+          onDevTaskOverviewSelected={this.onDevTaskOverviewSelected}
           onDeleteClick={this.props.onTeamMemberDelete}
           currentUserFirstName={this.props.userDisplayName}
         />
