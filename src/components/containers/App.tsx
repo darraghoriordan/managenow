@@ -264,7 +264,7 @@ export class App extends React.Component<{}, IAppState> {
             />
             <Grid columns="equal">
               <Grid.Column />
-              <Grid.Column width={8}>
+              <Grid.Column width={10}>
                 <Route
                   exact={true}
                   path={constants.ROUTES.LANDING}
