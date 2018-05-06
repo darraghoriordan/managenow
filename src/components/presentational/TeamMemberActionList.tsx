@@ -2,6 +2,7 @@ import * as React from "react";
 import {
   Button,
   ButtonProps,
+  Divider,
   Form,
   Header,
   Icon,
@@ -15,8 +16,8 @@ import ITechnique from "../../models/ITechnique";
 interface ITeamMemberActionListProps {
   actions: {};
   teamMemberName: string;
-  techniques:ITechnique[];
-  onCompletedClick: (teamMemberActionId: string) => void;
+  techniques: ITechnique[];
+  onCompletedClick: (teamMemberActionId: string, notes: string) => void;
   onSaveNotesClick: (teamMemberActionId: string, notes: string) => void;
 }
 
@@ -54,37 +55,56 @@ export default class TeamMemberActionList extends React.Component<
 
   public render() {
     const { teamMemberName, actions } = this.props;
+    const activeTasks = Object.keys(actions || {})
+      .map((element: string) => actions[element] as ITeamMemberAction)
+      .filter(
+        (el: ITeamMemberAction) => el.status === TeamMemberActionStatus.active
+      );
 
-    if (actions) {
-      return (
+    const completedTasks = Object.keys(actions || {})
+      .map((element: string) => actions[element] as ITeamMemberAction)
+      .filter(
+        (el: ITeamMemberAction) => el.status === TeamMemberActionStatus.done
+      );
+    return (
+      <div>
         <div>
-          <Header as="h2">Active Tasks</Header>
+          <Header as="h2">Active Development</Header>
           <Item.Group divided={true}>
-            {Object.keys(actions || {}).map((element: string) => {
-              return this.renderItem(actions[element]);
+            {activeTasks.map((el: ITeamMemberAction) => {
+              return this.renderItem(el);
             })}
           </Item.Group>
+          {(!activeTasks || activeTasks.length <= 0) && (
+            <p>{teamMemberName} has no development tasks. Add one now!</p>
+          )}
         </div>
-      );
-    }
-
-    if (teamMemberName) {
-      return <p>{teamMemberName} has no development tasks. Add one now!</p>;
-    }
-
-    return null;
+        <Divider />
+        {completedTasks && (
+          <div>
+            <Header as="h2">Development History</Header>
+            <Item.Group divided={true}>
+              {Object.keys(actions || {})
+                .map((element: string) => actions[element] as ITeamMemberAction)
+                .filter(
+                  (el: ITeamMemberAction) =>
+                    el.status === TeamMemberActionStatus.done
+                )
+                .map((el: ITeamMemberAction) => {
+                  return this.renderItem(el);
+                })}
+            </Item.Group>
+          </div>
+        )}
+      </div>
+    );
   }
 
   private renderItem(teamMemeberAction: ITeamMemberAction) {
-    if (
-      !teamMemeberAction ||
-      teamMemeberAction.status === TeamMemberActionStatus.done
-    ) {
-      return null;
-    }
     const technique =
-      this.props.techniques.find(el => el.id === teamMemeberAction.techniqueId) ||
-      ({} as ITechnique);
+      this.props.techniques.find(
+        el => el.id === teamMemeberAction.techniqueId
+      ) || ({} as ITechnique);
     if (!technique) {
       return null;
     }
@@ -108,46 +128,61 @@ export default class TeamMemberActionList extends React.Component<
             </span>
           </Item.Meta>
           <Item.Description>{technique.description}</Item.Description>
-          <Form>
-            <Form.Input label="Your Notes">
-              <TextArea
-                name={noteFieldName}
-                autoHeight={true}
-                placeholder="Add some notes..."
-                onChange={this.handleChange}
-                value={this.state && this.state[noteFieldName]}
-              />
-            </Form.Input>
-          </Form>
-
+          {teamMemeberAction.status === TeamMemberActionStatus.active && (
+            <Form>
+              <Form.Input label="Your Notes">
+                <TextArea
+                  name={noteFieldName}
+                  autoHeight={true}
+                  placeholder="Add some notes..."
+                  onChange={this.handleChange}
+                  value={this.state && this.state[noteFieldName]}
+                />
+              </Form.Input>
+            </Form>
+          )}
+          {teamMemeberAction.status === TeamMemberActionStatus.done && (
+            <div>
+              <Header as="h4">Notes</Header>
+              <p>{teamMemeberAction.notes}</p>
+            </div>
+          )}
           <Item.Extra>
-            <Button
-              type="button"
-              primary={true}
-              floated="right"
-              // tslint:disable-next-line:jsx-no-lambda
-              onClick={(e: any, data: ButtonProps) => {
-                this.props.onCompletedClick(teamMemeberAction.id);
-              }}
-            >           
-              <Icon className="check" />
-              Mark Completed
-            </Button>
-            <Button
-              type="button"
-              positive={true}
-              floated="right"
-              // tslint:disable-next-line:jsx-no-lambda
-              onClick={(e: any, data: ButtonProps) => {
-                this.props.onSaveNotesClick(
-                  teamMemeberAction.id,
-                  this.state[noteFieldName]
-                );
-              }}
-            >
-              <Icon className="save" />
-              Save Notes
-            </Button>
+            {teamMemeberAction.status === TeamMemberActionStatus.active && (
+              <div>
+                {" "}
+                <Button
+                  type="button"
+                  primary={true}
+                  floated="right"
+                  // tslint:disable-next-line:jsx-no-lambda
+                  onClick={(e: any, data: ButtonProps) => {
+                    this.props.onCompletedClick(
+                      teamMemeberAction.id,
+                      this.state[noteFieldName]
+                    );
+                  }}
+                >
+                  <Icon className="check" />
+                  Mark Completed
+                </Button>
+                <Button
+                  type="button"
+                  positive={true}
+                  floated="right"
+                  // tslint:disable-next-line:jsx-no-lambda
+                  onClick={(e: any, data: ButtonProps) => {
+                    this.props.onSaveNotesClick(
+                      teamMemeberAction.id,
+                      this.state[noteFieldName]
+                    );
+                  }}
+                >
+                  <Icon className="save" />
+                  Save Notes
+                </Button>
+              </div>
+            )}
           </Item.Extra>
         </Item.Content>
       </Item>

@@ -10,6 +10,7 @@ const constants = {
     SIGN_IN: "/signin",
     TEAM_MEMBER: "/team/member/:id",
     TEAM_MEMBER_ADD: "/team/add",
+    TEAM_MEMBER_DEV_TASK_ADD: "/team/member/:id/devtasks/add"
   },
   TECHNIQUE_CATEGORY: {
     BuildingCulture: "Building Culture",

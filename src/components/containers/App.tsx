@@ -19,6 +19,7 @@ import { validateTeamMemberForSave } from "../../services/validations";
 import AppFooter from "../presentational/AppFooter";
 import TopMenu from "../presentational/TopMenu";
 import AccountPage from "./AccountPage";
+import AddDevelopmentTaskPage from "./AddDevelopmentTaskPage";
 import AddTeamMemberPage from "./AddTeamMemberPage";
 import HomePage from "./HomePage";
 import SignInPage from "./SignInPage";
@@ -248,13 +249,15 @@ export class App extends React.Component<{}, IAppState> {
                   path={constants.ROUTES.HOME}
                   component={HomePage}
                 />
-                 <Route
+                <Route
                   exact={true}
                   path={constants.ROUTES.TEAM_MEMBER_ADD}
                   // tslint:disable-next-line:jsx-no-lambda
-                  render={ (routerProps)=>  
-                    (
-                     <AddTeamMemberPage {...routerProps} onTeamMemberAdd={this.onTeamMemberAdd} />
+                  render={routerProps => (
+                    <AddTeamMemberPage
+                      {...routerProps}
+                      onTeamMemberAdd={this.onTeamMemberAdd}
+                    />
                   )}
                 />
                 <Route
@@ -270,8 +273,27 @@ export class App extends React.Component<{}, IAppState> {
                             teamMembersProp[(routeProps as any).match.params.id]
                           }
                           isAuthenticated={authenticatedProp}
-                          onTeamMemberActionSave={this.onTeamMemberActionAdd}
+                          onDevelopmentTaskSave={this.onTeamMemberActionAdd}
                           onTeamMemberDelete={this.onTeamMemberDelete}
+                        />
+                      );
+                    }
+                    return <Redirect to={constants.ROUTES.SIGN_IN} />;
+                  }}
+                />
+                <Route
+                  exact={true}
+                  path={constants.ROUTES.TEAM_MEMBER_DEV_TASK_ADD}
+                  // tslint:disable-next-line:jsx-no-lambda
+                  render={routeProps => {
+                    if (authenticatedProp) {
+                      return (
+                        <AddDevelopmentTaskPage
+                          {...routeProps}
+                          teamMember={
+                            teamMembersProp[(routeProps as any).match.params.id]
+                          }
+                          onDevelopmentTaskSave={this.onTeamMemberActionAdd}
                         />
                       );
                     }

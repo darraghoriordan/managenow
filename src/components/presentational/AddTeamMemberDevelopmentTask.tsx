@@ -29,7 +29,10 @@ interface IAddActionState {
   selectedBehaviour: any;
   techniques: ITechnique[];
 }
-class AddAction extends React.Component<IAddActionProps, IAddActionState> {
+class AddTeamMemberDevelopmentTask extends React.Component<
+  IAddActionProps,
+  IAddActionState
+> {
   constructor(props: IAddActionProps) {
     super(props);
     this.onSelectChanged = this.onSelectChanged.bind(this);
@@ -38,7 +41,7 @@ class AddAction extends React.Component<IAddActionProps, IAddActionState> {
       techniques: []
     };
   }
-  public getCategoriesAsDropDownModels( 
+  public getCategoriesAsDropDownModels(
     categories: string[]
   ): IDropdownOption[] {
     return categories.map(objKey => {
@@ -118,7 +121,7 @@ class AddAction extends React.Component<IAddActionProps, IAddActionState> {
                 <Item.Description>{technique.description}</Item.Description>
                 <Item.Extra>
                   <Button
-                    content="Buy now"
+                    content="Get this source (external site)"
                     icon="add to cart"
                     labelPosition="left"
                     floated="left"
@@ -149,4 +152,4 @@ class AddAction extends React.Component<IAddActionProps, IAddActionState> {
     );
   }
 }
-export default AddAction;
+export default AddTeamMemberDevelopmentTask;

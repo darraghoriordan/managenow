@@ -34,7 +34,7 @@ export default class TeamMemberList extends React.PureComponent<
     }
 
     return (
-    
+     
       <Item.Group>
         {teamMemberIds.map((element: string) => {
           const tm = teamMembers[element] as ITeamMember;
