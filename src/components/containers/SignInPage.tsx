@@ -1,8 +1,8 @@
 import * as React from "react";
 import { FirebaseAuth } from "react-firebaseui";
 import { Redirect, RouteComponentProps, withRouter } from "react-router-dom";
+import { auth, uiConfig } from "../../api/firebase";
 import constants from "../../constants/constants";
-import { auth, uiConfig } from "../../firebase/firebase";
 interface ISignInPageProps extends RouteComponentProps<any> {
   authenticated: boolean;
 }

@@ -2,16 +2,16 @@ import { User } from "firebase";
 import * as React from "react";
 import { BrowserRouter as Router, Redirect, Route } from "react-router-dom";
 import { Grid } from "semantic-ui-react";
-import constants from "../../constants/constants";
-import { getUserOnce } from "../../firebase/db";
+import { getUserOnce } from "../../api/db";
 import {
   createUser,
   deleteTeamMember,
   saveTeamMember,
   saveTeamMemberAction,
   saveTeamMemberInteraction
-} from "../../firebase/db";
-import { auth } from "../../firebase/firebase";
+} from "../../api/db";
+import { auth } from "../../api/firebase";
+import constants from "../../constants/constants";
 import { EmptyAppUser } from "../../models/EmptyAppUser";
 import IAppUser, { AppUser } from "../../models/IAppUser";
 import ITeamMember from "../../models/ITeamMember";
@@ -165,10 +165,11 @@ export class App extends React.Component<{}, IAppState> {
         }));
 
         return Promise.resolve(teamMemberInteraction);
-      }).then((interaction:ITeamMemberInteraction)=> {
+      })
+      .then((interaction: ITeamMemberInteraction) => {
         // TODO: go and compute sentiment
-        return Promise.resolve(interaction);}
-      )
+        return Promise.resolve(interaction);
+      })
       .catch((error: string) =>
         // tslint:disable-next-line:no-console
         console.log("Couldnt save team member interaction: " + error)

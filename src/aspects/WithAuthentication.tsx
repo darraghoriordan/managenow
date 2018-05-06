@@ -1,7 +1,7 @@
 import { User } from "firebase";
 import * as React from "react";
-import { createUser, getUserOnce } from "../firebase/db";
-import { auth } from "../firebase/firebase";
+import { createUser, getUserOnce } from "../api/db";
+import { auth } from "../api/firebase";
 import IAppUser, { AppUser } from "../models/IAppUser";
 
 export interface IAuthState {
