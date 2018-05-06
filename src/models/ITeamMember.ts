@@ -6,6 +6,7 @@ export default interface ITeamMember {
   name: string;
   status: TeamMemberStatus;
   actions: {};
+  interactions:{};
   createdDate: number;
 }
 
@@ -15,6 +16,7 @@ export class TeamMember implements ITeamMember {
   public name: string;
   public status: TeamMemberStatus;
   public actions: {};
+  public interactions:{};
   public createdDate: number;
 
   constructor(name: string, color: string) {

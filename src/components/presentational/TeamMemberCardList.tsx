@@ -9,6 +9,7 @@ interface ITeamListProps {
   onDeleteClick: (teamMemberId: string) => void;
   onDevTaskOverviewSelected: (teamMemberId: string) => void;
   onTeamMemberOverviewSelected: (teamMemberId: string) => void;
+  onInteractionOverviewSelected: (teamMemberId: string) => void;
 }
 export default class TeamMemberList extends React.PureComponent<
   ITeamListProps,
@@ -37,8 +38,13 @@ export default class TeamMemberList extends React.PureComponent<
             <TeamMemberCard
               key={tm.id}
               teamMember={tm}
-              onTeamMemberOverviewSelected={this.props.onTeamMemberOverviewSelected}
-              onDevTaskOverviewSelected= {this.props.onDevTaskOverviewSelected}
+              onTeamMemberOverviewSelected={
+                this.props.onTeamMemberOverviewSelected
+              }
+              onDevTaskOverviewSelected={this.props.onDevTaskOverviewSelected}
+              onInteractionOverviewSelected={
+                this.props.onInteractionOverviewSelected
+              }
             />
           );
         })}

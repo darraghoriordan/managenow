@@ -26,7 +26,9 @@ class TeamListPage extends React.PureComponent<
     this.onTeamMemberOverviewSelected = this.onTeamMemberOverviewSelected.bind(
       this
     );
-
+    this.onInteractionOverviewSelected = this.onInteractionOverviewSelected.bind(
+      this
+    );
     this.state = {
       loading: true
     };
@@ -40,6 +42,15 @@ class TeamListPage extends React.PureComponent<
       )
     );
   }
+  public onInteractionOverviewSelected(teamMemberId: string) {
+    this.props.history.push(
+      constants.ROUTES.TEAM_MEMBER_INTERACTION_OVERVIEW.replace(
+        ":id",
+        teamMemberId
+      )
+    );
+  }
+
   public onTeamMemberOverviewSelected(teamMemberId: string) {
     this.props.history.push("/team/member/" + teamMemberId);
   }
@@ -63,6 +74,7 @@ class TeamListPage extends React.PureComponent<
         <TeamMemberCardList
           teamMembers={this.props.teamMembers}
           onTeamMemberOverviewSelected={this.onTeamMemberOverviewSelected}
+          onInteractionOverviewSelected={this.onInteractionOverviewSelected}
           onDevTaskOverviewSelected={this.onDevTaskOverviewSelected}
           onDeleteClick={this.props.onTeamMemberDelete}
           currentUserFirstName={this.props.userDisplayName}

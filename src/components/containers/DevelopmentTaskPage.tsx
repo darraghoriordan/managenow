@@ -90,7 +90,7 @@ class DevelopmentTaskPage extends React.PureComponent<
       <Icon className="chevron left" />
       Back
     </Button>
-        <Header as="h1">Details - {teamMember.name}</Header>
+        <Header as="h1">Development Tasks - {teamMember.name}</Header>
         <Button
           type="button"
           primary={true}

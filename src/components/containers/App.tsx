@@ -8,13 +8,15 @@ import {
   createUser,
   deleteTeamMember,
   saveTeamMember,
-  saveTeamMemberAction
+  saveTeamMemberAction,
+  saveTeamMemberInteraction
 } from "../../firebase/db";
 import { auth } from "../../firebase/firebase";
 import { EmptyAppUser } from "../../models/EmptyAppUser";
 import IAppUser, { AppUser } from "../../models/IAppUser";
 import ITeamMember from "../../models/ITeamMember";
 import ITeamMemberAction from "../../models/ITeamMemberAction";
+import ITeamMemberInteraction from "../../models/ITeamMemberInteractions";
 import { validateTeamMemberForSave } from "../../services/validations";
 import AppFooter from "../presentational/AppFooter";
 import TopMenu from "../presentational/TopMenu";
@@ -23,6 +25,7 @@ import AddDevelopmentTaskPage from "./AddDevelopmentTaskPage";
 import AddTeamMemberPage from "./AddTeamMemberPage";
 import DevelopmentTaskPage from "./DevelopmentTaskPage";
 import HomePage from "./HomePage";
+import InteractionsPage from "./InteractionsPage";
 import SignInPage from "./SignInPage";
 import TeamListPage from "./TeamListPage";
 import TeamMemberOverview from "./TeamMemberOverview";
@@ -122,7 +125,53 @@ export class App extends React.Component<{}, IAppState> {
       })
       .catch((error: string) =>
         // tslint:disable-next-line:no-console
-        console.log("Couldnt save team member: " + error)
+        console.log("Couldnt save team member action: " + error)
+      );
+  };
+  public onInteractionAdd = (
+    teamMemberId: string,
+    teamMemberInteraction: ITeamMemberInteraction
+  ): Promise<void | ITeamMemberInteraction> => {
+    return saveTeamMemberInteraction(
+      this.state.appUser.uid,
+      teamMemberId,
+      teamMemberInteraction
+    )
+      .then(savedTeamMemberInteraction => {
+        const interactions = Object.assign(
+          {},
+          this.state.appUser.teamMembers[teamMemberId].interactions
+        );
+
+        // if (!savedTeamMember.id) {
+        //   teamMember.id = teamMember.name;
+        // }
+        interactions[
+          savedTeamMemberInteraction.id
+        ] = savedTeamMemberInteraction;
+
+        this.setState(prevState => ({
+          ...prevState,
+          appUser: {
+            ...prevState.appUser,
+            teamMembers: {
+              ...prevState.appUser.teamMembers,
+              [teamMemberId]: {
+                ...prevState.appUser.teamMembers[teamMemberId],
+                interactions
+              }
+            }
+          }
+        }));
+
+        return Promise.resolve(teamMemberInteraction);
+      }).then((interaction:ITeamMemberInteraction)=> {
+        // TODO: go and compute sentiment
+        return Promise.resolve(interaction);}
+      )
+      .catch((error: string) =>
+        // tslint:disable-next-line:no-console
+        console.log("Couldnt save team member interaction: " + error)
       );
   };
   public onTeamMemberDelete = (teamMemberId: string) => {
@@ -281,7 +330,27 @@ export class App extends React.Component<{}, IAppState> {
                     return <Redirect to={constants.ROUTES.SIGN_IN} />;
                   }}
                 />
-                 <Route
+                <Route
+                  exact={true}
+                  path={constants.ROUTES.TEAM_MEMBER_INTERACTION_OVERVIEW}
+                  // tslint:disable-next-line:jsx-no-lambda
+                  render={routeProps => {
+                    if (authenticatedProp) {
+                      return (
+                        <InteractionsPage
+                          {...routeProps}
+                          teamMember={
+                            teamMembersProp[(routeProps as any).match.params.id]
+                          }
+                          isAuthenticated={authenticatedProp}
+                          onInteractionSave={this.onInteractionAdd}
+                        />
+                      );
+                    }
+                    return <Redirect to={constants.ROUTES.SIGN_IN} />;
+                  }}
+                />
+                <Route
                   exact={true}
                   path={constants.ROUTES.TEAM_MEMBER_OVERVIEW}
                   // tslint:disable-next-line:jsx-no-lambda

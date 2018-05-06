@@ -3,7 +3,7 @@ const constants = {
   FIELD_STRINGS: {
     techniqueSearchPlaceholderText: "We will work on..."
   },
-  ROUTES:{
+  ROUTES: {
     ACCOUNT: "/account",
     HOME: "/",
     LANDING: "/team",
@@ -11,6 +11,8 @@ const constants = {
     TEAM_MEMBER_ADD: "/team/add",
     TEAM_MEMBER_DEV_TASK_ADD: "/team/member/:id/devtasks/add",
     TEAM_MEMBER_DEV_TASK_OVERVIEW: "/team/member/:id/devtasks",
+    TEAM_MEMBER_INTERACTION_ADD: "/team/member/:id/interactions/add",
+    TEAM_MEMBER_INTERACTION_OVERVIEW: "/team/member/:id/interactions",
     TEAM_MEMBER_OVERVIEW: "/team/member/:id"
   },
   TECHNIQUE_CATEGORY: {
