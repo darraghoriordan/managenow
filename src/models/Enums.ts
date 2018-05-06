@@ -2,9 +2,10 @@ export enum TeamMemberStatus {
   active = "active",
   disabled = "disabled"
 }
-export enum TeamMemberNoteSentiment {
+export enum TeamMemberInteractionSentiment {
   positive = "positive",
-  negative = "negative"
+  negative = "negative",
+  neutral = "neutral"
 }
 export enum TeamMemberTodoStatus {
   active = "active",

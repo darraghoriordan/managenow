@@ -1,20 +1,25 @@
-import { TeamMemberNoteSentiment } from "./Enums";
+import { TeamMemberInteractionSentiment } from "./Enums";
 
-export default interface ITeamMemberNote {
+export default interface ITeamMemberInteraction {
   id: string;
   description: string;
-  sentiment: TeamMemberNoteSentiment;
+  computedSentiment: TeamMemberInteractionSentiment;
+  manualSentiment: TeamMemberInteractionSentiment;
   dateAdded: number;
 }
 
-export class TeamMemberNote implements ITeamMemberNote {
+export class TeamMemberInteraction implements ITeamMemberInteraction {
   public id: string;
   public description: string;
-  public sentiment: TeamMemberNoteSentiment;
+  public computedSentiment: TeamMemberInteractionSentiment;
+  public manualSentiment: TeamMemberInteractionSentiment;
   public dateAdded: number;
-  constructor(description: string, sentiment: TeamMemberNoteSentiment) {
+  constructor(
+    description: string,
+    computedSentiment: TeamMemberInteractionSentiment
+  ) {
     this.description = description;
     this.dateAdded = new Date().getTime();
-    this.sentiment = sentiment;
+    this.computedSentiment = computedSentiment;
   }
 }

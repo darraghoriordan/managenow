@@ -26,7 +26,7 @@ export const uiConfig = {
   signInOptions: [
     firebase.auth.GoogleAuthProvider.PROVIDER_ID
   ],
-  signInSuccessUrl: constants.ROUTE_LANDING
+  signInSuccessUrl: constants.ROUTES.LANDING
 
 };
 

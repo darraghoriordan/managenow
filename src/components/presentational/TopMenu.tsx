@@ -15,7 +15,7 @@ class TopMenu extends React.PureComponent<ITopMenuProps, any> {
     return (
       <Menu fixed="top">
         <Container>
-          <Menu.Item as={Link} header={true} to={constants.ROUTE_HOME}>
+          <Menu.Item as={Link} header={true} to={constants.ROUTES.HOME}>
             {/* <Image
               size="mini"
               src="./logo.png"
@@ -23,16 +23,16 @@ class TopMenu extends React.PureComponent<ITopMenuProps, any> {
             /> */}
             Manage Now
           </Menu.Item>
-          <Menu.Item as={Link} to={constants.ROUTE_HOME}>
+          <Menu.Item as={Link} to={constants.ROUTES.HOME}>
             Home
           </Menu.Item>
           {!this.props.authenticated ? (
-            <Menu.Item as={Link} to={constants.ROUTE_SIGN_IN}>
+            <Menu.Item as={Link} to={constants.ROUTES.SIGN_IN}>
               Sign in
             </Menu.Item>
           ) : (
             <React.Fragment>
-              <Menu.Item as={Link} to={constants.ROUTE_LANDING}>
+              <Menu.Item as={Link} to={constants.ROUTES.LANDING}>
                 Team
               </Menu.Item>
 

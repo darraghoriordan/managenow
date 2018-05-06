@@ -1,13 +1,15 @@
 import * as React from "react";
-import { Item } from "semantic-ui-react";
+import { Card } from "semantic-ui-react";
 import ITeamMember from "../../models/ITeamMember";
-import TeamMemberItem from "./TeamMemberItem";
+import TeamMemberCard from "./TeamMemberCard";
 import TeamMemberListEmptyState from "./TeamMemberListEmptyState";
 interface ITeamListProps {
   teamMembers: {};
   currentUserFirstName: string;
   onDeleteClick: (teamMemberId: string) => void;
-  onSelectedChanged: (teamMemberId: string) => void;
+  onDevTaskOverviewSelected: (teamMemberId: string) => void;
+  onTeamMemberOverviewSelected: (teamMemberId: string) => void;
+  onInteractionOverviewSelected: (teamMemberId: string) => void;
 }
 export default class TeamMemberList extends React.PureComponent<
   ITeamListProps,
@@ -30,17 +32,23 @@ export default class TeamMemberList extends React.PureComponent<
       return <TeamMemberListEmptyState firstName={currentUserFirstName} />;
     }
     return (
-      <Item.Group>
+      <Card.Group>
         {teamMemberArray.map((tm: ITeamMember) => {
           return (
-            <TeamMemberItem
+            <TeamMemberCard
               key={tm.id}
               teamMember={tm}
-              onSelectedChanged={this.props.onSelectedChanged}
+              onTeamMemberOverviewSelected={
+                this.props.onTeamMemberOverviewSelected
+              }
+              onDevTaskOverviewSelected={this.props.onDevTaskOverviewSelected}
+              onInteractionOverviewSelected={
+                this.props.onInteractionOverviewSelected
+              }
             />
           );
         })}
-      </Item.Group>
+      </Card.Group>
     );
   }
 }

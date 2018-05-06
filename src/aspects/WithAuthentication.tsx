@@ -1,7 +1,7 @@
 import { User } from "firebase";
 import * as React from "react";
-import { createUser, getUserOnce } from "../firebase/db";
-import { auth } from "../firebase/firebase";
+import { createUser, getUserOnce } from "../api/db";
+import { auth } from "../api/firebase";
 import IAppUser, { AppUser } from "../models/IAppUser";
 
 export interface IAuthState {
@@ -24,7 +24,7 @@ const withAuthentication = (Component: any) => {
     }
     public componentDidMount() {
       // if (!authCon(authUser)) {
-      //   this.props.history.push(constants.ROUTE_SIGN_IN);
+      //   this.props.history.push(constants.ROUTES.SIGN_IN);
       // }
       //  const authCon = (authUser: any) => !!this.props.authUser;
       auth.onAuthStateChanged((authUser: User) => {

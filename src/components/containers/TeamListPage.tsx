@@ -1,10 +1,9 @@
 import * as React from "react";
 import { RouteComponentProps, withRouter } from "react-router-dom";
-import { Divider, Header } from "semantic-ui-react";
+import { Button, ButtonProps, Divider, Icon } from "semantic-ui-react";
 import constants from "../../constants/constants";
 import ITeamMember from "../../models/ITeamMember";
-import AddTeamMemberForm from "../presentational/AddTeamMemberForm";
-import TeamMemberList from "../presentational/TeamMemberList";
+import TeamMemberCardList from "../presentational/TeamMemberCardList";
 
 export interface ITeamListPageProps extends RouteComponentProps<any> {
   teamMembers: {};
@@ -23,16 +22,36 @@ class TeamListPage extends React.PureComponent<
   constructor(props: ITeamListPageProps) {
     super(props);
 
-    this.onTeamMemberSelectedChanged = this.onTeamMemberSelectedChanged.bind(
+    this.onDevTaskOverviewSelected = this.onDevTaskOverviewSelected.bind(this);
+    this.onTeamMemberOverviewSelected = this.onTeamMemberOverviewSelected.bind(
       this
     );
-
+    this.onInteractionOverviewSelected = this.onInteractionOverviewSelected.bind(
+      this
+    );
     this.state = {
       loading: true
     };
   }
 
-  public onTeamMemberSelectedChanged(teamMemberId: string) {
+  public onDevTaskOverviewSelected(teamMemberId: string) {
+    this.props.history.push(
+      constants.ROUTES.TEAM_MEMBER_DEV_TASK_OVERVIEW.replace(
+        ":id",
+        teamMemberId
+      )
+    );
+  }
+  public onInteractionOverviewSelected(teamMemberId: string) {
+    this.props.history.push(
+      constants.ROUTES.TEAM_MEMBER_INTERACTION_OVERVIEW.replace(
+        ":id",
+        teamMemberId
+      )
+    );
+  }
+
+  public onTeamMemberOverviewSelected(teamMemberId: string) {
     this.props.history.push("/team/member/" + teamMemberId);
   }
 
@@ -40,7 +59,7 @@ class TeamListPage extends React.PureComponent<
     if (!this.props.isAuthenticated) {
       // tslint:disable-next-line:no-console
       console.log("no auth user, redirecting to signin");
-      this.props.history.push(constants.ROUTE_SIGN_IN);
+      this.props.history.push(constants.ROUTES.SIGN_IN);
     }
 
     this.setState({ loading: false });
@@ -52,22 +71,30 @@ class TeamListPage extends React.PureComponent<
     }
     return (
       <div style={{ marginTop: "7em" }}>
-        <Header as="h1">Your Team, {this.props.userDisplayName}</Header>
-
-        <TeamMemberList
+        <TeamMemberCardList
           teamMembers={this.props.teamMembers}
-          onSelectedChanged={this.onTeamMemberSelectedChanged}
+          onTeamMemberOverviewSelected={this.onTeamMemberOverviewSelected}
+          onInteractionOverviewSelected={this.onInteractionOverviewSelected}
+          onDevTaskOverviewSelected={this.onDevTaskOverviewSelected}
           onDeleteClick={this.props.onTeamMemberDelete}
           currentUserFirstName={this.props.userDisplayName}
- 
         />
         <Divider />
-        <AddTeamMemberForm onTeamMemberAdd={this.props.onTeamMemberAdd} />
+        <Button
+          type="button"
+          primary={true}
+          style={{ marginBottom: "1em" }}
+          // tslint:disable-next-line:jsx-no-lambda
+          onClick={(e: any, data: ButtonProps) => {
+            this.props.history.push(constants.ROUTES.TEAM_MEMBER_ADD);
+          }}
+        >
+          Add Team Member
+          <Icon className="chevron right" />
+        </Button>
       </div>
     );
   }
-
-
 }
 
 export default withRouter(TeamListPage);

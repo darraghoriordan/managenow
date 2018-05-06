@@ -2,27 +2,33 @@ import { User } from "firebase";
 import * as React from "react";
 import { BrowserRouter as Router, Redirect, Route } from "react-router-dom";
 import { Grid } from "semantic-ui-react";
-import constants from "../../constants/constants";
-import { getUserOnce } from "../../firebase/db";
+import { getUserOnce } from "../../api/db";
 import {
   createUser,
   deleteTeamMember,
   saveTeamMember,
-  saveTeamMemberAction
-} from "../../firebase/db";
-import { auth } from "../../firebase/firebase";
+  saveTeamMemberAction,
+  saveTeamMemberInteraction
+} from "../../api/db";
+import { auth } from "../../api/firebase";
+import constants from "../../constants/constants";
 import { EmptyAppUser } from "../../models/EmptyAppUser";
 import IAppUser, { AppUser } from "../../models/IAppUser";
 import ITeamMember from "../../models/ITeamMember";
 import ITeamMemberAction from "../../models/ITeamMemberAction";
+import ITeamMemberInteraction from "../../models/ITeamMemberInteractions";
 import { validateTeamMemberForSave } from "../../services/validations";
 import AppFooter from "../presentational/AppFooter";
 import TopMenu from "../presentational/TopMenu";
 import AccountPage from "./AccountPage";
+import AddDevelopmentTaskPage from "./AddDevelopmentTaskPage";
+import AddTeamMemberPage from "./AddTeamMemberPage";
+import DevelopmentTaskPage from "./DevelopmentTaskPage";
 import HomePage from "./HomePage";
+import InteractionsPage from "./InteractionsPage";
 import SignInPage from "./SignInPage";
 import TeamListPage from "./TeamListPage";
-import TeamMemberPage from "./TeamMemberPage";
+import TeamMemberOverview from "./TeamMemberOverview";
 
 export interface IAppState {
   loading: boolean;
@@ -52,7 +58,7 @@ export class App extends React.Component<{}, IAppState> {
   public signOutFirebase(history: any) {
     auth.signOut().then(
       () => {
-        history.push(constants.ROUTE_SIGN_IN);
+        history.push(constants.ROUTES.SIGN_IN);
       },
       error => {
         // tslint:disable-next-line:no-console
@@ -119,7 +125,54 @@ export class App extends React.Component<{}, IAppState> {
       })
       .catch((error: string) =>
         // tslint:disable-next-line:no-console
-        console.log("Couldnt save team member: " + error)
+        console.log("Couldnt save team member action: " + error)
+      );
+  };
+  public onInteractionAdd = (
+    teamMemberId: string,
+    teamMemberInteraction: ITeamMemberInteraction
+  ): Promise<void | ITeamMemberInteraction> => {
+    return saveTeamMemberInteraction(
+      this.state.appUser.uid,
+      teamMemberId,
+      teamMemberInteraction
+    )
+      .then(savedTeamMemberInteraction => {
+        const interactions = Object.assign(
+          {},
+          this.state.appUser.teamMembers[teamMemberId].interactions
+        );
+
+        // if (!savedTeamMember.id) {
+        //   teamMember.id = teamMember.name;
+        // }
+        interactions[
+          savedTeamMemberInteraction.id
+        ] = savedTeamMemberInteraction;
+
+        this.setState(prevState => ({
+          ...prevState,
+          appUser: {
+            ...prevState.appUser,
+            teamMembers: {
+              ...prevState.appUser.teamMembers,
+              [teamMemberId]: {
+                ...prevState.appUser.teamMembers[teamMemberId],
+                interactions
+              }
+            }
+          }
+        }));
+
+        return Promise.resolve(teamMemberInteraction);
+      })
+      .then((interaction: ITeamMemberInteraction) => {
+        // TODO: go and compute sentiment
+        return Promise.resolve(interaction);
+      })
+      .catch((error: string) =>
+        // tslint:disable-next-line:no-console
+        console.log("Couldnt save team member interaction: " + error)
       );
   };
   public onTeamMemberDelete = (teamMemberId: string) => {
@@ -162,11 +215,12 @@ export class App extends React.Component<{}, IAppState> {
         .then(authenticatedUser => getUserOnce(authenticatedUser.uid))
         .then(dataRef => {
           // if not exists create the new user
+          const refVal = dataRef.val();
           let foundUser: IAppUser = new AppUser(
-            dataRef.val().displayName,
-            dataRef.val().email,
-            dataRef.val().uid,
-            dataRef.val().teamMembers
+            refVal.displayName,
+            refVal.email,
+            refVal.uid,
+            refVal.teamMembers
           );
 
           if (!foundUser) {
@@ -213,7 +267,7 @@ export class App extends React.Component<{}, IAppState> {
               <Grid.Column width={8}>
                 <Route
                   exact={true}
-                  path={constants.ROUTE_LANDING}
+                  path={constants.ROUTES.LANDING}
                   // tslint:disable-next-line:jsx-no-lambda
                   render={routeProps => {
                     if (authenticatedProp) {
@@ -228,13 +282,13 @@ export class App extends React.Component<{}, IAppState> {
                         />
                       );
                     }
-                    return <Redirect to={constants.ROUTE_SIGN_IN} />;
+                    return <Redirect to={constants.ROUTES.SIGN_IN} />;
                   }}
                 />
 
                 <Route
                   exact={true}
-                  path={constants.ROUTE_SIGN_IN}
+                  path={constants.ROUTES.SIGN_IN}
                   // tslint:disable-next-line:jsx-no-lambda
                   render={() => (
                     <SignInPage authenticated={authenticatedProp} />
@@ -243,33 +297,102 @@ export class App extends React.Component<{}, IAppState> {
 
                 <Route
                   exact={true}
-                  path={constants.ROUTE_HOME}
+                  path={constants.ROUTES.HOME}
                   component={HomePage}
                 />
                 <Route
                   exact={true}
-                  path={constants.ROUTE_TEAM_MEMBER}
+                  path={constants.ROUTES.TEAM_MEMBER_ADD}
+                  // tslint:disable-next-line:jsx-no-lambda
+                  render={routerProps => (
+                    <AddTeamMemberPage
+                      {...routerProps}
+                      onTeamMemberAdd={this.onTeamMemberAdd}
+                    />
+                  )}
+                />
+                <Route
+                  exact={true}
+                  path={constants.ROUTES.TEAM_MEMBER_DEV_TASK_OVERVIEW}
                   // tslint:disable-next-line:jsx-no-lambda
                   render={routeProps => {
                     if (authenticatedProp) {
                       return (
-                        <TeamMemberPage
+                        <DevelopmentTaskPage
                           {...routeProps}
                           teamMember={
                             teamMembersProp[(routeProps as any).match.params.id]
                           }
                           isAuthenticated={authenticatedProp}
-                          onTeamMemberActionSave={this.onTeamMemberActionAdd}
-                          onTeamMemberDelete={this.onTeamMemberDelete}
+                          onDevelopmentTaskSave={this.onTeamMemberActionAdd}
                         />
                       );
                     }
-                    return <Redirect to={constants.ROUTE_SIGN_IN} />;
+                    return <Redirect to={constants.ROUTES.SIGN_IN} />;
                   }}
                 />
                 <Route
                   exact={true}
-                  path={constants.ROUTE_ACCOUNT}
+                  path={constants.ROUTES.TEAM_MEMBER_INTERACTION_OVERVIEW}
+                  // tslint:disable-next-line:jsx-no-lambda
+                  render={routeProps => {
+                    if (authenticatedProp) {
+                      return (
+                        <InteractionsPage
+                          {...routeProps}
+                          teamMember={
+                            teamMembersProp[(routeProps as any).match.params.id]
+                          }
+                          isAuthenticated={authenticatedProp}
+                          onInteractionSave={this.onInteractionAdd}
+                        />
+                      );
+                    }
+                    return <Redirect to={constants.ROUTES.SIGN_IN} />;
+                  }}
+                />
+                <Route
+                  exact={true}
+                  path={constants.ROUTES.TEAM_MEMBER_OVERVIEW}
+                  // tslint:disable-next-line:jsx-no-lambda
+                  render={routeProps => {
+                    if (authenticatedProp) {
+                      return (
+                        <TeamMemberOverview
+                          {...routeProps}
+                          teamMember={
+                            teamMembersProp[(routeProps as any).match.params.id]
+                          }
+                          isAuthenticated={authenticatedProp}
+                          onTeamMemberDelete={this.onTeamMemberDelete}
+                        />
+                      );
+                    }
+                    return <Redirect to={constants.ROUTES.SIGN_IN} />;
+                  }}
+                />
+                <Route
+                  exact={true}
+                  path={constants.ROUTES.TEAM_MEMBER_DEV_TASK_ADD}
+                  // tslint:disable-next-line:jsx-no-lambda
+                  render={routeProps => {
+                    if (authenticatedProp) {
+                      return (
+                        <AddDevelopmentTaskPage
+                          {...routeProps}
+                          teamMember={
+                            teamMembersProp[(routeProps as any).match.params.id]
+                          }
+                          onDevelopmentTaskSave={this.onTeamMemberActionAdd}
+                        />
+                      );
+                    }
+                    return <Redirect to={constants.ROUTES.SIGN_IN} />;
+                  }}
+                />
+                <Route
+                  exact={true}
+                  path={constants.ROUTES.ACCOUNT}
                   component={AccountPage}
                 />
               </Grid.Column>
