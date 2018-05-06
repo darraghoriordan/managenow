@@ -82,8 +82,8 @@ const TeamMemberCard: React.SFC<ITeamMemberCardProps> = props => {
                 onTeamMemberOverviewSelected(teamMember.id);
               }}
             >
-              {" "}
-              {"Overview for " + teamMember.name}{" "}
+              {"Go to overview "}
+              <Icon name="chevron right" />
             </Button>
           </div>
         </Card.Description>

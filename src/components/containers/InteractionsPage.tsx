@@ -1,7 +1,16 @@
+import { distanceInWordsToNow } from "date-fns";
 import * as React from "react";
 import { RouteComponentProps, withRouter } from "react-router-dom";
-import { Button, ButtonProps, Feed, Header, Icon } from "semantic-ui-react";
+import {
+  Button,
+  ButtonProps,
+  Divider,
+  Feed,
+  Header,
+  Icon
+} from "semantic-ui-react";
 import constants from "../../constants/constants";
+import { TeamMemberInteractionSentiment } from "../../models/Enums";
 import ITeamMember from "../../models/ITeamMember";
 import ITeamMemberInteraction from "../../models/ITeamMemberInteractions";
 import AddTeamMemberInteractionForm from "../presentational/AddTeamMemberInteractionForm";
@@ -48,6 +57,17 @@ class InteractionsPage extends React.PureComponent<
     return this.props.onInteractionSave(this.props.teamMember.id, interaction);
   }
 
+  public mapSentimentToIcon(sentiment: TeamMemberInteractionSentiment): string {
+    if (sentiment === TeamMemberInteractionSentiment.negative) {
+      return "thumbs down";
+    }
+    if (sentiment === TeamMemberInteractionSentiment.positive) {
+      return "thumbs up";
+    }
+
+    return "window minimize";
+  }
+
   public render() {
     if (this.state.loading) {
       return <div>loading...</div>;
@@ -79,37 +99,31 @@ class InteractionsPage extends React.PureComponent<
           Back
         </Button>
         <Header as="h1">Interactions - {teamMember.name}</Header>
-        <Button
-          type="button"
-          primary={true}
-          style={{ marginBottom: "1em" }}
-          // tslint:disable-next-line:jsx-no-lambda
-          onClick={(e: any, data: ButtonProps) => {
-            this.props.history.push(
-              constants.ROUTES.TEAM_MEMBER_INTERACTION_ADD.replace(
-                ":id",
-                teamMember.id
-              )
-            );
-          }}
-        >
-          Add Interaction
-          <Icon className="chevron right" />
-        </Button>
+
         <AddTeamMemberInteractionForm
           onTeamMemberInteractionAdd={this.onTeamMemberInteractionSave}
           selectedTeamMember={this.props.teamMember}
         />
+        <Divider />
         {interactions.length > 0 && (
-          <Feed>
-            {interactions.map((i: ITeamMemberInteraction) => (
-              <Feed.Event
-                icon="pencil"
-                date={i.dateAdded}
-                summary={i.description}
-              />
-            ))}
-          </Feed>
+          <div>
+            <Header as="h2">Past Interactions</Header>
+            <Feed>
+              {interactions.map((i: ITeamMemberInteraction) => {
+                const interactionSentiment =
+                  i.manualSentiment || i.computedSentiment;
+
+                return (
+                  <Feed.Event
+                    key={i.id}
+                    icon={this.mapSentimentToIcon(interactionSentiment)}
+                    date={distanceInWordsToNow(i.dateAdded) + " ago"}
+                    extraText={i.description}
+                  />
+                );
+              })}
+            </Feed>
+          </div>
         )}
       </div>
     );
