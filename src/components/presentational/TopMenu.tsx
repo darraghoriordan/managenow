@@ -21,7 +21,7 @@ class TopMenu extends React.PureComponent<ITopMenuProps, any> {
               src="./logo.png"
               style={{ marginRight: "1.5em" }}
             /> */}
-            Manage Now
+          {constants.APP_NAME}
           </Menu.Item>
           <Menu.Item as={Link} to={constants.ROUTES.HOME}>
             Home
