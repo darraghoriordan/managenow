@@ -35,6 +35,8 @@ class ActiveDevelopmentTask extends React.Component<
   }
   constructor(props: IActiveDevelopmentTaskProps) {
     super(props);
+
+    this.state = { notes: "" };
   }
   public handleChange = (e: any, { name, value }: any) =>
     this.setState({ [name]: value });
