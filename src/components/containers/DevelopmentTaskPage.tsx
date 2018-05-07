@@ -6,7 +6,8 @@ import { TeamMemberActionStatus } from "../../models/Enums";
 import ITeamMember from "../../models/ITeamMember";
 import ITeamMemberAction from "../../models/ITeamMemberAction";
 import { getTechniques } from "../../services/techniqueService";
-import TeamMemberActionList from "../presentational/TeamMemberActionList";
+import TeamMemberDevelopmentTaskList from "../presentational/TeamMemberDevelopmentTaskList";
+import { TopPageNavigation } from "../presentational/TopPageNavigation";
 
 export interface IDevelopmentTaskPageProps extends RouteComponentProps<any> {
   isAuthenticated: boolean;
@@ -47,7 +48,7 @@ class DevelopmentTaskPage extends React.PureComponent<
 
     this.setState({ loading: false });
   }
-  public onTeamMemberActionComplete(teamMemberActionId: string, notes:string) {
+  public onTeamMemberActionComplete(teamMemberActionId: string, notes: string) {
     const action = Object.assign(
       {},
       this.props.teamMember.actions[teamMemberActionId]
@@ -77,19 +78,8 @@ class DevelopmentTaskPage extends React.PureComponent<
 
     const { teamMember } = this.props;
     return (
-      <div style={{ marginTop: "7em" }}>
-        <Button
-      type="button"
-      primary={true}
-      style={{ marginBottom: "1em" }}
-      // tslint:disable-next-line:jsx-no-lambda
-      onClick={(e: any, data: ButtonProps) => {
-        this.props.history.goBack();
-      }}
-    >
-      <Icon className="chevron left" />
-      Back
-    </Button>
+      <React.Fragment>
+        <TopPageNavigation history={this.props.history} />
         <Header as="h1">Development Tasks - {teamMember.name}</Header>
         <Button
           type="button"
@@ -108,14 +98,14 @@ class DevelopmentTaskPage extends React.PureComponent<
           Add Development Task
           <Icon className="chevron right" />
         </Button>
-        <TeamMemberActionList
+        <TeamMemberDevelopmentTaskList
           teamMemberName={teamMember.name}
           actions={teamMember.actions}
           techniques={getTechniques()}
           onCompletedClick={this.onTeamMemberActionComplete}
           onSaveNotesClick={this.onTeamMemberActionSaveNotes}
         />
-      </div>
+      </React.Fragment>
     );
   }
 }

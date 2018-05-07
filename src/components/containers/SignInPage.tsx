@@ -31,11 +31,9 @@ class SignInPage extends React.Component<ISignInPageProps, ISignInPageState> {
     }
 
     return (
-      <div style={{ marginTop: "7em" }}>
-        <div style={{ textAlign: "center" }}>
-          <h1>Welcome!</h1>
-          <FirebaseAuth uiConfig={uiConfig} firebaseAuth={auth} />
-        </div>
+      <div style={{textAlign: "center" }}>
+        <h1>Welcome! Continue with Google...</h1>
+        <FirebaseAuth uiConfig={uiConfig} firebaseAuth={auth} />
       </div>
     );
   }

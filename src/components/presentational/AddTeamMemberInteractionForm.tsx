@@ -1,5 +1,12 @@
 import * as React from "react";
-import { Button, Form, Header, Message, TextArea } from "semantic-ui-react";
+import {
+  Button,
+  Form,
+  Header,
+  Icon,
+  Message,
+  TextArea
+} from "semantic-ui-react";
 import { TeamMemberInteractionSentiment } from "../../models/Enums";
 import ITeamMember from "../../models/ITeamMember";
 import ITeamMemberInteraction, {
@@ -85,10 +92,11 @@ class AddTeamMemberInteractionForm extends React.Component<
   };
   public render() {
     const { description } = this.state;
-    const lastSavedInteraction = (
-      this.state.lastSavedInteraction || ({} as ITeamMemberInteraction)
-    );
-    const lastSavedInteractionSentiment = lastSavedInteraction.manualSentiment || lastSavedInteraction.computedSentiment;
+    const lastSavedInteraction =
+      this.state.lastSavedInteraction || ({} as ITeamMemberInteraction);
+    const lastSavedInteractionSentiment =
+      lastSavedInteraction.manualSentiment ||
+      lastSavedInteraction.computedSentiment;
     return (
       <div>
         <Header as="h2">Add an interaction</Header>
@@ -101,8 +109,9 @@ class AddTeamMemberInteractionForm extends React.Component<
               onChange={this.handleChange}
             />
           </Form.Group>
-          <Button positive={true} type="submit">
-            Add interaction
+          <Button positive={true} type="submit" fluid={true}>
+            <Icon name="save" />
+            Save interaction
           </Button>
         </Form>
         {this.state.errors && (
@@ -115,21 +124,28 @@ class AddTeamMemberInteractionForm extends React.Component<
         {this.state.success && (
           <Message positive={true}>
             <Message.Header>Interaction saved!</Message.Header>
-            <p>We detected a {lastSavedInteractionSentiment} sentiment. Is this incorrect?</p>
-            {lastSavedInteractionSentiment !== TeamMemberInteractionSentiment.positive && (
+            <p>
+              We detected a {lastSavedInteractionSentiment} sentiment. Is this
+              incorrect?
+            </p>
+            {lastSavedInteractionSentiment !==
+              TeamMemberInteractionSentiment.positive && (
               <Button
-              onClick={
-                // tslint:disable-next-line:jsx-no-lambda
-                () =>
-                  this.manuallyOverrideInteractionSentiment(
-                    this.state.lastSavedInteraction ||
-                      ({} as ITeamMemberInteraction),
-                    TeamMemberInteractionSentiment.positive
-                  )
-              }
-              >Change to Positive</Button>
+                onClick={
+                  // tslint:disable-next-line:jsx-no-lambda
+                  () =>
+                    this.manuallyOverrideInteractionSentiment(
+                      this.state.lastSavedInteraction ||
+                        ({} as ITeamMemberInteraction),
+                      TeamMemberInteractionSentiment.positive
+                    )
+                }
+              >
+                Change to Positive
+              </Button>
             )}
-            {lastSavedInteractionSentiment !== TeamMemberInteractionSentiment.negative && (
+            {lastSavedInteractionSentiment !==
+              TeamMemberInteractionSentiment.negative && (
               <Button
                 onClick={
                   // tslint:disable-next-line:jsx-no-lambda
@@ -144,18 +160,21 @@ class AddTeamMemberInteractionForm extends React.Component<
                 Change to Negative
               </Button>
             )}
-            {lastSavedInteractionSentiment !== TeamMemberInteractionSentiment.neutral && (
+            {lastSavedInteractionSentiment !==
+              TeamMemberInteractionSentiment.neutral && (
               <Button
-              onClick={
-                // tslint:disable-next-line:jsx-no-lambda
-                () =>
-                  this.manuallyOverrideInteractionSentiment(
-                    this.state.lastSavedInteraction ||
-                      ({} as ITeamMemberInteraction),
-                    TeamMemberInteractionSentiment.neutral
-                  )
-              }
-              >Change to Neutral</Button>
+                onClick={
+                  // tslint:disable-next-line:jsx-no-lambda
+                  () =>
+                    this.manuallyOverrideInteractionSentiment(
+                      this.state.lastSavedInteraction ||
+                        ({} as ITeamMemberInteraction),
+                      TeamMemberInteractionSentiment.neutral
+                    )
+                }
+              >
+                Change to Neutral
+              </Button>
             )}
           </Message>
         )}

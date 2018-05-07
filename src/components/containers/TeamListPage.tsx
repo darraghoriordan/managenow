@@ -70,7 +70,7 @@ class TeamListPage extends React.PureComponent<
       return <div>loading...</div>;
     }
     return (
-      <div style={{ marginTop: "7em" }}>
+      <React.Fragment>
         <TeamMemberCardList
           teamMembers={this.props.teamMembers}
           onTeamMemberOverviewSelected={this.onTeamMemberOverviewSelected}
@@ -92,7 +92,7 @@ class TeamListPage extends React.PureComponent<
           Add Team Member
           <Icon className="chevron right" />
         </Button>
-      </div>
+      </React.Fragment>
     );
   }
 }

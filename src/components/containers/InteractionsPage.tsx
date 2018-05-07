@@ -2,18 +2,16 @@ import { distanceInWordsToNow } from "date-fns";
 import * as React from "react";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import {
-  Button,
-  ButtonProps,
   Divider,
   Feed,
-  Header,
-  Icon
+  Header
 } from "semantic-ui-react";
 import constants from "../../constants/constants";
 import { TeamMemberInteractionSentiment } from "../../models/Enums";
 import ITeamMember from "../../models/ITeamMember";
 import ITeamMemberInteraction from "../../models/ITeamMemberInteractions";
 import AddTeamMemberInteractionForm from "../presentational/AddTeamMemberInteractionForm";
+import { TopPageNavigation } from "../presentational/TopPageNavigation";
 
 export interface IInteractionsPageProps extends RouteComponentProps<any> {
   isAuthenticated: boolean;
@@ -85,19 +83,8 @@ class InteractionsPage extends React.PureComponent<
       );
 
     return (
-      <div style={{ marginTop: "7em" }}>
-        <Button
-          type="button"
-          primary={true}
-          style={{ marginBottom: "1em" }}
-          // tslint:disable-next-line:jsx-no-lambda
-          onClick={(e: any, data: ButtonProps) => {
-            this.props.history.goBack();
-          }}
-        >
-          <Icon className="chevron left" />
-          Back
-        </Button>
+      <React.Fragment>
+        <TopPageNavigation history={this.props.history} />
         <Header as="h1">Interactions - {teamMember.name}</Header>
 
         <AddTeamMemberInteractionForm
@@ -125,7 +112,7 @@ class InteractionsPage extends React.PureComponent<
             </Feed>
           </div>
         )}
-      </div>
+      </React.Fragment>
     );
   }
 }

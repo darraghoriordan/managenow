@@ -1,8 +1,7 @@
 import * as React from "react";
 import { Container,Header } from "semantic-ui-react";
 const HomePage = () => (
-  <div>
-    <Container text={true} style={{ marginTop: "7em" }}>
+    <Container text={true}>
       <Header as="h1">
         The greatest minds in leadership at your fingertips
       </Header>
@@ -16,7 +15,7 @@ const HomePage = () => (
         Effectively track those tasks that surface throughout the day - on mobile and in the cloud.
       </Header>
     </Container>
-  </div>
+
 );
 
 export default HomePage;

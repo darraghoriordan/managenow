@@ -20,7 +20,6 @@ import ITeamMemberInteraction from "../../models/ITeamMemberInteractions";
 import { validateTeamMemberForSave } from "../../services/validations";
 import AppFooter from "../presentational/AppFooter";
 import TopMenu from "../presentational/TopMenu";
-import AccountPage from "./AccountPage";
 import AddDevelopmentTaskPage from "./AddDevelopmentTaskPage";
 import AddTeamMemberPage from "./AddTeamMemberPage";
 import DevelopmentTaskPage from "./DevelopmentTaskPage";
@@ -261,10 +260,10 @@ export class App extends React.Component<{}, IAppState> {
               authenticated={authenticatedProp}
               displayName={this.state.appUser.firstName}
               onSignOut={this.signOutFirebase}
-            />
-            <Grid columns="equal">
+            />             
+            <Grid columns="equal" style={{marginTop: "2em"}}>
               <Grid.Column />
-              <Grid.Column width={10}>
+              <Grid.Column width={12}>
                 <Route
                   exact={true}
                   path={constants.ROUTES.LANDING}
@@ -389,11 +388,6 @@ export class App extends React.Component<{}, IAppState> {
                     }
                     return <Redirect to={constants.ROUTES.SIGN_IN} />;
                   }}
-                />
-                <Route
-                  exact={true}
-                  path={constants.ROUTES.ACCOUNT}
-                  component={AccountPage}
                 />
               </Grid.Column>
               <Grid.Column />
