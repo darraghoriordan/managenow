@@ -1,42 +1,37 @@
 import * as React from "react";
+import { RouteComponentProps, withRouter } from "react-router";
 import {
   Button,
   ButtonProps,
+  Container,
   Header,
   Icon,
   Item,
+  Popup,
   Rating
 } from "semantic-ui-react";
 import constants from "../../constants/constants";
-import ITeamMember from "../../models/ITeamMember";
-import ITeamMemberAction, {
-  TeamMemberAction
-} from "../../models/ITeamMemberAction";
 import ITechnique from "../../models/ITechnique";
 import { getRelevantTechniques } from "../../services/techniqueService";
-import { TechniqueCategorySelector } from "./TechniqueCategorySelector";
+import TechniqueCategorySelector from "../presentational/TechniqueCategorySelector";
 
-interface IAddActionProps {
-  selectedTeamMember: ITeamMember;
-  onSelection: (teamMemberId: string, t: ITeamMemberAction) => void;
-}
-interface IAddActionState {
-  selectedBehaviour: any;
+interface IOpenListPageState {
+  selectedBehaviour: string;
   techniques: ITechnique[];
 }
-class AddTeamMemberDevelopmentTask extends React.Component<
-  IAddActionProps,
-  IAddActionState
+
+class OpenListPage extends React.Component<
+  RouteComponentProps<any>,
+  IOpenListPageState
 > {
-  constructor(props: IAddActionProps) {
+  constructor(props: RouteComponentProps<any>) {
     super(props);
     this.onSelectChanged = this.onSelectChanged.bind(this);
     this.state = {
       selectedBehaviour: "",
-      techniques: []
+      techniques: [] as ITechnique[]
     };
   }
-
   public onSelectChanged(event: any, data: any) {
     if (typeof data === "undefined") {
       return;
@@ -48,26 +43,13 @@ class AddTeamMemberDevelopmentTask extends React.Component<
       techniques: selectedTechniques
     });
   }
-
-  public onSelectedTechnique(event: any, technique: ITechnique) {
-    // maybe this creation shouldn't be here
-    const teamMemberAction = new TeamMemberAction(technique.id);
-    this.props.onSelection(this.props.selectedTeamMember.id, teamMemberAction);
-  }
   public render() {
-    if (!this.props.selectedTeamMember || !this.props.selectedTeamMember.name) {
-      return null;
-    }
     return (
-      <div>
-        <Header as="h2">
-          Add a development task for {this.props.selectedTeamMember.name}
-        </Header>
-        <TechniqueCategorySelector
-          onSelectChanged={this.onSelectChanged}
-          placeholderText={
-            constants.FIELD_STRINGS.techniqueSearchPlaceholderText
-          }
+      <Container text={true}>
+        <Header as="h1">The new leader list</Header>
+        <TechniqueCategorySelector 
+        onSelectChanged={this.onSelectChanged} 
+        placeholderText={ constants.FIELD_STRINGS.openListtechniqueSearchPlaceholderText}
         />
         <Item.Group divided={true}>
           {this.state.techniques.map(technique => (
@@ -111,25 +93,33 @@ class AddTeamMemberDevelopmentTask extends React.Component<
                       (win || ({} as Window)).focus();
                     }}
                   />
-                  <Button
-                    type="button"
-                    positive={true}
-                    floated="right"
-                    // tslint:disable-next-line:jsx-no-lambda
-                    onClick={(e: any, data: ButtonProps) => {
-                      this.onSelectedTechnique(e, technique);
-                    }}
-                  >
-                    Assign task to {this.props.selectedTeamMember.name}
-                    <Icon className="right chevron" />
-                  </Button>
+                  <Popup
+                    trigger={
+                      <Button
+                        type="button"
+                        color="orange"
+                        disabled={true}
+                        floated="right"
+                        // tslint:disable-next-line:jsx-no-lambda
+                        onClick={(e: any, data: ButtonProps) => {
+                          // BUY PREMIUM!!!
+                        }}
+                      >
+                        <Icon className="lock" />Assign task to a team member
+                        <Icon className="right chevron" />
+                      </Button>
+                    }
+                    content="With the app you can assign techniques and track progress."
+                    on="hover"
+                  />
                 </Item.Extra>
               </Item.Content>
             </Item>
           ))}
         </Item.Group>
-      </div>
+      </Container>
     );
   }
 }
-export default AddTeamMemberDevelopmentTask;
+
+export default withRouter(OpenListPage);

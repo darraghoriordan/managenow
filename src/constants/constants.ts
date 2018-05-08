@@ -1,12 +1,15 @@
 const constants = {
-  APP_NAME: "New Leader List",
+  APP_NAME: "The New Leader List",
   FIELD_STRINGS: {
+    openListtechniqueSearchPlaceholderText: "Choose a category...",
     techniqueSearchPlaceholderText: "We will work on..."
   },
   ROUTES: {
     ACCOUNT: "/account",
+    APP_SALES: "/premium",
     HOME: "/",
     LANDING: "/team",
+    OPEN_LIST: "/list",
     SIGN_IN: "/signin",
     TEAM_MEMBER_ADD: "/team/add",
     TEAM_MEMBER_DEV_TASK_ADD: "/team/member/:id/devtasks/add",

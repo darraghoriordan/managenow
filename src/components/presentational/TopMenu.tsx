@@ -21,35 +21,40 @@ class TopMenu extends React.PureComponent<ITopMenuProps, any> {
               src="./logo.png"
               style={{ marginRight: "1.5em" }}
             /> */}
-          {constants.APP_NAME}
+            {constants.APP_NAME}
           </Menu.Item>
           <Menu.Item as={Link} to={constants.ROUTES.HOME}>
             Home
           </Menu.Item>
-          {!this.props.authenticated ? (
-            <Menu.Item as={Link} to={constants.ROUTES.SIGN_IN}>
-              Sign in
+          {!this.props.authenticated && (
+            <Menu.Item as={Link} to={constants.ROUTES.OPEN_LIST}>
+              The App
             </Menu.Item>
-          ) : (
-            <React.Fragment>
-              <Menu.Item as={Link} to={constants.ROUTES.LANDING}>
-                Team
-              </Menu.Item>
-
-              <Menu.Menu position="right">
-                <Dropdown item={true} text={this.props.displayName}>
-                  <Dropdown.Menu>
-                    <Dropdown.Item
-                      icon="edit"
-                      text="Signout"
-                      // tslint:disable-next-line:jsx-no-lambda
-                      onClick={() => this.props.onSignOut(this.props.history)}
-                    />
-                  </Dropdown.Menu>
-                </Dropdown>
-              </Menu.Menu>
-            </React.Fragment>
           )}
+          {this.props.authenticated && (
+            <Menu.Item as={Link} to={constants.ROUTES.LANDING}>
+              Your Team
+            </Menu.Item>
+          )}
+          <Menu.Menu position="right">
+            {!this.props.authenticated && (
+              <Menu.Item as={Link} to={constants.ROUTES.SIGN_IN}>
+                Sign in
+              </Menu.Item>
+            )}
+            {this.props.authenticated && (
+              <Dropdown item={true} text={this.props.displayName}>
+                <Dropdown.Menu>
+                  <Dropdown.Item
+                    icon="edit"
+                    text="Signout"
+                    // tslint:disable-next-line:jsx-no-lambda
+                    onClick={() => this.props.onSignOut(this.props.history)}
+                  />
+                </Dropdown.Menu>
+              </Dropdown>
+            )}
+          </Menu.Menu>
         </Container>
       </Menu>
     );

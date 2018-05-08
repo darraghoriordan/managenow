@@ -22,9 +22,10 @@ import AppFooter from "../presentational/AppFooter";
 import TopMenu from "../presentational/TopMenu";
 import AddDevelopmentTaskPage from "./AddDevelopmentTaskPage";
 import AddTeamMemberPage from "./AddTeamMemberPage";
+import AppPage from "./AppPage";
 import DevelopmentTaskPage from "./DevelopmentTaskPage";
-import HomePage from "./HomePage";
 import InteractionsPage from "./InteractionsPage";
+import OpenListPage from "./OpenListPage";
 import SignInPage from "./SignInPage";
 import TeamListPage from "./TeamListPage";
 import TeamMemberOverview from "./TeamMemberOverview";
@@ -297,7 +298,12 @@ export class App extends React.Component<{}, IAppState> {
                 <Route
                   exact={true}
                   path={constants.ROUTES.HOME}
-                  component={HomePage}
+                  component={OpenListPage}
+                />
+                               <Route
+                  exact={true}
+                  path={constants.ROUTES.APP_SALES}
+                  component={AppPage}
                 />
                 <Route
                   exact={true}

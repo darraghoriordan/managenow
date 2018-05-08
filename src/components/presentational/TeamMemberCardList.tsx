@@ -32,7 +32,7 @@ export default class TeamMemberList extends React.PureComponent<
       return <TeamMemberListEmptyState firstName={currentUserFirstName} />;
     }
     return (
-      <Card.Group itemsPerRow={3}>
+      <Card.Group itemsPerRow={3} stackable={true}>
         {teamMemberArray.map((tm: ITeamMember) => {
           return (
             <TeamMemberCard
