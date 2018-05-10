@@ -1,5 +1,5 @@
 const constants = {
-  APP_NAME: "The New Leader List",
+  APP_NAME: "New Leader List",
   FIELD_STRINGS: {
     openListtechniqueSearchPlaceholderText: "Choose a category...",
     techniqueSearchPlaceholderText: "We will work on..."

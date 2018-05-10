@@ -46,8 +46,8 @@ class OpenListPage extends React.Component<
   public render() {
     return (
       <Container text={true}>
-        <Header as="h1">The new leader list</Header>
-        <TechniqueCategorySelector 
+        <Header as="h1">Find the best solutions to common leadership problems</Header>
+        Select a topic and find solutions from your favorite world-class leaders<TechniqueCategorySelector 
         onSelectChanged={this.onSelectChanged} 
         placeholderText={ constants.FIELD_STRINGS.openListtechniqueSearchPlaceholderText}
         />
@@ -63,7 +63,7 @@ class OpenListPage extends React.Component<
                   <span className="source-name">
                     Source: {technique.sourcename}
                   </span>{" "}
-                  by
+                  by{" "}
                   <span className="source-author">{technique.author}</span>
                 </Item.Meta>
                 <Item.Meta>

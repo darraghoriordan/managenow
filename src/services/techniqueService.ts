@@ -42,6 +42,8 @@ export function getTechniques() {
     sourcename: "The First 90 Days",
     type: TechniqueSourceType.book
   });
+
+
   sampleTechniques.push({
     author: "Get Lighthouse",
     category: constants.TECHNIQUE_CATEGORY.BuildingRapportandInfluence,
@@ -55,6 +57,22 @@ export function getTechniques() {
       "https://getlighthouse.com/blog/how-to-start-one-on-ones-your-teams/",
     sourcename: "Starting one-on-ones",
     type: TechniqueSourceType.blog
+  });
+  sampleTechniques.push({
+    author: "Keyvalues.com",
+    category: constants.TECHNIQUE_CATEGORY.BuildingCulture,
+    coverimage: "",
+    description:
+      "The key values web site is used by engineers to find jobs based on culture. Audit your organisation and pick the top eight key values you would want people to think of when they think of your organisation. Chat to your team in one on ones about what they feel the key values are and compare.",
+    id: "2",
+    locationInSource: "https://www.keyvalues.com/",
+    name: "List your organisation's key values",
+    rating: 5,
+    referralLink:
+      "https://www.keyvalues.com/",
+
+    sourcename: "Key values",
+    type: TechniqueSourceType.book
   });
 
   return sampleTechniques;

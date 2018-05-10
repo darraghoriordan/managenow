@@ -81,7 +81,7 @@ class AddTeamMemberDevelopmentTask extends React.Component<
                   <span className="source-name">
                     Source: {technique.sourcename}
                   </span>{" "}
-                  by
+                  by{" "}
                   <span className="source-author">{technique.author}</span>
                 </Item.Meta>
                 <Item.Meta>
