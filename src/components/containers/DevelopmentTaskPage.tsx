@@ -53,9 +53,9 @@ class DevelopmentTaskPage extends React.PureComponent<
       {},
       this.props.teamMember.actions[teamMemberActionId]
     ) as ITeamMemberAction;
+    action.notes  = notes || "";
     action.status = TeamMemberActionStatus.done;
-
-    action.notes = notes || "";
+    action.dateCompleted = new Date().getTime();
     this.props.onDevelopmentTaskSave(this.props.teamMember.id, action);
   }
   public onTeamMemberActionSaveNotes(
@@ -66,7 +66,7 @@ class DevelopmentTaskPage extends React.PureComponent<
       {},
       this.props.teamMember.actions[teamMemberActionId]
     ) as ITeamMemberAction;
-    action.notes = notes = notes || "";
+    action.notes  = notes || "";
 
     this.props.onDevelopmentTaskSave(this.props.teamMember.id, action);
   }

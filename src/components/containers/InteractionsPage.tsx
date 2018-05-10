@@ -1,11 +1,7 @@
 import { distanceInWordsToNow } from "date-fns";
 import * as React from "react";
 import { RouteComponentProps, withRouter } from "react-router-dom";
-import {
-  Divider,
-  Feed,
-  Header
-} from "semantic-ui-react";
+import { Divider, Feed, Header } from "semantic-ui-react";
 import constants from "../../constants/constants";
 import { TeamMemberInteractionSentiment } from "../../models/Enums";
 import ITeamMember from "../../models/ITeamMember";

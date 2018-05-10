@@ -138,10 +138,12 @@ export class App extends React.Component<{}, IAppState> {
       teamMemberInteraction
     )
       .then(savedTeamMemberInteraction => {
-        const interactions = Object.assign(
-          {},
-          this.state.appUser.teamMembers[teamMemberId].interactions
-        );
+        // const interactions = Object.assign(
+        //   {},
+        //   this.state.appUser.teamMembers[teamMemberId].interactions
+        // );
+        const interactions = this.state.appUser.teamMembers[teamMemberId]
+          .interactions;
 
         // if (!savedTeamMember.id) {
         //   teamMember.id = teamMember.name;
@@ -158,7 +160,10 @@ export class App extends React.Component<{}, IAppState> {
               ...prevState.appUser.teamMembers,
               [teamMemberId]: {
                 ...prevState.appUser.teamMembers[teamMemberId],
-                interactions
+                interactions: {
+                  ...prevState.appUser.teamMembers[teamMemberId].interactions,
+                  [savedTeamMemberInteraction.id]: savedTeamMemberInteraction
+                }
               }
             }
           }
@@ -261,8 +266,8 @@ export class App extends React.Component<{}, IAppState> {
               authenticated={authenticatedProp}
               displayName={this.state.appUser.firstName}
               onSignOut={this.signOutFirebase}
-            />             
-            <Grid columns="equal" style={{marginTop: "2em"}}>
+            />
+            <Grid columns="equal" style={{ marginTop: "2em" }}>
               <Grid.Column />
               <Grid.Column width={12}>
                 <Route
@@ -300,7 +305,7 @@ export class App extends React.Component<{}, IAppState> {
                   path={constants.ROUTES.HOME}
                   component={OpenListPage}
                 />
-                               <Route
+                <Route
                   exact={true}
                   path={constants.ROUTES.APP_SALES}
                   component={AppPage}

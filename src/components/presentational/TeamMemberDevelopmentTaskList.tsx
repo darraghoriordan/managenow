@@ -27,13 +27,14 @@ export default class TeamMemberDevelopmentTaskList extends React.Component<
       .map((element: string) => actions[element] as ITeamMemberAction)
       .filter(
         (el: ITeamMemberAction) => el.status === TeamMemberActionStatus.active
-      );
+      ).sort((a, b) => b.dateCompleted - a.dateCompleted);;
 
     const completedTasks = Object.keys(actions || {})
       .map((element: string) => actions[element] as ITeamMemberAction)
       .filter(
         (el: ITeamMemberAction) => el.status === TeamMemberActionStatus.done
-      );
+      )
+      .sort((a, b) => b.dateCompleted - a.dateCompleted);
     return (
       <div>
         <div>

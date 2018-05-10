@@ -33,8 +33,8 @@ IInactiveDevelopmentTaskState
           </Item.Meta>
           <Item.Meta>
             <span className="created">
-              {"Created On: " +
-                new Date(teamMemeberAction.dateAdded).toLocaleDateString()}
+              {"Completed On: " +
+                new Date(teamMemeberAction.dateCompleted).toLocaleString()}
             </span>
           </Item.Meta>
           <Item.Description>{technique.description}</Item.Description>

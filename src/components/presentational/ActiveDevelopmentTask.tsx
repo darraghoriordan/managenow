@@ -23,20 +23,11 @@ class ActiveDevelopmentTask extends React.Component<
   IActiveDevelopmentTaskProps,
   IActiveDevelopmentTaskState
 > {
-  public static getDerivedStateFromProps(
-    nextProps: IActiveDevelopmentTaskProps,
-    prevState: IActiveDevelopmentTaskState
-  ) {
-    if (nextProps.teamMemeberAction.notes !== prevState.notes) {
-      return { notes: nextProps.teamMemeberAction.notes };
-    }
 
-    return null;
-  }
   constructor(props: IActiveDevelopmentTaskProps) {
     super(props);
 
-    this.state = { notes: "" };
+    this.state = { notes: props.teamMemeberAction.notes };
   }
   public handleChange = (e: any, { name, value }: any) =>
     this.setState({ [name]: value });
