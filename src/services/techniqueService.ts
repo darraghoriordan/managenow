@@ -27,7 +27,7 @@ export function getTechniques() {
 
   sampleTechniques.push({
     author: "Michael D. Watkins",
-
+    // authorTwitter: "MichaelDWatkins",
     category: constants.TECHNIQUE_CATEGORY.Decisons,
     coverimage: "/images/covers/thefirst90days.jpg",
     description:

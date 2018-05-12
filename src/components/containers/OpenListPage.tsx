@@ -46,10 +46,14 @@ class OpenListPage extends React.Component<
   public render() {
     return (
       <Container text={true}>
-        <Header as="h1">Find the best solutions to common leadership problems</Header>
-        Select a topic and find solutions from your favorite world-class leaders<TechniqueCategorySelector 
-        onSelectChanged={this.onSelectChanged} 
-        placeholderText={ constants.FIELD_STRINGS.openListtechniqueSearchPlaceholderText}
+        <Header as="h1">
+          Find the best solutions to common leadership problems
+        </Header>
+        Select a topic and find solutions from your favorite world-class leaders<TechniqueCategorySelector
+          onSelectChanged={this.onSelectChanged}
+          placeholderText={
+            constants.FIELD_STRINGS.openListtechniqueSearchPlaceholderText
+          }
         />
         <Item.Group divided={true}>
           {this.state.techniques.map(technique => (
@@ -63,8 +67,7 @@ class OpenListPage extends React.Component<
                   <span className="source-name">
                     Source: {technique.sourcename}
                   </span>{" "}
-                  by{" "}
-                  <span className="source-author">{technique.author}</span>
+                  by <span className="source-author">{technique.author}</span>
                 </Item.Meta>
                 <Item.Meta>
                   <span className="source-location">
@@ -98,11 +101,10 @@ class OpenListPage extends React.Component<
                       <Button
                         type="button"
                         color="orange"
-                        disabled={true}
                         floated="right"
                         // tslint:disable-next-line:jsx-no-lambda
                         onClick={(e: any, data: ButtonProps) => {
-                          // BUY PREMIUM!!!
+                          this.props.history.push("/team");
                         }}
                       >
                         <Icon className="lock" />Assign task to a team member

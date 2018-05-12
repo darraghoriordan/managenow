@@ -1,16 +1,18 @@
 import { differenceInCalendarDays, subDays } from "date-fns";
 import * as React from "react";
 import { Button, Card, Icon, SemanticCOLORS } from "semantic-ui-react";
-import { TeamMemberActionStatus } from "../../models/Enums";
+import { TeamMemberActionStatus, TeamMemberTodoStatus } from "../../models/Enums";
 import ITeamMember from "../../models/ITeamMember";
 import ITeamMemberAction from "../../models/ITeamMemberAction";
 import ITeamMemberInteraction from "../../models/ITeamMemberInteractions";
+import ITeamMemberTodo from "../../models/ITeamMemberTodo";
 
 interface ITeamMemberCardProps {
   teamMember: ITeamMember;
   onTeamMemberOverviewSelected: (teamMemberId: string) => void;
   onDevTaskOverviewSelected: (teamMemberId: string) => void;
   onInteractionOverviewSelected: (teamMemberId: string) => void;
+  onToDoOverviewSelected: (teamMemberId: string) => void;
 }
 
 const TeamMemberCard: React.SFC<ITeamMemberCardProps> = props => {
@@ -47,7 +49,13 @@ const TeamMemberCard: React.SFC<ITeamMemberCardProps> = props => {
 
   const daysSinceInteractionStyles =
     daysSinceInteraction >= 2 ? { color: "red" } : {};
-
+   const todos= Object.keys(teamMember.todos || {}).map(
+      (todoId: string) =>
+        teamMember.interactions[todoId] as ITeamMemberTodo
+    );
+    const activeTodoCount = todos.filter((t:ITeamMemberTodo) => t.status !== TeamMemberTodoStatus.done).length;
+    const overDueTodos = todos.filter((t:ITeamMemberTodo) => t.expectedCompletionDate < new Date().getTime());
+    const todoStyles = overDueTodos.length > 0 ? {color:"red"}:{}
   const cardIconStyle = {
     marginBottom: "0.3em",
     marginLeft: "auto",
@@ -113,6 +121,20 @@ const TeamMemberCard: React.SFC<ITeamMemberCardProps> = props => {
             <Icon name="line graph" />
             <span style={{ textDecoration: "underline" }}>
               {daysSinceInteraction} Days since last interaction{" "}
+            </span>
+          </span>
+        </a>
+        <br />
+        <a
+          // tslint:disable-next-line:jsx-no-lambda
+          onClick={() => {
+            onToDoOverviewSelected(teamMember.id);
+          }}
+        >
+          <span style={todoStyles}>
+            <Icon name="check" />
+            <span style={{ textDecoration: "underline" }}>
+              {activeTodoCount} Active Todos{" "}
             </span>
           </span>
         </a>

@@ -8,6 +8,7 @@ export default interface ITeamMember {
   actions: {};
   interactions:{};
   createdDate: number;
+  todos:{}
 }
 
 export class TeamMember implements ITeamMember {
@@ -17,6 +18,7 @@ export class TeamMember implements ITeamMember {
   public status: TeamMemberStatus;
   public actions: {};
   public interactions:{};
+  public todos:{};
   public createdDate: number;
 
   constructor(name: string, color: string) {
