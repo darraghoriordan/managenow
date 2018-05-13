@@ -2,6 +2,7 @@ import * as React from "react";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import { Button, ButtonProps, Header, Icon } from "semantic-ui-react";
 import constants from "../../constants/constants";
+import { TeamMemberTodoStatus } from "../../models/Enums";
 import ITeamMember from "../../models/ITeamMember";
 import ITeamMemberTodo from "../../models/ITeamMemberTodo";
 import TeamMemberTodoList from "../presentational/TeamMemberTodoList";
@@ -45,6 +46,7 @@ class ToDoPage extends React.PureComponent<IToDoPageProps, IToDoPageState> {
       this.props.teamMember.todos[teamMemberToDoId]
     ) as ITeamMemberTodo;
     todo.dateCompleted = new Date().getTime();
+    todo.status = TeamMemberTodoStatus.done;
     // TODO: handle the success and error
     this.props.onToDoSave(this.props.teamMember.id, todo);
   }

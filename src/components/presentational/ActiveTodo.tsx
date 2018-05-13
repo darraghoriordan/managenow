@@ -1,3 +1,4 @@
+import { distanceInWordsToNow } from "date-fns";
 import * as React from "react";
 import { Button, ButtonProps, Icon, Item } from "semantic-ui-react";
 import ITeamMemberTodo from "../../models/ITeamMemberTodo";
@@ -16,20 +17,17 @@ class ActiveTodo extends React.Component<IActiveTodoProps, any> {
 
   public render() {
     const { teamMemberTodo } = this.props;
-
+    const addedAsDate = new Date(teamMemberTodo.dateAdded);
+    const completionAsDate = new Date(teamMemberTodo.expectedCompletionDate);
     return (
       <Item key={teamMemberTodo.id}>
         <Item.Content>
           <Item.Header>{teamMemberTodo.title}</Item.Header>
+          <Item.Meta>Added: {addedAsDate.toLocaleString()}</Item.Meta>
+
           <Item.Meta>
-            Added: {new Date(teamMemberTodo.dateAdded).toLocaleString()}
-          </Item.Meta>
-          <Item.Meta>
-            Completed: {new Date(teamMemberTodo.dateCompleted).toLocaleString()}
-          </Item.Meta>
-          <Item.Meta>
-            Expected:{" "}
-            {new Date(teamMemberTodo.expectedCompletionDate).toLocaleString()}
+            Expected in{" "}
+            {distanceInWordsToNow(completionAsDate, { addSuffix: true })}
           </Item.Meta>
           <Item.Meta>Owner: {teamMemberTodo.owner}</Item.Meta>
           <Item.Description>{teamMemberTodo.description}</Item.Description>

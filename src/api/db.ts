@@ -111,18 +111,31 @@ export const saveTeamMemberInteraction = (
     .update(updates)
     .then(() => Promise.resolve(teamMemberInteraction));
 };
+export const validateToDo = (todo: ITeamMemberTodo): string[] => {
+  const errors = [];
+  if (!todo.title || todo.title === "") {
+    errors.push("You must add a title.");
+  }
+  if (!todo.description || todo.description === "") {
+    errors.push("You must add a description.");
+  }
 
+  return errors;
+};
 export const saveTeamMemberTodo = (
   uid: string,
   teamMemberId: string,
   teamMemberTodo: ITeamMemberTodo
 ) => {
+  const errors = validateToDo(teamMemberTodo);
+  if (errors.length > 0) {
+    return Promise.reject(errors);
+  }
   // if we dont already have an id try to get one from firebase
   if (!teamMemberTodo.id) {
     const newKey: string =
-      db
-        .ref("/users/" + uid + "/teamMembers/" + teamMemberId + "/todos")
-        .push().key || "error";
+      db.ref("/users/" + uid + "/teamMembers/" + teamMemberId + "/todos").push()
+        .key || "error";
 
     if (newKey === "error") {
       // tslint:disable-next-line:no-console

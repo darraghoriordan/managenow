@@ -72,13 +72,19 @@ class AddTeamMemberTodo extends React.Component<
           success: true
         });
       })
-      .catch((error: string) =>
+      .catch((error: string | string[]) => {
         // tslint:disable-next-line:no-console
+        const errors: string[] = [];
+        if (typeof error === "string") {
+          errors.push(error);
+        } else {
+          errors.push(...error);
+        }
         this.setState({
-          errors: [error],
+          errors,
           success: false
-        })
-      );
+        });
+      });
   };
 
   public render() {
