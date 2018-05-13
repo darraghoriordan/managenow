@@ -1,25 +1,37 @@
-import { TeamMemberTodoStatus } from "./Enums";
+import { TeamMemberToDoOwner, TeamMemberTodoStatus } from "./Enums";
 
 export default interface ITeamMemberTodo {
   id: string;
   description: string;
   dateCompleted: number;
-  assignedTo: string;
+  expectedCompletionDate: number;
+  owner: TeamMemberToDoOwner;
   status: TeamMemberTodoStatus;
   dateAdded: number;
+  title: string;
 }
 
 export class TeamMemberTodo implements ITeamMemberTodo {
   public id: string;
   public description: string;
+  public title: string;
   public dateCompleted: number;
-  public assignedTo: string;
+  public expectedCompletionDate: number;
+  public owner: TeamMemberToDoOwner;
   public status: TeamMemberTodoStatus;
   public dateAdded: number;
 
-  constructor(assignedTo: string) {
+  constructor(
+    title: string,
+    description: string,
+    owner: TeamMemberToDoOwner,
+    expectedCompletionDate: number
+  ) {
+    this.title = title;
+    this.description = description;
+    this.expectedCompletionDate = expectedCompletionDate;
     this.dateAdded = new Date().getTime();
     this.status = TeamMemberTodoStatus.active;
-    this.assignedTo = assignedTo;
+    this.owner = owner;
   }
 }

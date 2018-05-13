@@ -10,6 +10,7 @@ interface ITeamListProps {
   onDevTaskOverviewSelected: (teamMemberId: string) => void;
   onTeamMemberOverviewSelected: (teamMemberId: string) => void;
   onInteractionOverviewSelected: (teamMemberId: string) => void;
+  onToDoOverviewSelected: (teamMemberId: string) => void;
 }
 export default class TeamMemberList extends React.PureComponent<
   ITeamListProps,
@@ -45,6 +46,7 @@ export default class TeamMemberList extends React.PureComponent<
               onInteractionOverviewSelected={
                 this.props.onInteractionOverviewSelected
               }
+             onToDoOverviewSelected = {this.props.onToDoOverviewSelected} 
             />
           );
         })}

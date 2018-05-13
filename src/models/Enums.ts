@@ -15,6 +15,10 @@ export enum TeamMemberActionStatus {
   active = "active",
   done = "done"
 }
+export enum TeamMemberToDoOwner {
+  you = "you",
+  teamMember = "teamMember"
+}
 export enum TechniqueSourceType {
   book = "book",
   podcast = "podcast",

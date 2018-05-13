@@ -1,7 +1,5 @@
 import * as React from "react";
-import {
-  Header,
-  Item} from "semantic-ui-react";
+import { Header, Item } from "semantic-ui-react";
 import ITeamMemberAction from "../../models/ITeamMemberAction";
 import ITechnique from "../../models/ITechnique";
 
@@ -9,12 +7,9 @@ interface IInactiveDevelopmentTaskProps {
   technique: ITechnique;
   teamMemeberAction: ITeamMemberAction;
 }
-interface IInactiveDevelopmentTaskState {
-  notes: string;
-}
- class InactiveDevelopmentTask extends React.Component<
-IInactiveDevelopmentTaskProps,
-IInactiveDevelopmentTaskState
+class InactiveDevelopmentTask extends React.Component<
+  IInactiveDevelopmentTaskProps,
+  any
 > {
   constructor(props: IInactiveDevelopmentTaskProps) {
     super(props);
@@ -38,8 +33,8 @@ IInactiveDevelopmentTaskState
             </span>
           </Item.Meta>
           <Item.Description>{technique.description}</Item.Description>
-              <Header as="h4">Notes</Header>
-              <p>{teamMemeberAction.notes}</p>
+          <Header as="h4">Notes</Header>
+          <p>{teamMemeberAction.notes}</p>
         </Item.Content>
       </Item>
     );
