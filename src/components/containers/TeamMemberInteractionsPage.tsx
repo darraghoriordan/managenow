@@ -9,7 +9,7 @@ import ITeamMemberInteraction from "../../models/ITeamMemberInteractions";
 import AddTeamMemberInteractionForm from "../presentational/AddTeamMemberInteractionForm";
 import { TopPageNavigation } from "../presentational/TopPageNavigation";
 
-export interface IInteractionsPageProps extends RouteComponentProps<any> {
+export interface ITeamMemberInteractionsPageProps extends RouteComponentProps<any> {
   isAuthenticated: boolean;
   teamMember: ITeamMember;
   onInteractionSave: (
@@ -17,14 +17,14 @@ export interface IInteractionsPageProps extends RouteComponentProps<any> {
     teamMemberInteraction: ITeamMemberInteraction
   ) => Promise<void | ITeamMemberInteraction>;
 }
-export interface IInteractionsPageState {
+export interface ITeamMemberInteractionsPageState {
   loading: boolean;
 }
-class InteractionsPage extends React.PureComponent<
-  IInteractionsPageProps,
-  IInteractionsPageState
+class TeamMemberInteractionsPage extends React.PureComponent<
+  ITeamMemberInteractionsPageProps,
+  ITeamMemberInteractionsPageState
 > {
-  constructor(props: IInteractionsPageProps) {
+  constructor(props: ITeamMemberInteractionsPageProps) {
     super(props);
     this.onTeamMemberInteractionSave = this.onTeamMemberInteractionSave.bind(
       this
@@ -113,4 +113,4 @@ class InteractionsPage extends React.PureComponent<
   }
 }
 
-export default withRouter(InteractionsPage);
+export default withRouter(TeamMemberInteractionsPage);

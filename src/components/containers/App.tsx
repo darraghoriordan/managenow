@@ -26,13 +26,13 @@ import AddDevelopmentTaskPage from "./AddDevelopmentTaskPage";
 import AddTeamMemberPage from "./AddTeamMemberPage";
 import AddTodoPage from "./AddTodoPage";
 import AppPage from "./AppPage";
-import DevelopmentTaskPage from "./DevelopmentTaskPage";
-import InteractionsPage from "./InteractionsPage";
 import OpenListPage from "./OpenListPage";
 import ScrollToTop from "./ScrollToTop";
 import SignInPage from "./SignInPage";
-import TeamListPage from "./TeamListPage";
-import TeamMemberOverview from "./TeamMemberOverview";
+import TeamMemberDevelopmentActionPage from "./TeamMemberDevelopmentActionPage";
+import TeamMemberInteractionsPage from "./TeamMemberInteractionsPage";
+import TeamMemberListPage from "./TeamMemberListPage";
+import TeamMemberOverviewPage from "./TeamMemberOverviewPage";
 import ToDoPage from "./ToDoPage";
 
 export interface IAppState {
@@ -333,7 +333,7 @@ export class App extends React.Component<{}, IAppState> {
                   render={routeProps => {
                     if (authenticatedProp) {
                       return (
-                        <TeamListPage
+                        <TeamMemberListPage
                           {...routeProps}
                           teamMembers={teamMembersProp}
                           isAuthenticated={authenticatedProp}
@@ -384,7 +384,7 @@ export class App extends React.Component<{}, IAppState> {
                   render={routeProps => {
                     if (authenticatedProp) {
                       return (
-                        <DevelopmentTaskPage
+                        <TeamMemberDevelopmentActionPage
                           {...routeProps}
                           teamMember={
                             teamMembersProp[(routeProps as any).match.params.id]
@@ -404,7 +404,7 @@ export class App extends React.Component<{}, IAppState> {
                   render={routeProps => {
                     if (authenticatedProp) {
                       return (
-                        <InteractionsPage
+                        <TeamMemberInteractionsPage
                           {...routeProps}
                           teamMember={
                             teamMembersProp[(routeProps as any).match.params.id]
@@ -468,7 +468,7 @@ export class App extends React.Component<{}, IAppState> {
                   render={routeProps => {
                     if (authenticatedProp) {
                       return (
-                        <TeamMemberOverview
+                        <TeamMemberOverviewPage
                           {...routeProps}
                           teamMember={
                             teamMembersProp[(routeProps as any).match.params.id]

@@ -5,21 +5,21 @@ import constants from "../../constants/constants";
 import ITeamMember from "../../models/ITeamMember";
 import TeamMemberCardList from "../presentational/TeamMemberCardList";
 
-export interface ITeamListPageProps extends RouteComponentProps<any> {
+export interface ITeamMemberListPageProps extends RouteComponentProps<any> {
   teamMembers: {};
   isAuthenticated: boolean;
   userDisplayName: string;
   onTeamMemberDelete: (teamMemberId: string) => void;
   onTeamMemberAdd: (teamMember: ITeamMember) => Promise<ITeamMember>;
 }
-export interface ITeamListPageState {
+export interface ITeamMemberListPageState {
   loading: boolean;
 }
-class TeamListPage extends React.PureComponent<
-  ITeamListPageProps,
-  ITeamListPageState
+class TeamMemberListPage extends React.PureComponent<
+ITeamMemberListPageProps,
+  ITeamMemberListPageState
 > {
-  constructor(props: ITeamListPageProps) {
+  constructor(props: ITeamMemberListPageProps) {
     super(props);
 
     this.onDevTaskOverviewSelected = this.onDevTaskOverviewSelected.bind(this);
@@ -106,4 +106,4 @@ class TeamListPage extends React.PureComponent<
   }
 }
 
-export default withRouter(TeamListPage);
+export default withRouter(TeamMemberListPage);
