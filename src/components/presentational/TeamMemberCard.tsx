@@ -52,7 +52,7 @@ const TeamMemberCard: React.SFC<ITeamMemberCardProps> = props => {
     daysSinceInteraction >= 2 ? { color: "red" } : {};
    const todos= Object.keys(teamMember.todos || {}).map(
       (todoId: string) =>
-        teamMember.interactions[todoId] as ITeamMemberTodo
+        teamMember.todos[todoId] as ITeamMemberTodo
     );
     const activeTodoCount = todos.filter((t:ITeamMemberTodo) => t.status !== TeamMemberTodoStatus.done).length;
     const overDueTodos = todos.filter((t:ITeamMemberTodo) => t.expectedCompletionDate < new Date().getTime());

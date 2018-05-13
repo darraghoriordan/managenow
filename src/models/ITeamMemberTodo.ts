@@ -5,7 +5,7 @@ export default interface ITeamMemberTodo {
   description: string;
   dateCompleted: number;
   expectedCompletionDate: number;
-  owner:TeamMemberToDoOwner;
+  owner: TeamMemberToDoOwner;
   status: TeamMemberTodoStatus;
   dateAdded: number;
   title: string;
@@ -27,6 +27,8 @@ export class TeamMemberTodo implements ITeamMemberTodo {
     owner: TeamMemberToDoOwner,
     expectedCompletionDate: number
   ) {
+    this.title = title;
+    this.description = description;
     this.expectedCompletionDate = expectedCompletionDate;
     this.dateAdded = new Date().getTime();
     this.status = TeamMemberTodoStatus.active;

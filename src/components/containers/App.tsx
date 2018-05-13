@@ -2,6 +2,7 @@ import { User } from "firebase";
 import * as React from "react";
 import { BrowserRouter as Router, Redirect, Route } from "react-router-dom";
 import { Grid } from "semantic-ui-react";
+import { getUserOnce } from "../../api/db";
 import {
   createUser,
   deleteTeamMember,
@@ -10,7 +11,6 @@ import {
   saveTeamMemberInteraction,
   saveTeamMemberTodo
 } from "../../api/db";
-import { getUserOnce } from "../../api/db";
 import { auth } from "../../api/firebase";
 import constants from "../../constants/constants";
 import { EmptyAppUser } from "../../models/EmptyAppUser";
@@ -24,6 +24,7 @@ import AppFooter from "../presentational/AppFooter";
 import TopMenu from "../presentational/TopMenu";
 import AddDevelopmentTaskPage from "./AddDevelopmentTaskPage";
 import AddTeamMemberPage from "./AddTeamMemberPage";
+import AddTodoPage from "./AddTodoPage";
 import AppPage from "./AppPage";
 import DevelopmentTaskPage from "./DevelopmentTaskPage";
 import InteractionsPage from "./InteractionsPage";
@@ -145,15 +146,12 @@ export class App extends React.Component<{}, IAppState> {
         //   {},
         //   this.state.appUser.teamMembers[teamMemberId].interactions
         // );
-        const todos = this.state.appUser.teamMembers[teamMemberId]
-          .todos;
+        const todos = this.state.appUser.teamMembers[teamMemberId].todos;
 
         // if (!savedTeamMember.id) {
         //   teamMember.id = teamMember.name;
         // }
-        todos[
-          savedTeamMemberTodo.id
-        ] = savedTeamMemberTodo;
+        todos[savedTeamMemberTodo.id] = savedTeamMemberTodo;
 
         this.setState(prevState => ({
           ...prevState,
@@ -416,7 +414,7 @@ export class App extends React.Component<{}, IAppState> {
                     return <Redirect to={constants.ROUTES.SIGN_IN} />;
                   }}
                 />
-                        <Route
+                <Route
                   exact={true}
                   path={constants.ROUTES.TEAM_MEMBER_TODOS_OVERVIEW}
                   // tslint:disable-next-line:jsx-no-lambda
@@ -428,8 +426,32 @@ export class App extends React.Component<{}, IAppState> {
                           teamMember={
                             teamMembersProp[(routeProps as any).match.params.id]
                           }
+                          todos={
+                            (teamMembersProp[
+                              (routeProps as any).match.params.id
+                            ].todos || {}) as ITeamMemberTodo[]
+                          }
                           isAuthenticated={authenticatedProp}
                           onToDoSave={this.onTodoSave}
+                        />
+                      );
+                    }
+                    return <Redirect to={constants.ROUTES.SIGN_IN} />;
+                  }}
+                />
+                <Route
+                  exact={true}
+                  path={constants.ROUTES.TEAM_MEMBER_TODOS_ADD}
+                  // tslint:disable-next-line:jsx-no-lambda
+                  render={routeProps => {
+                    if (authenticatedProp) {
+                      return (
+                        <AddTodoPage
+                          {...routeProps}
+                          teamMember={
+                            teamMembersProp[(routeProps as any).match.params.id]
+                          }
+                          onTodoSave={this.onTodoSave}
                         />
                       );
                     }

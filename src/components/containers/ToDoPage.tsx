@@ -2,7 +2,6 @@ import * as React from "react";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import { Button, ButtonProps, Header, Icon } from "semantic-ui-react";
 import constants from "../../constants/constants";
-import { TeamMemberToDoOwner } from "../../models/Enums";
 import ITeamMember from "../../models/ITeamMember";
 import ITeamMemberTodo from "../../models/ITeamMemberTodo";
 import TeamMemberTodoList from "../presentational/TeamMemberTodoList";
@@ -11,7 +10,11 @@ import { TopPageNavigation } from "../presentational/TopPageNavigation";
 export interface IToDoPageProps extends RouteComponentProps<any> {
   isAuthenticated: boolean;
   teamMember: ITeamMember;
-  onToDoSave: (teamMemberId: string, teamMemberToDo: ITeamMemberTodo) => void;
+  todos: ITeamMemberTodo[];
+  onToDoSave: (
+    teamMemberId: string,
+    teamMemberToDo: ITeamMemberTodo
+  ) => Promise<void | ITeamMemberTodo>;
 }
 export interface IToDoPageState {
   loading: boolean;
@@ -20,7 +23,6 @@ class ToDoPage extends React.PureComponent<IToDoPageProps, IToDoPageState> {
   constructor(props: IToDoPageProps) {
     super(props);
 
-    this.onTeamMemberToDoSave = this.onTeamMemberToDoSave.bind(this);
     this.onTeamMemberToDoComplete = this.onTeamMemberToDoComplete.bind(this);
 
     this.state = {
@@ -43,23 +45,7 @@ class ToDoPage extends React.PureComponent<IToDoPageProps, IToDoPageState> {
       this.props.teamMember.todos[teamMemberToDoId]
     ) as ITeamMemberTodo;
     todo.dateCompleted = new Date().getTime();
-    this.props.onToDoSave(this.props.teamMember.id, todo);
-  }
-  public onTeamMemberToDoSave(
-    teamMemberTodoId: string,
-    title: string,
-    description: string,
-    expectedCompletionDate: number,
-    owner: TeamMemberToDoOwner
-  ) {
-    const todo = Object.assign(
-      {},
-      this.props.teamMember.todos[teamMemberTodoId]
-    ) as ITeamMemberTodo;
-    todo.title = title || "";
-    todo.description = description || "";
-    todo.expectedCompletionDate = expectedCompletionDate;
-    todo.owner = owner;
+    // TODO: handle the success and error
     this.props.onToDoSave(this.props.teamMember.id, todo);
   }
 
@@ -68,7 +54,7 @@ class ToDoPage extends React.PureComponent<IToDoPageProps, IToDoPageState> {
       return <div>loading...</div>;
     }
 
-    const { teamMember } = this.props;
+    const { teamMember, todos } = this.props;
     return (
       <React.Fragment>
         <TopPageNavigation history={this.props.history} />
@@ -92,7 +78,7 @@ class ToDoPage extends React.PureComponent<IToDoPageProps, IToDoPageState> {
         </Button>
         <TeamMemberTodoList
           teamMemberName={teamMember.name}
-          todos={teamMember.todos}
+          todos={todos}
           onTeamMemberToDoComplete={this.onTeamMemberToDoComplete}
         />
       </React.Fragment>
