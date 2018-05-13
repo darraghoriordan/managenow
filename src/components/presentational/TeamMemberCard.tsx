@@ -1,9 +1,9 @@
 import { differenceInCalendarDays, subDays } from "date-fns";
 import * as React from "react";
 import { Button, Card, Icon, SemanticCOLORS } from "semantic-ui-react";
-import { TeamMemberActionStatus, TeamMemberTodoStatus } from "../../models/Enums";
+import { TeamMemberDevelopmentActionStatus, TeamMemberTodoStatus } from "../../models/Enums";
 import ITeamMember from "../../models/ITeamMember";
-import ITeamMemberAction from "../../models/ITeamMemberAction";
+import ITeamMemberDevelopmentAction from "../../models/ITeamMemberDevelopmentAction";
 import ITeamMemberInteraction from "../../models/ITeamMemberInteractions";
 import ITeamMemberTodo from "../../models/ITeamMemberTodo";
 
@@ -26,11 +26,11 @@ const TeamMemberCard: React.SFC<ITeamMemberCardProps> = props => {
 
   const numberOfActions = Object.keys(teamMember.actions || {})
     .map(
-      (actionId: string) => teamMember.actions[actionId] as ITeamMemberAction
+      (actionId: string) => teamMember.actions[actionId] as ITeamMemberDevelopmentAction
     )
     .filter(
-      (action: ITeamMemberAction) =>
-        action.status === TeamMemberActionStatus.active
+      (action: ITeamMemberDevelopmentAction) =>
+        action.status === TeamMemberDevelopmentActionStatus.active
     ).length;
   const numberOfActionsStyles = numberOfActions <= 0 ? { color: "red" } : {};
 

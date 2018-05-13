@@ -16,12 +16,12 @@ import constants from "../../constants/constants";
 import { EmptyAppUser } from "../../models/EmptyAppUser";
 import IAppUser, { AppUser } from "../../models/IAppUser";
 import ITeamMember from "../../models/ITeamMember";
-import ITeamMemberAction from "../../models/ITeamMemberAction";
+import ITeamMemberDevelopmentAction from "../../models/ITeamMemberDevelopmentAction";
 import ITeamMemberInteraction from "../../models/ITeamMemberInteractions";
 import ITeamMemberTodo from "../../models/ITeamMemberTodo";
 import { validateTeamMemberForSave } from "../../services/validations";
 import AppFooter from "../presentational/AppFooter";
-import TopMenu from "../presentational/TopMenu";
+import HeaderMenu from "../presentational/HeaderMenu";
 import AddDevelopmentTaskPage from "./AddDevelopmentTaskPage";
 import AddTeamMemberPage from "./AddTeamMemberPage";
 import AddTodoPage from "./AddTodoPage";
@@ -104,7 +104,7 @@ export class App extends React.Component<{}, IAppState> {
 
   public onTeamMemberActionAdd = (
     teamMemberId: string,
-    teamMemberAction: ITeamMemberAction
+    teamMemberAction: ITeamMemberDevelopmentAction
   ) => {
     saveTeamMemberAction(this.state.appUser.uid, teamMemberId, teamMemberAction)
       .then(savedTeamMemberAction => {
@@ -318,7 +318,7 @@ export class App extends React.Component<{}, IAppState> {
       <div>
         <Router>
           <ScrollToTop>
-            <TopMenu
+            <HeaderMenu
               authenticated={authenticatedProp}
               displayName={this.state.appUser.firstName}
               onSignOut={this.signOutFirebase}

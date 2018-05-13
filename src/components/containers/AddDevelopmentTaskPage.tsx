@@ -1,14 +1,14 @@
 import * as React from "react";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import ITeamMember from "../../models/ITeamMember";
-import ITeamMemberAction from "../../models/ITeamMemberAction";
+import ITeamMemberDevelopmentAction from "../../models/ITeamMemberDevelopmentAction";
 import AddTeamMemberDevelopmentTask from "../presentational/AddTeamMemberDevelopmentTask";
 import TopPageNavigation from "../presentational/TopPageNavigation";
 interface IAddTeamMemberPageProps extends RouteComponentProps<any> {
   teamMember: ITeamMember;
   onDevelopmentTaskSave: (
     teamMemberId: string,
-    teamMemberAction: ITeamMemberAction
+    teamMemberAction: ITeamMemberDevelopmentAction
   ) => void;
 }
 
@@ -20,7 +20,7 @@ class AddTeamMemberPage extends React.Component<IAddTeamMemberPageProps, any> {
   }
   public onAddDevelopmentTask(
     teamMemberId: string,
-    teamMemberAction: ITeamMemberAction
+    teamMemberAction: ITeamMemberDevelopmentAction
   ) {
     this.props.onDevelopmentTaskSave(teamMemberId, teamMemberAction);
     this.props.history.goBack();

@@ -7,12 +7,12 @@ import {
   Item,
   TextArea
 } from "semantic-ui-react";
-import ITeamMemberAction from "../../models/ITeamMemberAction";
+import ITeamMemberDevelopmentAction from "../../models/ITeamMemberDevelopmentAction";
 import ITechnique from "../../models/ITechnique";
 
 interface IActiveDevelopmentTaskProps {
   technique: ITechnique;
-  teamMemeberAction: ITeamMemberAction;
+  teamMemeberAction: ITeamMemberDevelopmentAction;
   onCompletedClick: (teamMemberActionId: string, notes: string) => void;
   onSaveNotesClick: (teamMemberActionId: string, notes: string) => void;
 }

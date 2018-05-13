@@ -4,13 +4,13 @@ import { withRouter } from "react-router-dom";
 import { Container, Dropdown, Menu } from "semantic-ui-react";
 import constants from "../../constants/constants";
 
-interface ITopMenuProps extends RouteComponentProps<any> {
+interface IHeaderMenuProps extends RouteComponentProps<any> {
   displayName: string;
   onSignOut: (history: any) => void;
   authenticated: boolean;
 }
 
-class TopMenu extends React.PureComponent<ITopMenuProps, any> {
+class HeaderMenu extends React.PureComponent<IHeaderMenuProps, any> {
   public render() {
     return (
       <Menu fixed="top">
@@ -61,4 +61,4 @@ class TopMenu extends React.PureComponent<ITopMenuProps, any> {
   }
 }
 
-export default withRouter(TopMenu);
+export default withRouter(HeaderMenu);

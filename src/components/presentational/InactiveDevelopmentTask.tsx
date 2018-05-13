@@ -1,11 +1,11 @@
 import * as React from "react";
 import { Header, Item } from "semantic-ui-react";
-import ITeamMemberAction from "../../models/ITeamMemberAction";
+import ITeamMemberDevelopmentAction from "../../models/ITeamMemberDevelopmentAction";
 import ITechnique from "../../models/ITechnique";
 
 interface IInactiveDevelopmentTaskProps {
   technique: ITechnique;
-  teamMemeberAction: ITeamMemberAction;
+  teamMemeberAction: ITeamMemberDevelopmentAction;
 }
 class InactiveDevelopmentTask extends React.Component<
   IInactiveDevelopmentTaskProps,

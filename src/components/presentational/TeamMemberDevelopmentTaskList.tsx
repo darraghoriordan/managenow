@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Divider, Header, Item } from "semantic-ui-react";
-import { TeamMemberActionStatus } from "../../models/Enums";
-import ITeamMemberAction from "../../models/ITeamMemberAction";
+import { TeamMemberDevelopmentActionStatus } from "../../models/Enums";
+import ITeamMemberDevelopmentAction from "../../models/ITeamMemberDevelopmentAction";
 import ITechnique from "../../models/ITechnique";
 import ActiveDevelopmentTask from "./ActiveDevelopmentTask";
 import InactiveDevelopmentTask from "./InactiveDevelopmentTask";
@@ -24,15 +24,15 @@ export default class TeamMemberDevelopmentTaskList extends React.Component<
   public render() {
     const { teamMemberName, actions } = this.props;
     const activeTasks = Object.keys(actions || {})
-      .map((element: string) => actions[element] as ITeamMemberAction)
+      .map((element: string) => actions[element] as ITeamMemberDevelopmentAction)
       .filter(
-        (el: ITeamMemberAction) => el.status === TeamMemberActionStatus.active
+        (el: ITeamMemberDevelopmentAction) => el.status === TeamMemberDevelopmentActionStatus.active
       ).sort((a, b) => b.dateAdded - a.dateAdded);;
 
     const completedTasks = Object.keys(actions || {})
-      .map((element: string) => actions[element] as ITeamMemberAction)
+      .map((element: string) => actions[element] as ITeamMemberDevelopmentAction)
       .filter(
-        (el: ITeamMemberAction) => el.status === TeamMemberActionStatus.done
+        (el: ITeamMemberDevelopmentAction) => el.status === TeamMemberDevelopmentActionStatus.done
       )
       .sort((a, b) => b.dateCompleted - a.dateCompleted);
     return (
@@ -40,7 +40,7 @@ export default class TeamMemberDevelopmentTaskList extends React.Component<
         <div>
           <Header as="h2">Active Development Tasks</Header>
           <Item.Group divided={true}>
-            {activeTasks.map((el: ITeamMemberAction) => {
+            {activeTasks.map((el: ITeamMemberDevelopmentAction) => {
               const technique =
                 this.props.techniques.find(x => x.id === el.techniqueId) ||
                 ({} as ITechnique);
@@ -71,7 +71,7 @@ export default class TeamMemberDevelopmentTaskList extends React.Component<
               <Divider />
               <Header as="h2">Development Task History</Header>
               <Item.Group divided={true}>
-                {completedTasks.map((el: ITeamMemberAction) => {
+                {completedTasks.map((el: ITeamMemberDevelopmentAction) => {
                   const technique =
                     this.props.techniques.find(x => x.id === el.techniqueId) ||
                     ({} as ITechnique);

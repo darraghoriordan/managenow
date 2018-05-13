@@ -11,7 +11,7 @@ export enum TeamMemberTodoStatus {
   active = "active",
   done = "done"
 }
-export enum TeamMemberActionStatus {
+export enum TeamMemberDevelopmentActionStatus {
   active = "active",
   done = "done"
 }

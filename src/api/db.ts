@@ -1,6 +1,6 @@
 import IAppUser from "../models/IAppUser";
 import ITeamMember from "../models/ITeamMember";
-import ITeamMemberAction from "../models/ITeamMemberAction";
+import ITeamMemberDevelopmentAction from "../models/ITeamMemberDevelopmentAction";
 import ITeamMemberInteraction from "../models/ITeamMemberInteractions";
 import ITeamMemberTodo from "../models/ITeamMemberTodo";
 import { db } from "./firebase";
@@ -43,7 +43,7 @@ export const saveTeamMember = (uid: string, teamMember: ITeamMember) => {
 export const saveTeamMemberAction = (
   uid: string,
   teamMemberId: string,
-  teamMemberAction: ITeamMemberAction
+  teamMemberAction: ITeamMemberDevelopmentAction
 ) => {
   // if we dont already have an id try to get one from firebase
   if (!teamMemberAction.id) {

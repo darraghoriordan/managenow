@@ -2,9 +2,9 @@ import * as React from "react";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import { Button, ButtonProps, Header, Icon } from "semantic-ui-react";
 import constants from "../../constants/constants";
-import { TeamMemberActionStatus } from "../../models/Enums";
+import { TeamMemberDevelopmentActionStatus } from "../../models/Enums";
 import ITeamMember from "../../models/ITeamMember";
-import ITeamMemberAction from "../../models/ITeamMemberAction";
+import ITeamMemberDevelopmentAction from "../../models/ITeamMemberDevelopmentAction";
 import { getTechniques } from "../../services/techniqueService";
 import TeamMemberDevelopmentTaskList from "../presentational/TeamMemberDevelopmentTaskList";
 import { TopPageNavigation } from "../presentational/TopPageNavigation";
@@ -14,7 +14,7 @@ export interface IDevelopmentTaskPageProps extends RouteComponentProps<any> {
   teamMember: ITeamMember;
   onDevelopmentTaskSave: (
     teamMemberId: string,
-    teamMemberAction: ITeamMemberAction
+    teamMemberAction: ITeamMemberDevelopmentAction
   ) => void;
 }
 export interface IDevelopmentTaskPageState {
@@ -52,9 +52,9 @@ class DevelopmentTaskPage extends React.PureComponent<
     const action = Object.assign(
       {},
       this.props.teamMember.actions[teamMemberActionId]
-    ) as ITeamMemberAction;
+    ) as ITeamMemberDevelopmentAction;
     action.notes  = notes || "";
-    action.status = TeamMemberActionStatus.done;
+    action.status = TeamMemberDevelopmentActionStatus.done;
     action.dateCompleted = new Date().getTime();
     this.props.onDevelopmentTaskSave(this.props.teamMember.id, action);
   }
@@ -65,7 +65,7 @@ class DevelopmentTaskPage extends React.PureComponent<
     const action = Object.assign(
       {},
       this.props.teamMember.actions[teamMemberActionId]
-    ) as ITeamMemberAction;
+    ) as ITeamMemberDevelopmentAction;
     action.notes  = notes || "";
 
     this.props.onDevelopmentTaskSave(this.props.teamMember.id, action);

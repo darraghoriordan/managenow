@@ -9,16 +9,16 @@ import {
 } from "semantic-ui-react";
 import constants from "../../constants/constants";
 import ITeamMember from "../../models/ITeamMember";
-import ITeamMemberAction, {
-  TeamMemberAction
-} from "../../models/ITeamMemberAction";
+import ITeamMemberDevelopmentAction, {
+  TeamMemberDevelopmentAction
+} from "../../models/ITeamMemberDevelopmentAction";
 import ITechnique from "../../models/ITechnique";
 import { getRelevantTechniques } from "../../services/techniqueService";
 import { TechniqueCategorySelector } from "./TechniqueCategorySelector";
 
 interface IAddActionProps {
   selectedTeamMember: ITeamMember;
-  onSelection: (teamMemberId: string, t: ITeamMemberAction) => void;
+  onSelection: (teamMemberId: string, t: ITeamMemberDevelopmentAction) => void;
 }
 interface IAddActionState {
   selectedBehaviour: any;
@@ -51,7 +51,7 @@ class AddTeamMemberDevelopmentTask extends React.Component<
 
   public onSelectedTechnique(event: any, technique: ITechnique) {
     // maybe this creation shouldn't be here
-    const teamMemberAction = new TeamMemberAction(technique.id);
+    const teamMemberAction = new TeamMemberDevelopmentAction(technique.id);
     this.props.onSelection(this.props.selectedTeamMember.id, teamMemberAction);
   }
   public render() {
