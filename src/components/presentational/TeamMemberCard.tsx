@@ -20,7 +20,8 @@ const TeamMemberCard: React.SFC<ITeamMemberCardProps> = props => {
     teamMember,
     onDevTaskOverviewSelected,
     onTeamMemberOverviewSelected,
-    onInteractionOverviewSelected
+    onInteractionOverviewSelected,
+    onToDoOverviewSelected
   } = props;
 
   const numberOfActions = Object.keys(teamMember.actions || {})

@@ -2,6 +2,7 @@ import IAppUser from "../models/IAppUser";
 import ITeamMember from "../models/ITeamMember";
 import ITeamMemberAction from "../models/ITeamMemberAction";
 import ITeamMemberInteraction from "../models/ITeamMemberInteractions";
+import ITeamMemberTodo from "../models/ITeamMemberTodo";
 import { db } from "./firebase";
 
 export const createUser = (user: IAppUser) =>
@@ -109,4 +110,40 @@ export const saveTeamMemberInteraction = (
     .ref()
     .update(updates)
     .then(() => Promise.resolve(teamMemberInteraction));
+};
+
+export const saveTeamMemberTodo = (
+  uid: string,
+  teamMemberId: string,
+  teamMemberTodo: ITeamMemberTodo
+) => {
+  // if we dont already have an id try to get one from firebase
+  if (!teamMemberTodo.id) {
+    const newKey: string =
+      db
+        .ref("/users/" + uid + "/teamMembers/" + teamMemberId + "/todos")
+        .push().key || "error";
+
+    if (newKey === "error") {
+      // tslint:disable-next-line:no-console
+      console.log("saving teamMember todo error");
+      return Promise.reject("saving teamMember todo error");
+    }
+    teamMemberTodo.id = newKey;
+  }
+  const updates: any = {};
+
+  updates[
+    "/users/" +
+      uid +
+      "/teamMembers/" +
+      teamMemberId +
+      "/todos/" +
+      teamMemberTodo.id
+  ] = teamMemberTodo;
+
+  return db
+    .ref()
+    .update(updates)
+    .then(() => Promise.resolve(teamMemberTodo));
 };

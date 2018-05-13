@@ -17,8 +17,8 @@ const constants = {
     TEAM_MEMBER_INTERACTION_ADD: "/team/member/:id/interactions/add",
     TEAM_MEMBER_INTERACTION_OVERVIEW: "/team/member/:id/interactions",
     TEAM_MEMBER_OVERVIEW: "/team/member/:id",
-    TEAM_MEMBER_TODOS: "/team/member/:id/todos",
-    TEAM_MEMBER_TODOS_ADD: "/team/member/:id/todos/add"
+    TEAM_MEMBER_TODOS_ADD: "/team/member/:id/todos/add",
+    TEAM_MEMBER_TODOS_OVERVIEW: "/team/member/:id/todos"
   },
   TECHNIQUE_CATEGORY: {
     BuildingCulture: "Building Culture",

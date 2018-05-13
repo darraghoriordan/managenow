@@ -54,7 +54,7 @@ class ToDoPage extends React.PureComponent<IToDoPageProps, IToDoPageState> {
   ) {
     const todo = Object.assign(
       {},
-      this.props.teamMember.actions[teamMemberTodoId]
+      this.props.teamMember.todos[teamMemberTodoId]
     ) as ITeamMemberTodo;
     todo.title = title || "";
     todo.description = description || "";

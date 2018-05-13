@@ -2,14 +2,15 @@ import { User } from "firebase";
 import * as React from "react";
 import { BrowserRouter as Router, Redirect, Route } from "react-router-dom";
 import { Grid } from "semantic-ui-react";
-import { getUserOnce } from "../../api/db";
 import {
   createUser,
   deleteTeamMember,
   saveTeamMember,
   saveTeamMemberAction,
-  saveTeamMemberInteraction
+  saveTeamMemberInteraction,
+  saveTeamMemberTodo
 } from "../../api/db";
+import { getUserOnce } from "../../api/db";
 import { auth } from "../../api/firebase";
 import constants from "../../constants/constants";
 import { EmptyAppUser } from "../../models/EmptyAppUser";
@@ -17,6 +18,7 @@ import IAppUser, { AppUser } from "../../models/IAppUser";
 import ITeamMember from "../../models/ITeamMember";
 import ITeamMemberAction from "../../models/ITeamMemberAction";
 import ITeamMemberInteraction from "../../models/ITeamMemberInteractions";
+import ITeamMemberTodo from "../../models/ITeamMemberTodo";
 import { validateTeamMemberForSave } from "../../services/validations";
 import AppFooter from "../presentational/AppFooter";
 import TopMenu from "../presentational/TopMenu";
@@ -29,6 +31,7 @@ import OpenListPage from "./OpenListPage";
 import SignInPage from "./SignInPage";
 import TeamListPage from "./TeamListPage";
 import TeamMemberOverview from "./TeamMemberOverview";
+import ToDoPage from "./ToDoPage";
 
 export interface IAppState {
   loading: boolean;
@@ -126,6 +129,58 @@ export class App extends React.Component<{}, IAppState> {
       .catch((error: string) =>
         // tslint:disable-next-line:no-console
         console.log("Couldnt save team member action: " + error)
+      );
+  };
+  public onTodoSave = (
+    teamMemberId: string,
+    teamMemberTodo: ITeamMemberTodo
+  ): Promise<void | ITeamMemberTodo> => {
+    return saveTeamMemberTodo(
+      this.state.appUser.uid,
+      teamMemberId,
+      teamMemberTodo
+    )
+      .then(savedTeamMemberTodo => {
+        // const interactions = Object.assign(
+        //   {},
+        //   this.state.appUser.teamMembers[teamMemberId].interactions
+        // );
+        const todos = this.state.appUser.teamMembers[teamMemberId]
+          .todos;
+
+        // if (!savedTeamMember.id) {
+        //   teamMember.id = teamMember.name;
+        // }
+        todos[
+          savedTeamMemberTodo.id
+        ] = savedTeamMemberTodo;
+
+        this.setState(prevState => ({
+          ...prevState,
+          appUser: {
+            ...prevState.appUser,
+            teamMembers: {
+              ...prevState.appUser.teamMembers,
+              [teamMemberId]: {
+                ...prevState.appUser.teamMembers[teamMemberId],
+                todos: {
+                  ...prevState.appUser.teamMembers[teamMemberId].todos,
+                  [savedTeamMemberTodo.id]: savedTeamMemberTodo
+                }
+              }
+            }
+          }
+        }));
+
+        return Promise.resolve(savedTeamMemberTodo);
+      })
+      .then((x: ITeamMemberTodo) => {
+        // TODO: go and compute sentiment
+        return Promise.resolve(x);
+      })
+      .catch((error: string) =>
+        // tslint:disable-next-line:no-console
+        console.log("Couldnt save team member todo: " + error)
       );
   };
   public onInteractionAdd = (
@@ -355,6 +410,26 @@ export class App extends React.Component<{}, IAppState> {
                           }
                           isAuthenticated={authenticatedProp}
                           onInteractionSave={this.onInteractionAdd}
+                        />
+                      );
+                    }
+                    return <Redirect to={constants.ROUTES.SIGN_IN} />;
+                  }}
+                />
+                        <Route
+                  exact={true}
+                  path={constants.ROUTES.TEAM_MEMBER_TODOS_OVERVIEW}
+                  // tslint:disable-next-line:jsx-no-lambda
+                  render={routeProps => {
+                    if (authenticatedProp) {
+                      return (
+                        <ToDoPage
+                          {...routeProps}
+                          teamMember={
+                            teamMembersProp[(routeProps as any).match.params.id]
+                          }
+                          isAuthenticated={authenticatedProp}
+                          onToDoSave={this.onTodoSave}
                         />
                       );
                     }
