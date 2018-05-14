@@ -2,6 +2,7 @@ import { User } from "firebase";
 import * as React from "react";
 import { BrowserRouter as Router, Redirect, Route } from "react-router-dom";
 import { Grid } from "semantic-ui-react";
+import { getUserOnce } from "../../api/db";
 import {
   createUser,
   deleteTeamMember,
@@ -10,7 +11,6 @@ import {
   saveTeamMemberInteraction,
   saveTeamMemberTodo
 } from "../../api/db";
-import { getUserOnce } from "../../api/db";
 import { auth } from "../../api/firebase";
 import constants from "../../constants/constants";
 import { EmptyAppUser } from "../../models/EmptyAppUser";
@@ -25,15 +25,15 @@ import HeaderMenu from "../presentational/HeaderMenu";
 import AddDevelopmentTaskPage from "./AddDevelopmentTaskPage";
 import AddTeamMemberPage from "./AddTeamMemberPage";
 import AddTodoPage from "./AddTodoPage";
-import AppPage from "./AppPage";
+import AppSalesPage from "./AppSalesPage";
 import OpenListPage from "./OpenListPage";
 import ScrollToTop from "./ScrollToTop";
 import SignInPage from "./SignInPage";
+import TeamMemberDetailsPage from "./TeamMemberDetailsPage";
 import TeamMemberDevelopmentActionPage from "./TeamMemberDevelopmentActionPage";
 import TeamMemberInteractionsPage from "./TeamMemberInteractionsPage";
 import TeamMemberListPage from "./TeamMemberListPage";
-import TeamMemberOverviewPage from "./TeamMemberOverviewPage";
-import ToDoPage from "./ToDoPage";
+import TeamMemberTodoListPage from "./TeamMemberTodoListPage";
 
 export interface IAppState {
   loading: boolean;
@@ -62,8 +62,7 @@ export class App extends React.Component<{}, IAppState> {
     this.onTodoSave = this.onTodoSave.bind(this);
     this.onInteractionAdd = this.onInteractionAdd.bind(this);
     this.onTeamMemberDelete = this.onTeamMemberDelete.bind(this);
-    
-    
+
     this.state = state;
   }
   public signOutFirebase(history: any) {
@@ -83,7 +82,10 @@ export class App extends React.Component<{}, IAppState> {
         saveTeamMember(this.state.appUser.uid, validatedTeamMember)
       )
       .then(savedTeamMember => {
-        const teamMembers = Object.assign({}, this.state.appUser.teamMembers || {});
+        const teamMembers = Object.assign(
+          {},
+          this.state.appUser.teamMembers || {}
+        );
 
         // if (!savedTeamMember.id) {
         //   teamMember.id = teamMember.name;
@@ -182,7 +184,7 @@ export class App extends React.Component<{}, IAppState> {
       .then((x: ITeamMemberTodo) => {
         // TODO: go and compute sentiment
         return Promise.resolve(x);
-      })
+      });
   };
   public onInteractionAdd = (
     teamMemberId: string,
@@ -198,8 +200,8 @@ export class App extends React.Component<{}, IAppState> {
         //   {},
         //   this.state.appUser.teamMembers[teamMemberId].interactions
         // );
-        const interactions = this.state.appUser.teamMembers[teamMemberId]
-          .interactions || {};
+        const interactions =
+          this.state.appUser.teamMembers[teamMemberId].interactions || {};
 
         // if (!savedTeamMember.id) {
         //   teamMember.id = teamMember.name;
@@ -364,7 +366,7 @@ export class App extends React.Component<{}, IAppState> {
                 <Route
                   exact={true}
                   path={constants.ROUTES.APP_SALES}
-                  component={AppPage}
+                  component={AppSalesPage}
                 />
                 <Route
                   exact={true}
@@ -424,7 +426,7 @@ export class App extends React.Component<{}, IAppState> {
                   render={routeProps => {
                     if (authenticatedProp) {
                       return (
-                        <ToDoPage
+                        <TeamMemberTodoListPage
                           {...routeProps}
                           teamMember={
                             teamMembersProp[(routeProps as any).match.params.id]
@@ -468,7 +470,7 @@ export class App extends React.Component<{}, IAppState> {
                   render={routeProps => {
                     if (authenticatedProp) {
                       return (
-                        <TeamMemberOverviewPage
+                        <TeamMemberDetailsPage
                           {...routeProps}
                           teamMember={
                             teamMembersProp[(routeProps as any).match.params.id]

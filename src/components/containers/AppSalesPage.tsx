@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Container,Header } from "semantic-ui-react";
-const AppPage = () => (
+const AppSalesPage = () => (
     <Container text={true}>
       <Header as="h1">
         The greatest minds in leadership at your fingertips
@@ -18,4 +18,4 @@ const AppPage = () => (
 
 );
 
-export default AppPage;
+export default AppSalesPage;

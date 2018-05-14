@@ -8,7 +8,8 @@ import ITeamMemberTodo from "../../models/ITeamMemberTodo";
 import TeamMemberTodoList from "../presentational/TeamMemberTodoList";
 import { TopPageNavigation } from "../presentational/TopPageNavigation";
 
-export interface IToDoPageProps extends RouteComponentProps<any> {
+export interface ITeamMemberTodoListPageProps
+  extends RouteComponentProps<any> {
   isAuthenticated: boolean;
   teamMember: ITeamMember;
   todos: ITeamMemberTodo[];
@@ -20,8 +21,11 @@ export interface IToDoPageProps extends RouteComponentProps<any> {
 export interface IToDoPageState {
   loading: boolean;
 }
-class ToDoPage extends React.PureComponent<IToDoPageProps, IToDoPageState> {
-  constructor(props: IToDoPageProps) {
+class TeamMemberTodoListPage extends React.PureComponent<
+  ITeamMemberTodoListPageProps,
+  IToDoPageState
+> {
+  constructor(props: ITeamMemberTodoListPageProps) {
     super(props);
 
     this.onTeamMemberToDoComplete = this.onTeamMemberToDoComplete.bind(this);
@@ -88,4 +92,4 @@ class ToDoPage extends React.PureComponent<IToDoPageProps, IToDoPageState> {
   }
 }
 
-export default withRouter(ToDoPage);
+export default withRouter(TeamMemberTodoListPage);

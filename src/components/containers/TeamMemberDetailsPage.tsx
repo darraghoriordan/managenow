@@ -5,19 +5,19 @@ import constants from "../../constants/constants";
 import ITeamMember from "../../models/ITeamMember";
 import { TopPageNavigation } from "../presentational/TopPageNavigation";
 
-export interface ITeamMemberOverviewProps extends RouteComponentProps<any> {
+export interface ITeamMemberDetailsProps extends RouteComponentProps<any> {
   isAuthenticated: boolean;
   teamMember: ITeamMember;
   onTeamMemberDelete: (teamMemberId: string) => void;
 }
-export interface ITeamMemberOverviewState {
+export interface ITeamMemberDetailsState {
   loading: boolean;
 }
-class TeamMemberOverviewPage extends React.PureComponent<
-  ITeamMemberOverviewProps,
-  ITeamMemberOverviewState
+class TeamMemberDetailsPage extends React.PureComponent<
+ITeamMemberDetailsProps,
+ITeamMemberDetailsState
 > {
-  constructor(props: ITeamMemberOverviewProps) {
+  constructor(props: ITeamMemberDetailsProps) {
     super(props);
 
     this.state = {
@@ -64,4 +64,4 @@ class TeamMemberOverviewPage extends React.PureComponent<
   }
 }
 
-export default withRouter(TeamMemberOverviewPage);
+export default withRouter(TeamMemberDetailsPage);
