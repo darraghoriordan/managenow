@@ -1,0 +1,129 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly for authenticated user 1`] = `
+<div
+  className="ui top fixed menu"
+>
+  <div
+    className="ui container"
+  >
+    <a
+      className="header item"
+      href="/"
+      onClick={[Function]}
+    >
+      New Leader List
+    </a>
+    <a
+      className="item"
+      href="/"
+      onClick={[Function]}
+    >
+      Home
+    </a>
+    <a
+      className="item"
+      href="/team"
+      onClick={[Function]}
+    >
+      Your Team
+    </a>
+    <div
+      className="right menu"
+    >
+      <div
+        aria-busy={undefined}
+        aria-disabled={undefined}
+        aria-expanded={false}
+        aria-multiselectable={undefined}
+        className="ui item dropdown"
+        onBlur={[Function]}
+        onChange={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onMouseDown={[Function]}
+        role="listbox"
+        tabIndex={0}
+      >
+        <div
+          aria-live="polite"
+          className="text"
+          role="alert"
+        >
+          darragh
+        </div>
+        <i
+          aria-hidden="true"
+          className="dropdown icon"
+          onClick={[Function]}
+        />
+        <div
+          className="menu transition"
+        >
+          <div
+            aria-checked={undefined}
+            aria-disabled={undefined}
+            aria-selected={undefined}
+            className="item"
+            onClick={[Function]}
+            role="option"
+          >
+            <i
+              aria-hidden="true"
+              className="edit icon"
+            />
+            <span
+              className="text"
+            >
+              Signout
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`renders correctly for non-authenticated user 1`] = `
+<div
+  className="ui top fixed menu"
+>
+  <div
+    className="ui container"
+  >
+    <a
+      className="header item"
+      href="/"
+      onClick={[Function]}
+    >
+      New Leader List
+    </a>
+    <a
+      className="item"
+      href="/"
+      onClick={[Function]}
+    >
+      Home
+    </a>
+    <a
+      className="item"
+      href="/list"
+      onClick={[Function]}
+    >
+      The App
+    </a>
+    <div
+      className="right menu"
+    >
+      <a
+        className="item"
+        href="/signin"
+        onClick={[Function]}
+      >
+        Sign in
+      </a>
+    </div>
+  </div>
+</div>
+`;

@@ -5,12 +5,15 @@ import { Container, Dropdown, Menu } from "semantic-ui-react";
 import constants from "../../constants/constants";
 
 interface IHeaderMenuProps extends RouteComponentProps<any> {
-  displayName: string;
+  displayName?: string;
   onSignOut: (history: any) => void;
   authenticated: boolean;
 }
 
 class HeaderMenu extends React.PureComponent<IHeaderMenuProps, any> {
+  public static defaultProps: Partial<IHeaderMenuProps> = {
+    displayName: ""
+  };
   public render() {
     return (
       <Menu fixed="top">

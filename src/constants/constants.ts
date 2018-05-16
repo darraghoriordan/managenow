@@ -25,7 +25,7 @@ const constants = {
     BuildingProducts: "Building Products",
     BuildingRapportandInfluence: "Building Rapport and Influence",
     Coaching: "Coaching",
-    Decisons: "Decisons",
+    Decisions: "Decisions",
     Delegating: "Delegating",
     DirectingPeople: "Directing People",
     Diversity: "Diversity",
