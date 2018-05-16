@@ -28,7 +28,7 @@ export function getTechniques() {
   sampleTechniques.push({
     author: "Michael D. Watkins",
     // authorTwitter: "MichaelDWatkins",
-    category: constants.TECHNIQUE_CATEGORY.Decisons,
+    category: constants.TECHNIQUE_CATEGORY.Decisions,
     coverimage: "/images/covers/thefirst90days.jpg",
     description:
       "There a few different ways to make decisions depending on the maturity of the team. Picking the right model can change he outcome.",
